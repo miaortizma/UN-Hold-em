@@ -57,12 +57,14 @@ public class Card {
         }
         if (newValue == 0) {
             newValue = 14;
+        } else {
+            newValue++;
         }
         this.value = newValue;
     }
 
     public Card(int value, int suit) {
-        if (-1 < value && value < 13) {
+        if (1< value && value < 15) {
             this.value = value;
         } else {
             this.value = -1;
@@ -87,10 +89,10 @@ public class Card {
 
     @Override
     public String toString() {
-        String[] rank = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+        String[] rank = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
         String[] suit = {"\u2660", "\u2663", "\u2764", "\u2666"};
 
-        return rank[this.value] + "" + suit[this.suit] + "\t";
+        return rank[this.value - 2] + "" + suit[this.suit] + "\t";
 
     }
 
