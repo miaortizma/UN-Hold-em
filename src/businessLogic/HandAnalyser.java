@@ -29,18 +29,24 @@ public class HandAnalyser {
         return frequency;
     }
 
+    public static int[] handRanks(Hand hand) {
+        int[] ranks = new int[5];
+        for (int i = 0; i < 5; i++) {
+            ranks[i] = hand.getCard(i).getValue();
+        }
+        return ranks;
+    }
+
     /**
      *
      * @param hand
      * @return indice de la carta màs alta
      */
     public static Card highCard(Hand hand) {
-        int maxCard = hand.getCard(0).getValue(), cardIndex = 0, cardValue = 0;
+        int maxCard = hand.getCard(0).getValue(), cardIndex = 0, cardValue;
         for (int i = 0; i < hand.getSize(); i++) {
             cardValue = hand.getCard(i).getValue();
-            if (cardValue == 0) {
-                return hand.getCard(i);
-            }
+
             if (hand.getCard(i).getValue() > maxCard) {
                 cardIndex = i;
             }
