@@ -7,7 +7,6 @@ package businessLogic;
 
 import data.Card;
 import data.Hand;
-import java.util.Arrays;
 
 /**
  *
@@ -15,24 +14,19 @@ import java.util.Arrays;
  */
 public class HandAnalyser {
 
-    private static String[] hands = {"4 of a Kind", "Straight Flush", "Straight", "Flush", "High Card",
+    private static final String[] HANDS = {"4 of a Kind", "Straight Flush", "Straight", "Flush", "High Card",
         "1 Pair", "2 Pair", "Royal Flush", "3 of a Kind", "Full House"};
 
-    private static String rankHand(Hand hand) {
+    public static String rankHand(Hand hand) {
         int[] ranks = hand.getCardRanks();
         int[] suits = hand.getCardSuits();
-
-        System.out.println(Arrays.toString(ranks));
-        long s = 0;
-        for (int i = 0; i < ranks.length; i++) {
+        long s = 0, v = 0, o;
+        for (int i = 0; i < hand.getSize(); i++) {
             s += 1 << ranks[i];
-        }
-
-        long v = 0, o;
-        for (int i = 0; i < 5; i++) {
             o = (long) Math.pow(2, (ranks[i] - 2) * 4);
             v += o * (((v / o) & 15) + 1);
         }
+
         //0x403c Ace low Straight
         //(s / (s & -s) == 31) Straight
         v = v % 15 - ((s / (s & -s) == 31) || (s == 0x403c) ? 3 : 1);
@@ -50,7 +44,7 @@ public class HandAnalyser {
     }
 
     public static String[] getHands() {
-        return hands;
+        return HANDS;
     }
 
     public static int[] rankFrequency(Hand hand) {
