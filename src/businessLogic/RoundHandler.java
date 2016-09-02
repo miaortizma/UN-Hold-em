@@ -12,13 +12,14 @@ import static ui.UI.printDeck;
 
 /**
  *
- * @author OnePoker UN  &
+ * @author OnePoker UN &
  */
 public class RoundHandler {
 
-    public static void reiceveBets(Round round, List<Player> players) {
+    public static void reiceveBets(Round round) {
         //stub
 
+        List<Player> players = round.getPlayers();
         System.out.println("Betting time");
         for (int i = 0; i < players.size(); i++) {
             round.addToPot(25);
@@ -28,8 +29,10 @@ public class RoundHandler {
 
     public static void playRound(Round round) {
         //tratando de imprimir cartas unicode
-        
+
         Deck dealingDeck = round.getDealingDeck();
+        Hand tableHand = round.getTableHand();
+        
         System.out.println((char) 0x1F0B8);
         printDeck(dealingDeck);
         shuffleDeck(dealingDeck);
@@ -37,41 +40,30 @@ public class RoundHandler {
         burnCard(dealingDeck);
         //printDeck(dealingDeck);
 
-        List<Player> players = round.getPlayers();
-        dealToPlayers(dealingDeck, players);
+        reiceveBets(round);
 
-    }
-
-    public static void communitaryHand(Round round) {
-        
-        
-        Deck dealingDeck = round.getDealingDeck();
-        
-        Deck tableDeck = round.getTableHand();
-        for (int i = 0; i < 5; i++) {
-
+        dealToPlayers(round);
+        for (int i = 0; i < 3; i++) {
             switch (i) {
                 case 0: {
                     System.out.println("The flop: ");
-                    deal(dealingDeck, tableDeck, 3);
-                    i = 2;
+                    deal(dealingDeck, tableHand, 3);
                     break;
                 }
-                case 3: {
+                case 1: {
                     System.out.println("The turn:  ");
-                    deal(dealingDeck, tableDeck, 1);
+                    deal(dealingDeck, tableHand, 1);
                     break;
                 }
-                case 4: {
+                case 2: {
                     System.out.println("The river:  ");
-                    deal(dealingDeck, tableDeck, 1);
+                    deal(dealingDeck, tableHand, 1);
                     break;
                 }
-
             }
-            //doesn't print name
-            printDeck(tableDeck, false);
+
         }
+
     }
 
 }

@@ -52,7 +52,9 @@ public class DealingAssistant {
         }
     }
 
-    public static void dealToPlayers(Deck deck, List<Player> players) {
+    public static void dealToPlayers(Round round) {
+        List<Player> players = round.getPlayers();
+        Deck deck = round.getDealingDeck();
         System.out.println("Dealing time");
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
