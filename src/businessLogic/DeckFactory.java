@@ -8,6 +8,8 @@ package businessLogic;
 import static businessLogic.DealingAssistant.shuffleDeck;
 import data.Card;
 import data.Deck;
+import data.Hand;
+import data.Player;
 
 /**
  *
@@ -15,7 +17,7 @@ import data.Deck;
  */
 public class DeckFactory {
 
-    public static Deck CreateDeck(String deckType) {
+    public static Deck CreateDeck(String deckType, Player... args) {
         if (deckType.equalsIgnoreCase("DEALINGDECK")) {
             Deck dealingDeck = new Deck("Dealing deck");
             for (int i = 0; i < 52; i++) {
@@ -24,7 +26,12 @@ public class DeckFactory {
             shuffleDeck(dealingDeck);
             return dealingDeck;
         } else if (deckType.equalsIgnoreCase("PLAYERHAND")) {
-            return new Deck("Hand");
+            if (args.length > 0) {
+                return new Hand("Hand", args[0]);
+            } else {
+                return new Hand("Hand");
+
+            }
         } else {
             return null;
         }

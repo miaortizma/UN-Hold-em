@@ -11,8 +11,15 @@ package data;
  */
 public class Hand extends Deck {
 
+    private Player player;
+
     public Hand(String name) {
         super(name);
+    }
+
+    public Hand(String name, Player player) {
+        super(name);
+        this.player = player;
     }
 
 }
