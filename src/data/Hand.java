@@ -5,6 +5,8 @@
  */
 package data;
 
+import static businessLogic.HandAnalyser.handRanks;
+import static businessLogic.HandAnalyser.handSuits;
 
 /**
  *
@@ -13,13 +15,21 @@ package data;
 public class Hand extends Deck {
 
     private String rank;
-    private int rankLevel;
+    
+    
+    public int[] getCardRanks(){
+        return handRanks(this);
+    
+    }
+    
+    public int[] getCardSuits(){
+        return handSuits(this);
+    }
+
     public Hand(String name) {
         super(name);
     }
 
-   
-  
     /**
      * @return the rank
      */
@@ -34,20 +44,6 @@ public class Hand extends Deck {
         this.rank = rank;
     }
 
-    /**
-     * @return the rankLevel
-     */
-    public int getRankLevel() {
-        return rankLevel;
-    }
-
-    /**
-     * @param rankLevel the rankLevel to set
-     */
-    public void setRankLevel(int rankLevel) {
-        this.rankLevel = rankLevel;
-    }
-    
-    
+   
 
 }
