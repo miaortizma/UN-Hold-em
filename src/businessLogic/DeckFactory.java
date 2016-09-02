@@ -29,7 +29,12 @@ public class DeckFactory {
         } else {
             return null;
         }
+    }
 
+    public static Deck CreateDeck(String deckType, String name) {
+        Deck deck = CreateDeck(deckType);
+        deck.setName(name);
+        return deck;
     }
 
 }
