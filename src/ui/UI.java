@@ -14,6 +14,19 @@ import java.util.List;
  */
 public class UI {
 
+    public static final String[] RANKS = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+    public static final String[] SUITS = {"\u2660", "\u2663", "\u2764", "\u2666"};
+
+    /*for (int i = 0; i < 13; i++) {
+            if (i != 12) {
+                System.out.print(1 + "000");
+            } else {
+                System.out.println("1");
+            }
+        }
+        for (int i = 0; i < 13; i++) {
+            System.out.print(rank[12 - i] + "   ");
+        }*/
     public static void printWelcome() {
         System.out.println("Welcome to UN Hold' em");
         System.out.println("Start a new tournament?");

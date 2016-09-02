@@ -5,21 +5,43 @@
  */
 package data;
 
+import static businessLogic.HandAnalyser.handRanks;
+import static businessLogic.HandAnalyser.handSuits;
+
 /**
  *
  * @author OnePoker UN Estudiante
  */
 public class Hand extends Deck {
 
-    private Player player;
+    private String rank;
 
+    public int[] getCardRanks() {
+        return handRanks(this);
+
+    }
+
+    public int[] getCardSuits() {
+        return handSuits(this);
+    }
+
+    
     public Hand(String name) {
         super(name);
     }
 
-    public Hand(String name, Player player) {
-        super(name);
-        this.player = player;
+    /**
+     * @return the rank
+     */
+    public String getRank() {
+        return rank;
+    }
+
+    /**
+     * @param rank the rank to set
+     */
+    public void setRank(String rank) {
+        this.rank = rank;
     }
 
 }
