@@ -7,7 +7,7 @@ package data;
 
 /**
  *
- * @author OnePoker UN  & 
+ * @author OnePoker UN &
  */
 public class Card {
 
@@ -27,32 +27,38 @@ public class Card {
      */
     public Card(int i) {
         // System.out.println("Attempt to create card with value: "  + i);
-
+        int newValue;
         this.suit = (i < 13) ? 0 : (i < 26) ? 1 : (i < 39) ? 2 : (i < 52) ? 3 : 4;
         //System.out.println("Suit calculated as :" + this.suit);
         switch (this.suit) {
             case (0): {
-                this.value = i;
+                newValue = i;
                 break;
             }
             case (1): {
-                this.value = i % 13;
+                newValue = i % 13;
                 break;
             }
             case (2): {
-                this.value = i % 26;
+                newValue = i % 26;
                 break;
             }
             case (3): {
-                this.value = i % 39;
+                newValue = i % 39;
                 break;
             }
             default: {
                 System.out.println("Not a valid card");
-                value = -1;
+                newValue = -1;
             }
-
         }
+        if (newValue < 0 || newValue > 13) {
+            throw new IllegalArgumentException();
+        }
+        if (newValue == 0) {
+            newValue = 14;
+        }
+        this.value = newValue;
     }
 
     public Card(int value, int suit) {
