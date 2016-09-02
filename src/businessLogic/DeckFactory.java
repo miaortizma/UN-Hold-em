@@ -17,7 +17,7 @@ import data.Player;
  */
 public class DeckFactory {
 
-    public static Deck CreateDeck(String deckType, Player... args) {
+    public static Deck CreateDeck(String deckType, Object... args) {
         if (deckType.equalsIgnoreCase("DEALINGDECK")) {
             Deck dealingDeck = new Deck("Dealing deck");
             for (int i = 0; i < 52; i++) {
@@ -27,7 +27,7 @@ public class DeckFactory {
             return dealingDeck;
         } else if (deckType.equalsIgnoreCase("PLAYERHAND")) {
             if (args.length > 0) {
-                return new Hand("Hand", args[0]);
+                return new Hand("Hand", (Player)args[0]);
             } else {
                 return new Hand("Hand");
 
