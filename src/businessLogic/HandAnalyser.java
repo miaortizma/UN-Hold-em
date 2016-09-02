@@ -16,7 +16,13 @@ public class HandAnalyser {
 
     private static final String[] HANDS = {"4 of a Kind", "Straight Flush", "Straight", "Flush", "High Card",
         "1 Pair", "2 Pair", "Royal Flush", "3 of a Kind", "Full House"};
-
+    
+    
+    /**
+     * Reference Author @subskybox
+     * http://stackoverflow.com/questions/2829883/7-card-poker-hand-evaluator
+     * http://www.codeproject.com/Articles/569271/A-Poker-hand-analyzer-in-JavaScript-using-bit-math
+     * /
     public static String rankHand(Hand hand) {
         int[] ranks = hand.getCardRanks();
         int[] suits = hand.getCardSuits();
