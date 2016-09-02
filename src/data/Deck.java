@@ -10,14 +10,14 @@ import java.util.List;
 
 /**
  *
- * @author OnePoker UN  & 
+ * @author OnePoker UN
  */
 public class Deck {
 
     private final List<Card> cards;
     private String name;
 
-    public Deck() {
+    private Deck() {
         System.out.print("Deck Constructor: ");
         this.cards = new ArrayList<>();
     }
@@ -28,7 +28,7 @@ public class Deck {
         this.name = name;
     }
 
-    public void add(Card card) {
+    public void addCard(Card card) {
         cards.add(card);
 
     }

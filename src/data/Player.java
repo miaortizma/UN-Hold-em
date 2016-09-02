@@ -28,7 +28,7 @@ public class Player {
     }
 
     public void receiveCard(Card card) {
-        hand.add(card);
+        hand.addCard(card);
     }
 
     public Deck getDeck() {

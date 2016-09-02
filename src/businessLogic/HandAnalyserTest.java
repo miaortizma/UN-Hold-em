@@ -6,31 +6,28 @@
 package businessLogic;
 
 import static businessLogic.DealingAssistant.deal;
-import static businessLogic.DealingAssistant.shuffleDeck;
+import static businessLogic.DeckFactory.CreateDeck;
 import static businessLogic.HandAnalyser.highCard;
-import static businessLogic.RoundHandler.communitaryHand;
 import data.Deck;
 import data.Hand;
-import data.Round;
 import static ui.UI.printDeck;
 
 /**
  *
- * @author OnePoker UN 
+ * @author OnePoker UN
  */
 public class HandAnalyserTest {
 
     public static void test() {
 
-        Hand juego = new Hand("Prueba");
-        Round ronda = new Round();
-        Deck dealer = ronda.getDealingDeck();
-        Hand comunitario = ronda.getTableHand();
-        shuffleDeck(dealer);
+        Hand juego = (Hand) CreateDeck("playerhand");
+        Deck dealer = CreateDeck("dealingdeck");
         deal(dealer, juego, 2);
 
         printDeck(juego);
-        communitaryHand(ronda);
-        System.out.println(highCard(juego));
+        for (int i = 0; i < 5; i++) {
+            System.out.print(deal(dealer) + " ");
+        }
+        System.out.println("\nHigh Card: " + highCard(juego));
     }
 }
