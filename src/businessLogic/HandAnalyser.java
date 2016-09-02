@@ -7,6 +7,7 @@ package businessLogic;
 
 import data.Card;
 import data.Hand;
+import java.util.Arrays;
 
 /**
  *
@@ -14,8 +15,32 @@ import data.Hand;
  */
 public class HandAnalyser {
 
-    private String[] hands = {"4 of a Kind", "Straight Flush", "Straight", "Flush", "High Card",
+    private static String[] hands = {"4 of a Kind", "Straight Flush", "Straight", "Flush", "High Card",
         "1 Pair", "2 Pair", "Royal Flush", "3 of a Kind", "Full House"};
+
+    private static String rankHand(Hand hand) {
+        int[] ranks = hand.getCardRanks();
+        int[] suits = hand.getCardSuits();
+
+        System.out.println(Arrays.toString(ranks));
+        long s = 0;
+        for (int i = 0; i < ranks.length; i++) {
+            s += 1 << ranks[i];
+        }
+
+        long v = 0, o;
+        for (int i = 0; i < 5; i++) {
+            o = (long) Math.pow(2, (ranks[i] - 2) * 4);
+            v += o * (((v / o) & 15) + 1);
+        }
+        //0x403c Ace low Straight
+        //(s / (s & -s) == 31) Straight
+        v = v % 15 - ((s / (s & -s) == 31) || (s == 0x403c) ? 3 : 1);
+        //0x7c00 Royal Flush
+        v -= (allEqual(suits) ? 1 : 0) * ((s == 0x7c00) ? -5 : 1);
+        return getHands()[(int) v];
+
+    }
 
     public static void pair(Hand hand) {
         //asume que recibe una mano ordenada
@@ -24,7 +49,7 @@ public class HandAnalyser {
         }
     }
 
-    public String[] getHands() {
+    public static String[] getHands() {
         return hands;
     }
 
