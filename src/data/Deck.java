@@ -25,7 +25,7 @@ public class Deck {
 
     public Deck(String name) {
         this();
-        String[] legalConstructorName = {"Dealing deck", "Hand"};
+        String[] legalConstructorName = {"Dealing deck", "Hand", "Royal Flush"};
         System.out.println(name);
         if (Arrays.asList(legalConstructorName).contains(name)) {
             System.out.println("Created " + name);
