@@ -7,7 +7,7 @@ package businessLogic;
 
 import static businessLogic.DealingAssistant.deal;
 import static businessLogic.DeckFactory.CreateDeck;
-import static businessLogic.HandAnalyser.highCard;
+import static businessLogic.HandAnalyser.rankHand;
 import data.Deck;
 import data.Hand;
 import static ui.UI.printDeck;
@@ -21,13 +21,20 @@ public class HandAnalyserTest {
     public static void test() {
 
         Hand juego = (Hand) CreateDeck("playerhand");
+        Hand comunitario = (Hand) CreateDeck("playerhand");
         Deck dealer = CreateDeck("dealingdeck");
         deal(dealer, juego, 2);
+        deal(dealer, comunitario, 5);
+        /*comunitario.addCard(new Card(12, 3));
+        comunitario.addCard(new Card(13, 2));
+        comunitario.addCard(new Card(3, 2));
+        comunitario.addCard(new Card(2, 3));
+        comunitario.addCard(new Card(14, 2));
+         */
+        printDeck(comunitario);
+        
 
-        printDeck(juego);
-        for (int i = 0; i < 5; i++) {
-            System.out.print(deal(dealer) + " ");
-        }
-        System.out.println("\nHigh Card: " + highCard(juego));
+        System.out.println(rankHand(comunitario));
     }
+
 }
