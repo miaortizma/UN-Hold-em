@@ -15,17 +15,17 @@ import static businessLogic.HandAnalyser.handSuits;
 public class Hand extends Deck {
 
     private String rank;
-    
-    
-    public int[] getCardRanks(){
+
+    public int[] getCardRanks() {
         return handRanks(this);
-    
+
     }
-    
-    public int[] getCardSuits(){
+
+    public int[] getCardSuits() {
         return handSuits(this);
     }
 
+    
     public Hand(String name) {
         super(name);
     }
@@ -43,7 +43,5 @@ public class Hand extends Deck {
     public void setRank(String rank) {
         this.rank = rank;
     }
-
-   
 
 }

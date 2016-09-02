@@ -25,12 +25,6 @@ public class HandAnalyserTest {
         Deck dealer = CreateDeck("dealingdeck");
         deal(dealer, juego, 2);
         deal(dealer, comunitario, 5);
-        /*comunitario.addCard(new Card(12, 3));
-        comunitario.addCard(new Card(13, 2));
-        comunitario.addCard(new Card(3, 2));
-        comunitario.addCard(new Card(2, 3));
-        comunitario.addCard(new Card(14, 2));
-         */
         printDeck(comunitario);
         
 

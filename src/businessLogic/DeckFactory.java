@@ -31,6 +31,23 @@ public class DeckFactory {
         }
     }
 
+    public static Hand CreateHand(String handType) {
+        if (handType.equalsIgnoreCase("ROYAL")) {
+            int suit = GameEngine.RND.nextInt(4);
+            Hand royal = new Hand("Royal Flush");
+            royal.addCard(new Card(10, suit));
+            royal.addCard(new Card(11, suit));
+            royal.addCard(new Card(12, suit));
+            royal.addCard(new Card(13, suit));
+            royal.addCard(new Card(14, suit));
+            return royal;
+        } else {
+            //stub 
+            return null;
+        }
+
+    }
+
     public static Deck CreateDeck(String deckType, String name) {
         Deck deck = CreateDeck(deckType);
         deck.setName(name);
