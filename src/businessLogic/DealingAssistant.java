@@ -35,7 +35,7 @@ public class DealingAssistant {
 
     public static void deal(Deck deck, Hand mano, int i) {
         for (int j = 0; j < i; j++) {
-            mano.add(deal(deck));
+            mano.addCard(deal(deck));
         }
     }
 
@@ -48,7 +48,7 @@ public class DealingAssistant {
      */
     public static void deal(Deck deck1, Deck deck2, int i) {
         for (int j = 0; j < i; j++) {
-            deck2.add(deal(deck1));
+            deck2.addCard(deal(deck1));
         }
     }
 

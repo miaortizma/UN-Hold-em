@@ -28,7 +28,7 @@ public class Deck {
         this.name = name;
     }
 
-    public void add(Card card) {
+    public void addCard(Card card) {
         cards.add(card);
 
     }

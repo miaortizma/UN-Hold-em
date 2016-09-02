@@ -29,7 +29,7 @@ public class HandAnalyserTest {
         shuffleDeck(dealer);
         deal(dealer, juego, 2);
 
-        printDeck(juego);
+        //printDeck(juego);
         communitaryHand(ronda);
         System.out.println(highCard(juego));
     }

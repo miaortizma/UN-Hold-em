@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  *
- * @author OnePoker UN  &
+ * @author OnePoker UN &
  */
 public class Round {
 
@@ -24,9 +24,8 @@ public class Round {
         players = new ArrayList<>();
         dealingDeck = new Deck("Dealing deck");
         tableHand = new Hand("Table deck");
-        List<Card> cards = dealingDeck.getCards();
         for (int i = 0; i < 52; i++) {
-            cards.add(new Card(i));
+            dealingDeck.addCard(new Card(i));
         }
         for (int i = 0; i < 5; i++) {
             players.add(new Player());
@@ -55,6 +54,8 @@ public class Round {
     }
 
     public Round(Round previousRound) {
-
+        //stub
+        //Crear ronda "Heredando" los valores de una ronda anterior
+        //Permitiria guardar en memoria rondas pasadas 
     }
 }
