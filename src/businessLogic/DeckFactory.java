@@ -25,10 +25,9 @@ public class DeckFactory {
             shuffleDeck(dealingDeck);
             return dealingDeck;
         } else if (deckType.equalsIgnoreCase("PLAYERHAND")) {
-            return new Hand();
+            return new Hand("Player Hand");
         } else {
-            return new Deck();
-
+            return null;
         }
 
     }
