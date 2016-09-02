@@ -6,6 +6,7 @@
 package data;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,8 +25,14 @@ public class Deck {
 
     public Deck(String name) {
         this();
-        System.out.println("Created " + name);
-        this.name = name;
+        String[] legalConstructorName = {"Dealing deck", "Hand"};
+        System.out.println(name);
+        if (Arrays.asList(legalConstructorName).contains(name)) {
+            System.out.println("Created " + name);
+            this.name = name;
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public void addCard(Card card) {
@@ -35,6 +42,10 @@ public class Deck {
 
     public String getName() {
         return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Card getCard(int i) {
