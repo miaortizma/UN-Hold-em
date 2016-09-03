@@ -26,10 +26,11 @@ public class HandAnalyserTest {
         Deck dealer = CreateDeck("dealingdeck");
         Hand royal = CreateHand("royal");
         deal(dealer, juego, 2);
+        printDeck(dealer);
         deal(dealer, comunitario, 5);
         printDeck(comunitario);
         System.out.println(rankHand(comunitario));
-        printDeck(royal);
+        //printDeck(royal);
         System.out.println(rankHand(royal));
     }
 

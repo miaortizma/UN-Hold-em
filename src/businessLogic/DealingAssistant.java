@@ -69,12 +69,10 @@ public class DealingAssistant {
         System.out.println("Shuffling Deck !!");
         Random rnd = new Random();
         List<Card> cards = deck.getCards();
-
         int index;
         Card temp;
         for (int i = cards.size() - 1; i > 0; i--) {
             index = rnd.nextInt(i + 1);
-
             temp = cards.get(index);
             cards.set(index, cards.get(i));
             cards.set(i, temp);

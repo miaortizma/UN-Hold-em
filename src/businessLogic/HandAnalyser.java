@@ -22,7 +22,9 @@ public class HandAnalyser {
      * Reference Author @subskybox
      * http://stackoverflow.com/questions/2829883/7-card-poker-hand-evaluator
      * http://www.codeproject.com/Articles/569271/A-Poker-hand-analyzer-in-JavaScript-using-bit-math
-     * /
+     *
+     * 
+     * */
     public static String rankHand(Hand hand) {
         int[] ranks = hand.getCardRanks();
         int[] suits = hand.getCardSuits();
