@@ -5,7 +5,7 @@
  */
 package data;
 
-import static businessLogic.DeckFactory.CreateDeck;
+import static businessLogic.DeckFactory.createDeck;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,16 +15,16 @@ import java.util.List;
  */
 public class Round {
 
-    private Deck dealingDeck;
+    private DealingDeck dealingDeck;
     private Hand tableHand;
     private List<Player> players;
     private int pot;
 
     public Round() {
-        System.out.println("Starting new round");
+        //System.out.println("Starting new round");
         players = new ArrayList<>();
         tableHand = new Hand("Table deck");
-        dealingDeck = CreateDeck("dealingDeck");
+        dealingDeck = createDeck("dealingDeck");
 
         for (int i = 0; i < 5; i++) {
             players.add(new Player());
@@ -44,7 +44,7 @@ public class Round {
         return players.size();
     }
 
-    public Deck getDealingDeck() {
+    public DealingDeck getDealingDeck() {
         return dealingDeck;
     }
 

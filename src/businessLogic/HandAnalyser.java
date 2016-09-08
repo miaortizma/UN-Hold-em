@@ -5,6 +5,7 @@
  */
 package businessLogic;
 
+import static businessLogic.DeckFactory.createHand;
 import data.Card;
 import data.Hand;
 
@@ -14,22 +15,23 @@ import data.Hand;
  */
 public class HandAnalyser {
 
-    private static final String[] HANDS = {"4 of a Kind", "Straight Flush", "Straight", "Flush", "High Card",
-        "1 Pair", "2 Pair", "Royal Flush", "3 of a Kind", "Full House"};
-    
-    
+    private static final String[] HANDS = {"4 of a Kind", "Straight Flush", "Straight", "Flush", "High Card", "1 Pair", "2 Pair", "Royal Flush", "3 of a Kind", "Full House"};
+
     /**
      * Reference Author @subskybox
      * http://stackoverflow.com/questions/2829883/7-card-poker-hand-evaluator
      * http://www.codeproject.com/Articles/569271/A-Poker-hand-analyzer-in-JavaScript-using-bit-math
      *
-     * 
-     * */
+     *
+     *
+     * @param hand
+     * @return
+     */
     public static String rankHand(Hand hand) {
         int[] ranks = hand.getCardRanks();
         int[] suits = hand.getCardSuits();
         long s = 0, v = 0, o;
-        for (int i = 0; i < hand.getSize(); i++) {
+        for (int i = 0; i < 5; i++) {
             s += 1 << ranks[i];
             o = (long) Math.pow(2, (ranks[i] - 2) * 4);
             v += o * (((v / o) & 15) + 1);
@@ -44,39 +46,8 @@ public class HandAnalyser {
 
     }
 
-    public static void pair(Hand hand) {
-        //asume que recibe una mano ordenada
-        for (int i = hand.getSize(); i > 0; i--) {
-
-        }
-    }
-
     public static String[] getHands() {
         return HANDS;
-    }
-
-    public static int[] rankFrequency(Hand hand) {
-        int[] frequency = new int[13];
-        for (int i = 0; i < hand.getSize(); i++) {
-            frequency[hand.getCard(i).getValue()]++;
-        }
-        return frequency;
-    }
-
-    public static int[] handSuits(Hand hand) {
-        int[] suits = new int[hand.getSize()];
-        for (int i = 0; i < hand.getSize(); i++) {
-            suits[i] = hand.getCard(i).getSuit();
-        }
-        return suits;
-    }
-
-    public static int[] handRanks(Hand hand) {
-        int[] ranks = new int[hand.getSize()];
-        for (int i = 0; i < hand.getSize(); i++) {
-            ranks[i] = hand.getCard(i).getValue();
-        }
-        return ranks;
     }
 
     public static boolean allEqual(int[] x) {
@@ -96,12 +67,44 @@ public class HandAnalyser {
      */
     public static Card highCard(Hand hand) {
         int maxCard = hand.getCard(0).getValue(), cardIndex = 0;
-        for (int i = 0; i < hand.getSize(); i++) {
+        for (int i = 0; i < 5; i++) {
             if (hand.getCard(i).getValue() > maxCard) {
                 cardIndex = i;
             }
         }
         return hand.getCard(cardIndex);
+    }
+
+    /**
+     * http://stackoverflow.com/questions/33859993/get-all-possible-5-card-poker-hands-given-7-cards
+     *
+     * @param playerHand
+     * @param comunitary
+     */
+    public static void allPossibleHands(Hand playerHand, Hand comunitary) {
+        Hand merge = createHand("array");
+        merge.addAll(playerHand);
+        merge.addAll(comunitary);
+        Hand[] allHands = new Hand[21];
+        int hand = 0;
+        // select first card not to be in the hand
+        for (int firstCard = 0; firstCard < 7; firstCard++) {
+            // select first card not to be in the hand
+            for (int secondCard = firstCard + 1; secondCard < 7; secondCard++) {
+                // every card that is not the first or second will added to the hand
+                Hand temp = createHand("array");
+                for (int i = 0; i < 7; i++) {
+                    if (i != firstCard && i != secondCard) {
+                        temp.addCard(merge.getCard(i));
+                    }
+                }
+                allHands[hand] = temp;
+                System.out.println(temp);
+                System.out.println((hand) + ": " + rankHand(temp));
+                // next hand
+                hand++;
+            }
+        }
     }
 
 }

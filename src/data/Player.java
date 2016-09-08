@@ -7,7 +7,7 @@ package data;
 
 /**
  *
- * @author OnePoker UN  & 
+ * @author OnePoker UN &
  */
 public class Player {
 
@@ -27,18 +27,14 @@ public class Player {
 
     }
 
-    public void receiveCard(Card card) {
-        hand.addCard(card);
-    }
-
-    public Deck getDeck() {
+    public Hand getHand() {
         return this.hand;
     }
 
     public Player() {
         this.id = +count;
         hand = new Hand("Player " + this.id + " Deck");
-        System.out.println("Creating player with id: " + this.id);
+        //System.out.println("Creating player with id: " + this.id);
         count++;
     }
 
