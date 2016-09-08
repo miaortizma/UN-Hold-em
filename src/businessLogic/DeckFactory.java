@@ -24,10 +24,8 @@ public class DeckFactory {
             }
             shuffleDeck(dealingDeck);
             return dealingDeck;
-        } else if (deckType.equalsIgnoreCase("PLAYERHAND")) {
-            return new Hand("Hand");
         } else {
-            return null;
+            return new Deck("Hola");
         }
     }
 
@@ -42,8 +40,7 @@ public class DeckFactory {
             royal.addCard(new Card(14, suit));
             return royal;
         } else {
-            //stub 
-            return null;
+            return new Hand("Hola");
         }
 
     }

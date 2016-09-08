@@ -21,17 +21,16 @@ public class HandAnalyserTest {
 
     public static void test() {
 
-        Hand juego = (Hand) CreateDeck("playerhand");
-        Hand comunitario = (Hand) CreateDeck("playerhand");
+        Hand juego = (Hand) CreateHand("playerhand");
+        Hand comunitario = (Hand) CreateHand("playerhand");
         Deck dealer = CreateDeck("dealingdeck");
         Hand royal = CreateHand("royal");
+        
         deal(dealer, juego, 2);
         printDeck(dealer);
         deal(dealer, comunitario, 5);
-        printDeck(comunitario);
+        System.out.println(comunitario);
         System.out.println(rankHand(comunitario));
-        //printDeck(royal);
-        System.out.println(rankHand(royal));
     }
 
 }

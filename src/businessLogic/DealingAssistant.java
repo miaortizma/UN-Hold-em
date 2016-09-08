@@ -20,35 +20,9 @@ public class DealingAssistant {
         return deck.getCards().remove(deck.getSize() - 1);
     }
 
-    /**
-     * Deals from deck to player i times
-     *
-     * @param deck
-     * @param player
-     * @param i
-     */
-    public static void deal(Deck deck, Player player, int i) {
-        for (int j = 0; j < i; j++) {
-            player.receiveCard(deal(deck));
-        }
-    }
-
     public static void deal(Deck deck, Hand mano, int i) {
         for (int j = 0; j < i; j++) {
             mano.addCard(deal(deck));
-        }
-    }
-
-    /**
-     * Deals from deck1 to deck2 i times
-     *
-     * @param deck1
-     * @param deck2
-     * @param i
-     */
-    public static void deal(Deck deck1, Deck deck2, int i) {
-        for (int j = 0; j < i; j++) {
-            deck2.addCard(deal(deck1));
         }
     }
 
@@ -58,9 +32,7 @@ public class DealingAssistant {
         System.out.println("Dealing time");
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
-            deal(deck, player, 2);
-            printDeck(player.getDeck());
-            //printDeck(dealingDeck);
+            deal(deck, player.getHand(), 2);
         }
 
     }

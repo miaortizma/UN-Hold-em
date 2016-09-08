@@ -61,7 +61,7 @@ public class RoundHandler {
                     break;
                 }
             }
-
+            System.out.println(tableHand);
         }
 
     }
