@@ -5,11 +5,10 @@
  */
 package businessLogic;
 
-import businessLogic.tests.HandAnalyserTest;
+import tests.HandAnalyserTest;
 import static businessLogic.RoundHandler.*;
 import data.*;
 import java.util.Random;
-import java.util.Scanner;
 import static ui.UI.*;
 
 /**
@@ -36,27 +35,29 @@ public class GameEngine {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        in = new Scanner(System.in);
-        startGame();
-        //tests();
+        //startGame();
+        tests();
     }
 
     public static void startGame() {
         int menu = 0;
         printWelcome();
 
-        tournament = new Tournament();
         while (true) {
             try {
                 printMenu();
                 menu = askMenu();
                 switch (menu) {
                     case 1: {
-                        playRound(tournament.getRound());
+                        playRound(new Round());
                         break;
                     }
                     case 2: {
+                        printHelp();
                         break;
+                    }
+                    case 3: {
+                        printCommands();
                     }
                     default: {
                         throw new IllegalArgumentException("Not a valid command", null);

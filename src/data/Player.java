@@ -34,7 +34,7 @@ public class Player {
     public Player() {
         this.id = +count;
         hand = new Hand("Player " + this.id + " Deck");
-        System.out.println("Creating player with id: " + this.id);
+        //System.out.println("Creating player with id: " + this.id);
         count++;
     }
 

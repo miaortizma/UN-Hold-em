@@ -6,9 +6,10 @@
 package businessLogic;
 
 import static businessLogic.DealingAssistant.*;
+import static businessLogic.HandAnalyser.allPossibleHands;
 import data.*;
 import java.util.List;
-import static ui.UI.printDeck;
+import static ui.UI.*;
 
 /**
  *
@@ -16,15 +17,44 @@ import static ui.UI.printDeck;
  */
 public class RoundHandler {
 
-    public static void reiceveBets(Round round) {
+    public static void reiceveBets(Round round) throws Exception {
         //stub
-
+        int userBet = askInt("Bet: ");
         List<Player> players = round.getPlayers();
         System.out.println("Betting time");
         for (int i = 0; i < players.size(); i++) {
             round.addToPot(25);
         }
+    }
 
+    public static void roundMenu() {
+        int menu = 0;
+        while (true) {
+            try {
+                printRoundMenu();
+                menu = askMenu();
+                switch (menu) {
+                    case 1: {
+                        playRound(new Round());
+                        break;
+                    }
+                    case 2: {
+                        printHelp();
+                        break;
+                    }
+                    case 3: {
+                    }
+                    default: {
+                        throw new IllegalArgumentException("Not a valid command", null);
+                    }
+
+                }
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+                ex.printStackTrace();
+                printError();
+            }
+        }
     }
 
     public static void playRound(Round round) {
@@ -32,14 +62,13 @@ public class RoundHandler {
 
         Deck dealingDeck = round.getDealingDeck();
         Hand tableHand = round.getTableHand();
-        
-        printDeck(dealingDeck);
         burnCard(dealingDeck);
 
-        reiceveBets(round);
-
         dealToPlayers(round);
+        System.out.println("Your cards are: ");
+        System.out.println("" + round.getPlayers().get(0).getHand());
         for (int i = 0; i < 3; i++) {
+            roundMenu();
             switch (i) {
                 case 0: {
                     System.out.println("The flop: ");
@@ -59,6 +88,8 @@ public class RoundHandler {
             }
             System.out.println(tableHand);
         }
+
+        allPossibleHands(round.getPlayers().get(0).getHand(), round.getTableHand());
 
     }
 

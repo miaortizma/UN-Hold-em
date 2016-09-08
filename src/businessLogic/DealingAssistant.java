@@ -12,7 +12,7 @@ import static ui.UI.printDeck;
 public class DealingAssistant {
 
     public static void burnCard(Deck deck) {
-        System.out.println("Card burned!");
+        //System.out.println("Card burned!");
         deck.getCards().remove(deck.getSize() - 1);
     }
 
@@ -41,7 +41,7 @@ public class DealingAssistant {
     }
 
     public static void shuffleDeck(Deck deck) {
-        System.out.println("Shuffling Deck !!");
+        //System.out.println("Shuffling Deck !!");
         Random rnd = new Random();
         List<Card> cards = deck.getCards();
         int index;

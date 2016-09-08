@@ -7,7 +7,8 @@ package businessLogic;
 
 import data.Card;
 import data.Hand;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  *
@@ -77,27 +78,38 @@ public class HandAnalyser {
     }
 
     /**
-     * Heap's algorithm
+     * http://stackoverflow.com/questions/33859993/get-all-possible-5-card-poker-hands-given-7-cards
+     *
+     * @param playerHand
+     * @param comunitary
      */
-    public static void generate(int n, List<Card> cards) {
-        if (n == 1) {
-            System.out.println(cards.toString());
-        } else {
-            for (int i = 0; i < n - 1; i++) {
-                generate(n - 1, cards);
-                if (n % 2 == 0) {
-                    swap(cards, i, -n - 1);
-                } else {
-                    swap(cards, 0, n - 1);
+    public static void allPossibleHands(Hand playerHand, Hand comunitary) {
+        Hand merge = new Hand();
+        merge.setCards(new ArrayList<>());
+        merge.addAll(playerHand);
+        merge.addAll(comunitary);
+        int cardsSelected = 0;
+        int hand = 0;
+        // select first card not to be in the hand
+        for (int firstCard = 0; firstCard < 7; firstCard++) {
+            // select first card not to be in the hand
+            for (int secondCard = firstCard + 1; secondCard < 7; secondCard++) {
+                // every card that is not the first or second will added to the hand
+                Hand temp = new Hand();
+                temp.setCards(new LinkedList<>());
+                for (int i = 0; i < 7; i++) {
+                    if (i != firstCard && i != secondCard) {
+                        temp.addCard(merge.getCard(i));
+                        //allHands[hand][cardsSelected++] = merge.getCard(i);
+                    }
                 }
+                System.out.println(temp);
+                System.out.println((hand)+": "+rankHand(temp));
+                // next hand
+                //cardsSelected = 0;
+                hand++;
             }
-            generate(n - 1, cards);
         }
     }
 
-    public static void swap(List<Card> cards, int i, int j) {
-        Card temp = cards.get(j);
-        cards.set(j, cards.get(i));
-        cards.set(i, temp);
-    }
 }

@@ -21,7 +21,7 @@ public class Round {
     private int pot;
 
     public Round() {
-        System.out.println("Starting new round");
+        //System.out.println("Starting new round");
         players = new ArrayList<>();
         tableHand = new Hand("Table deck");
         dealingDeck = CreateDeck("dealingDeck");

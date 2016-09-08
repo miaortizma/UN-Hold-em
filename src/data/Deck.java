@@ -19,16 +19,16 @@ public class Deck {
     private String name;
 
     private Deck() {
-        System.out.print("Deck Constructor: ");
+        //System.out.print("Deck Constructor: ");
         this.cards = new ArrayList<>();
     }
 
     public Deck(String name) {
         this();
         String[] legalConstructorName = {"Dealing deck", "Hand", "Royal Flush"};
-        System.out.println(name);
+        //System.out.println(name);
         if (Arrays.asList(legalConstructorName).contains(name)) {
-            System.out.println("Created " + name);
+            //System.out.println("Created " + name);
             this.name = name;
         } else {
             throw new IllegalArgumentException();
