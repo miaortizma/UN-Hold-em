@@ -7,6 +7,7 @@ package businessLogic;
 
 import data.Card;
 import data.Hand;
+import java.util.List;
 
 /**
  *
@@ -25,7 +26,7 @@ public class HandAnalyser {
      *
      *
      * @param hand
-     * @return 
+     * @return
      */
     public static String rankHand(Hand hand) {
         int[] ranks = hand.getCardRanks();
@@ -75,4 +76,28 @@ public class HandAnalyser {
         return hand.getCard(cardIndex);
     }
 
+    /**
+     * Heap's algorithm
+     */
+    public static void generate(int n, List<Card> cards) {
+        if (n == 1) {
+            System.out.println(cards.toString());
+        } else {
+            for (int i = 0; i < n - 1; i++) {
+                generate(n - 1, cards);
+                if (n % 2 == 0) {
+                    swap(cards, i, -n - 1);
+                } else {
+                    swap(cards, 0, n - 1);
+                }
+            }
+            generate(n - 1, cards);
+        }
+    }
+
+    public static void swap(List<Card> cards, int i, int j) {
+        Card temp = cards.get(j);
+        cards.set(j, cards.get(i));
+        cards.set(i, temp);
+    }
 }
