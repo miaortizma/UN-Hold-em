@@ -34,8 +34,8 @@ public class GameEngine {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        //startGame();
-        test();
+        startGame();
+        //test();
     }
 
     private static void startGame() {
