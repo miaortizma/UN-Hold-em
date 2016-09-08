@@ -5,16 +5,12 @@
  */
 package tests;
 
-import static businessLogic.DealingAssistant.deal;
-import static businessLogic.DeckFactory.CreateDeck;
-import static businessLogic.DeckFactory.CreateHand;
+import static businessLogic.DeckFactory.createDeck;
+import static businessLogic.DeckFactory.createHand;
 import static businessLogic.HandAnalyser.allPossibleHands;
-import static businessLogic.HandAnalyser.rankHand;
 import data.DealingDeck;
 import data.Hand;
-import static ui.UI.printDeck;
 import static businessLogic.DealingAssistant.deal;
-import static businessLogic.DeckFactory.CreateDeck;
 
 /**
  *
@@ -24,10 +20,10 @@ public class HandAnalyserTest {
 
     public static void test() {
 
-        Hand juego = (Hand) CreateHand("playerhand");
-        Hand comunitario = (Hand) CreateHand("playerhand");
-        DealingDeck dealer = CreateDeck("dealingdeck");
-        Hand royal = CreateHand("royal");
+        Hand juego = (Hand) createHand("playerhand");
+        Hand comunitario = (Hand) createHand("playerhand");
+        DealingDeck dealer = createDeck("dealingdeck");
+        Hand royal = createHand("royal");
 
         deal(dealer, juego, 2);
         //printDeck(dealer);

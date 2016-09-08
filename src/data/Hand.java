@@ -5,8 +5,6 @@
  */
 package data;
 
-import businessLogic.AbstractDeck;
-
 /**
  *
  * @author OnePoker UN Estudiante

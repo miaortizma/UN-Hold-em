@@ -16,7 +16,7 @@ import data.Hand;
  */
 public class DeckFactory {
 
-    public static DealingDeck CreateDeck(String deckType) {
+    public static DealingDeck createDeck(String deckType) {
         if (deckType.equalsIgnoreCase("DEALINGDECK")) {
             DealingDeck dealingDeck = new DealingDeck("Dealing deck");
             for (int i = 0; i < 52; i++) {
@@ -29,7 +29,7 @@ public class DeckFactory {
         }
     }
 
-    public static Hand CreateHand(String handType) {
+    public static Hand createHand(String handType) {
         if (handType.equalsIgnoreCase("ROYAL")) {
             int suit = GameEngine.RND.nextInt(4);
             Hand royal = new Hand("Royal Flush");
@@ -43,12 +43,6 @@ public class DeckFactory {
             return new Hand("Hola");
         }
 
-    }
-
-    public static DealingDeck CreateDeck(String deckType, String name) {
-        DealingDeck deck = CreateDeck(deckType);
-        deck.setName(name);
-        return deck;
     }
 
 }

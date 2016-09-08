@@ -5,10 +5,9 @@
  */
 package data;
 
-import static businessLogic.DeckFactory.CreateDeck;
+import static businessLogic.DeckFactory.createDeck;
 import java.util.ArrayList;
 import java.util.List;
-import static businessLogic.DeckFactory.CreateDeck;
 
 /**
  *
@@ -25,7 +24,7 @@ public class Round {
         //System.out.println("Starting new round");
         players = new ArrayList<>();
         tableHand = new Hand("Table deck");
-        dealingDeck = CreateDeck("dealingDeck");
+        dealingDeck = createDeck("dealingDeck");
 
         for (int i = 0; i < 5; i++) {
             players.add(new Player());

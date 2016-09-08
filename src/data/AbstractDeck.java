@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package businessLogic;
+package data;
 
-import data.Card;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,18 +15,16 @@ import java.util.List;
  */
 public abstract class AbstractDeck {
 
-    private List<Card> cards;
+    private final List<Card> cards;
 
     public AbstractDeck(String type) {
         if (type.equalsIgnoreCase("linked")) {
             cards = new LinkedList<>();
         } else if (type.equalsIgnoreCase("array")) {
             cards = new ArrayList<>();
+        } else {
+            cards = new ArrayList<>();
         }
-    }
-
-    public void setCards(List<Card> cards) {
-        this.cards = cards;
     }
 
     public Card getCard(int i) {
