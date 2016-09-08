@@ -6,6 +6,8 @@
 package businessLogic;
 
 import data.Card;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -15,5 +17,33 @@ import java.util.List;
 public abstract class AbstractDeck {
 
     private List<Card> cards;
+
+    public AbstractDeck(String type) {
+        if (type.equalsIgnoreCase("linked")) {
+            cards = new LinkedList<>();
+        } else if (type.equalsIgnoreCase("array")) {
+            cards = new ArrayList<>();
+        }
+    }
+
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
+    }
+
+    public Card getCard(int i) {
+        return this.cards.get(i);
+    }
+
+    public void addCard(Card card) {
+        this.cards.add(card);
+    }
+
+    public List<Card> getCards() {
+        return this.cards;
+    }
+
+    public int getSize() {
+        return cards.size();
+    }
 
 }
