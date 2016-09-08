@@ -5,29 +5,45 @@
  */
 package data;
 
-import static businessLogic.HandAnalyser.handRanks;
-import static businessLogic.HandAnalyser.handSuits;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author OnePoker UN Estudiante
  */
-public class Hand extends Deck {
+public class Hand {
 
+    private List<Card> cards;
     private String rank;
 
     public int[] getCardRanks() {
-        return handRanks(this);
+        int[] ranks = new int[5];
+        for (int i = 0; i < 5; i++) {
+            ranks[i] = cards.get(i).getValue();
+        }
+        return ranks;
 
+    }
+
+    public Card getCard(int i) {
+        return this.cards.get(i);
     }
 
     public int[] getCardSuits() {
-        return handSuits(this);
+        int[] suits = new int[5];
+        for (int i = 0; i < 5; i++) {
+            suits[i] = cards.get(i).getSuit();
+        }
+        return suits;
     }
 
-    
     public Hand(String name) {
-        super(name);
+        this.cards = new ArrayList<>();
+    }
+
+    public void addCard(Card card) {
+        this.cards.add(card);
     }
 
     /**
@@ -42,6 +58,15 @@ public class Hand extends Deck {
      */
     public void setRank(String rank) {
         this.rank = rank;
+    }
+
+    @Override
+    public String toString() {
+        String out = "";
+        for (int i = 0; i < cards.size(); i++) {
+            out += cards.get(i).toString();
+        }
+        return out;
     }
 
 }
