@@ -5,54 +5,35 @@
  */
 package data;
 
-import java.util.ArrayList;
-import java.util.List;
+import businessLogic.AbstractDeck;
 
 /**
  *
  * @author OnePoker UN Estudiante
  */
-public class Hand {
-    
-    private List<Card> cards;
+public class Hand extends AbstractDeck {
+
     private String rank;
-    
-    public Hand() {
+
+    public Hand(String type) {
+        super(type);
     }
-    
-    public Hand(String name) {
-        String[] legalConstructorName = {"Hand", "Royal Flush"};
-        
-        this.cards = new ArrayList<>();
-    }
-    
-    public void setCards(List<Card> cards) {
-        this.cards = cards;
-    }
-    
+
     public int[] getCardRanks() {
         int[] ranks = new int[5];
         for (int i = 0; i < 5; i++) {
-            ranks[i] = cards.get(i).getValue();
+            ranks[i] = getCard(i).getValue();
         }
         return ranks;
-        
+
     }
-    
-    public Card getCard(int i) {
-        return this.cards.get(i);
-    }
-    
+
     public int[] getCardSuits() {
         int[] suits = new int[5];
         for (int i = 0; i < 5; i++) {
-            suits[i] = cards.get(i).getSuit();
+            suits[i] = getCard(i).getSuit();
         }
         return suits;
-    }
-    
-    public void addCard(Card card) {
-        this.cards.add(card);
     }
 
     /**
@@ -68,24 +49,20 @@ public class Hand {
     public void setRank(String rank) {
         this.rank = rank;
     }
-    
-    public List<Card> getCards() {
-        return this.cards;
-    }
-    
+
     public void addAll(Hand hand) {
         for (int i = 0; i < hand.getCards().size(); i++) {
             this.addCard(hand.getCard(i));
         }
     }
-    
+
     @Override
     public String toString() {
         String out = "";
-        for (int i = 0; i < cards.size(); i++) {
-            out += cards.get(i).toString();
+        for (int i = 0; i < getSize(); i++) {
+            out += getCard(i).toString();
         }
         return out;
     }
-    
+
 }

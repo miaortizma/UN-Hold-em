@@ -35,7 +35,7 @@ public class UI {
         System.out.println(ascci);
     }
 
-    public static void printDeck(Deck deck) {
+    public static void printDeck(DealingDeck deck) {
         System.out.println(deck.getName() + ": ");
         List<Card> cards = deck.getCards();
         int count = 0;

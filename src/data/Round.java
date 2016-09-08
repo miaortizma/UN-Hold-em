@@ -8,6 +8,7 @@ package data;
 import static businessLogic.DeckFactory.CreateDeck;
 import java.util.ArrayList;
 import java.util.List;
+import static businessLogic.DeckFactory.CreateDeck;
 
 /**
  *
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public class Round {
 
-    private Deck dealingDeck;
+    private DealingDeck dealingDeck;
     private Hand tableHand;
     private List<Player> players;
     private int pot;
@@ -44,7 +45,7 @@ public class Round {
         return players.size();
     }
 
-    public Deck getDealingDeck() {
+    public DealingDeck getDealingDeck() {
         return dealingDeck;
     }
 

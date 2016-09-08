@@ -9,6 +9,7 @@ import data.Card;
 import data.Hand;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
@@ -16,8 +17,7 @@ import java.util.LinkedList;
  */
 public class HandAnalyser {
 
-    private static final String[] HANDS = {"4 of a Kind", "Straight Flush", "Straight", "Flush", "High Card",
-        "1 Pair", "2 Pair", "Royal Flush", "3 of a Kind", "Full House"};
+    private static final String[] HANDS = {"4 of a Kind", "Straight Flush", "Straight", "Flush", "High Card", "1 Pair", "2 Pair", "Royal Flush", "3 of a Kind", "Full House"};
 
     /**
      * Reference Author @subskybox
@@ -84,10 +84,11 @@ public class HandAnalyser {
      * @param comunitary
      */
     public static void allPossibleHands(Hand playerHand, Hand comunitary) {
-        Hand merge = new Hand();
+        Hand merge = new Hand("array");
         merge.setCards(new ArrayList<>());
         merge.addAll(playerHand);
         merge.addAll(comunitary);
+        Hand[] allHands = new Hand[21];
         int cardsSelected = 0;
         int hand = 0;
         // select first card not to be in the hand
@@ -95,18 +96,17 @@ public class HandAnalyser {
             // select first card not to be in the hand
             for (int secondCard = firstCard + 1; secondCard < 7; secondCard++) {
                 // every card that is not the first or second will added to the hand
-                Hand temp = new Hand();
-                temp.setCards(new LinkedList<>());
+                Hand temp = new Hand("array");
                 for (int i = 0; i < 7; i++) {
                     if (i != firstCard && i != secondCard) {
                         temp.addCard(merge.getCard(i));
-                        //allHands[hand][cardsSelected++] = merge.getCard(i);
                     }
                 }
+                allHands[hand] = temp;
                 System.out.println(temp);
-                System.out.println((hand)+": "+rankHand(temp));
+                System.out.println((hand) + ": " + rankHand(temp));
                 // next hand
-                //cardsSelected = 0;
+                cardsSelected = 0;
                 hand++;
             }
         }

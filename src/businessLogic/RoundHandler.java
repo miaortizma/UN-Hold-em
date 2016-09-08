@@ -60,7 +60,7 @@ public class RoundHandler {
     public static void playRound(Round round) {
         //tratando de imprimir cartas unicode
 
-        Deck dealingDeck = round.getDealingDeck();
+        DealingDeck dealingDeck = round.getDealingDeck();
         Hand tableHand = round.getTableHand();
         burnCard(dealingDeck);
 

@@ -11,19 +11,19 @@ import static ui.UI.printDeck;
  */
 public class DealingAssistant {
 
-    public static void burnCard(Deck deck) {
+    public static void burnCard(DealingDeck deck) {
         //System.out.println("Card burned!");
         deck.getCards().remove(deck.getSize() - 1);
     }
 
-    public static Card deal(Deck deck) {
+    public static Card deal(DealingDeck deck) {
         if (deck.getCards().isEmpty()) {
             throw new IllegalArgumentException("Empty deck", null);
         }
         return deck.getCards().remove(deck.getSize() - 1);
     }
 
-    public static void deal(Deck deck, Hand mano, int i) {
+    public static void deal(DealingDeck deck, Hand mano, int i) {
         for (int j = 0; j < i; j++) {
             mano.addCard(deal(deck));
         }
@@ -31,7 +31,7 @@ public class DealingAssistant {
 
     public static void dealToPlayers(Round round) {
         List<Player> players = round.getPlayers();
-        Deck deck = round.getDealingDeck();
+        DealingDeck deck = round.getDealingDeck();
         System.out.println("Dealing time");
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
@@ -40,8 +40,8 @@ public class DealingAssistant {
 
     }
 
-    public static void shuffleDeck(Deck deck) {
-        //System.out.println("Shuffling Deck !!");
+    public static void shuffleDeck(DealingDeck deck) {
+        //System.out.println("Shuffling DealingDeck !!");
         Random rnd = new Random();
         List<Card> cards = deck.getCards();
         int index;
