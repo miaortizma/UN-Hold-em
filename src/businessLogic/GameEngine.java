@@ -5,9 +5,11 @@
  */
 package businessLogic;
 
+import businessLogic.tests.HandAnalyserTest;
 import static businessLogic.RoundHandler.*;
 import data.*;
 import java.util.Random;
+import java.util.Scanner;
 import static ui.UI.*;
 
 /**
@@ -34,18 +36,80 @@ public class GameEngine {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        in = new Scanner(System.in);
         startGame();
-        //test();
+        //tests();
     }
 
-    private static void startGame() {
+    public static void startGame() {
+        int menu = 0;
         printWelcome();
+
         tournament = new Tournament();
-        playRound(tournament.getRound());
+        while (true) {
+            try {
+                printMenu();
+                menu = askMenu();
+                switch (menu) {
+                    case 1: {
+                        playRound(tournament.getRound());
+                        break;
+                    }
+                    case 2: {
+                        break;
+                    }
+                    default: {
+                        throw new IllegalArgumentException("Not a valid command", null);
+                    }
+
+                }
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+                ex.printStackTrace();
+                printError();
+            }
+        }
     }
 
-    private static void test() {
+    private static void tests() {
         HandAnalyserTest.test();
+    }
+
+    public static void askUser() {
+        while (true) {
+            try {
+
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                printError();
+            }
+        }
+    }
+
+    public static boolean checkCommand(String input, boolean print) {
+        switch (input) {
+            case "<Exit>": {
+                if (print) {
+                    printExit();
+                }
+                System.exit(0);
+            }
+            case "<Info>": {
+                if (print) {
+                    printInfo();
+                }
+                return true;
+            }
+            case "<Help>": {
+                if (print) {
+                    printHelp();
+                }
+                return true;
+            }
+            default: {
+                return false;
+            }
+        }
     }
 
 }

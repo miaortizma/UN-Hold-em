@@ -33,12 +33,8 @@ public class RoundHandler {
         Deck dealingDeck = round.getDealingDeck();
         Hand tableHand = round.getTableHand();
         
-        System.out.println((char) 0x1F0B8);
-        printDeck(dealingDeck);
-        shuffleDeck(dealingDeck);
         printDeck(dealingDeck);
         burnCard(dealingDeck);
-        //printDeck(dealingDeck);
 
         reiceveBets(round);
 

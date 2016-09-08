@@ -17,6 +17,9 @@ public class DealingAssistant {
     }
 
     public static Card deal(Deck deck) {
+        if (deck.getCards().isEmpty()) {
+            throw new IllegalArgumentException("Empty deck", null);
+        }
         return deck.getCards().remove(deck.getSize() - 1);
     }
 
