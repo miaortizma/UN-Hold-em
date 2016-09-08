@@ -7,7 +7,7 @@ package data;
 
 /**
  *
- * @author OnePoker UN  & 
+ * @author OnePoker UN &
  */
 public class Player {
 
@@ -27,11 +27,7 @@ public class Player {
 
     }
 
-    public void receiveCard(Card card) {
-        hand.addCard(card);
-    }
-
-    public Deck getDeck() {
+    public Hand getHand() {
         return this.hand;
     }
 
