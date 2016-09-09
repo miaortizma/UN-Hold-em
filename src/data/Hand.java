@@ -67,7 +67,7 @@ public class Hand extends AbstractDeck implements Comparable<Hand> {
 
     @Override
     public int compareTo(Hand hand) {
-        return hand.getRank() > this.getRank() ? (hand.getRank() == this.getRank() ? (highCard(hand) > highCard(this) ? 1 : -1) : -1) : -1;
+        return hand.getRank() > this.getRank() ? -1 : 1;
     }
 
 }

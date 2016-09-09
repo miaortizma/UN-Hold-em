@@ -9,9 +9,8 @@ import data.DealingDeck;
 import data.Hand;
 import static businessLogic.DealingAssistant.deal;
 import static businessLogic.DealingAssistant.dealToPlayers;
+import static businessLogic.HandAnalyser.bestHand;
 import data.Round;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -29,11 +28,16 @@ public class HandAnalyserTest {
         deal(dealer, comunitario, 5);
         System.out.println("Comunitario: \n" + comunitario);
         System.out.println("");
-        List<Hand> manos = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            System.out.println(ronda.getPlayers().get(i).getHand());
-        }
-        //compareHands(ronda);
+        System.out.println(ronda.getPlayerHand(0));
+        bestHand(ronda.getPlayerHand(0),comunitario);
+       // List<Hand> manos = new ArrayList<>();
+        /**
+         * for (int i = 0; i < 5; i++) {
+         * manos.add(ronda.getPlayers().get(i).getHand());
+         * System.out.println(manos.get(i));
+         * System.out.println(HANDS[manos.get(i).getRank()] +
+         * bestHand(manos.get(i), comunitario)); }
+         */        //compareHands(ronda);
     }
 
 }

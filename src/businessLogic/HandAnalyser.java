@@ -6,7 +6,6 @@
 package businessLogic;
 
 import static businessLogic.DeckFactory.createHand;
-import data.Card;
 import data.Hand;
 import data.Round;
 
@@ -16,7 +15,8 @@ import data.Round;
  */
 public class HandAnalyser {
 
-    private static final String[] HANDS = {"4 of a Kind", "Straight Flush", "Straight", "Flush", "High Card", "1 Pair", "2 Pair", "Royal Flush", "3 of a Kind", "Full House"};
+    public static final String[] HANDS = {"4 of a Kind", "Straight Flush", "Straight", "Flush", "High Card", "1 Pair", "2 Pair", "Royal Flush", "3 of a Kind", "Full House"};
+    
 
     /**
      * Reference Author @subskybox
@@ -28,7 +28,7 @@ public class HandAnalyser {
      * @param hand
      * @return
      */
-    public static String rankHand(Hand hand) {
+    public static void rankHand(Hand hand) {
         int[] ranks = hand.getCardRanks();
         int[] suits = hand.getCardSuits();
         long s = 0, v = 0, o;
@@ -43,8 +43,7 @@ public class HandAnalyser {
         v = v % 15 - ((s / (s & -s) == 31) || (s == 0x403c) ? 3 : 1);
         //0x7c00 Royal Flush
         v -= (allEqual(suits) ? 1 : 0) * ((s == 0x7c00) ? -5 : 1);
-        return getHands()[(int) v];
-
+        hand.setRank((int) v);
     }
 
     public static String[] getHands() {
@@ -81,11 +80,13 @@ public class HandAnalyser {
      * @param playerHand
      * @param comunitary
      */
-    public static void allPossibleHands(Hand playerHand, Hand comunitary) {
+    public static Hand bestHand(Hand playerHand, Hand comunitary) {
         Hand merge = createHand("array");
+        Hand bestHand = comunitary;
+        rankHand(comunitary);
         merge.addAll(playerHand);
         merge.addAll(comunitary);
-        Hand[] allHands = new Hand[21];
+
         int hand = 0;
         // select first card not to be in the hand
         for (int firstCard = 0; firstCard < 7; firstCard++) {
@@ -98,13 +99,16 @@ public class HandAnalyser {
                         temp.addCard(merge.getCard(i));
                     }
                 }
-                allHands[hand] = temp;
-                System.out.println(temp);
-                System.out.println((hand) + ": " + rankHand(temp));
+                rankHand(temp);
+                System.out.println(hand+"  "+HANDS[temp.getRank()] + " " + temp);
+                bestHand = bestHand.compareTo(temp) > 0 ? temp : bestHand;
+                System.out.println("\nBEST HAND :" +HANDS[bestHand.getRank()]+ bestHand);
+                System.out.println("");
                 // next hand
                 hand++;
             }
         }
+        return bestHand;
     }
 
     public static void compareHands(Round round) {
