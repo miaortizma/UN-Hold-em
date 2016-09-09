@@ -5,12 +5,13 @@
  */
 package tests;
 
-import static businessLogic.DeckFactory.createDeck;
-import static businessLogic.DeckFactory.createHand;
-import static businessLogic.HandAnalyser.allPossibleHands;
 import data.DealingDeck;
 import data.Hand;
 import static businessLogic.DealingAssistant.deal;
+import static businessLogic.DealingAssistant.dealToPlayers;
+import data.Round;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -20,18 +21,19 @@ public class HandAnalyserTest {
 
     public static void test() {
 
-        Hand juego = (Hand) createHand("playerhand");
-        Hand comunitario = (Hand) createHand("playerhand");
-        DealingDeck dealer = createDeck("dealingdeck");
-        Hand royal = createHand("royal");
-
-        deal(dealer, juego, 2);
+        Round ronda = new Round();
+        dealToPlayers(ronda);
+        DealingDeck dealer = ronda.getDealingDeck();
+        Hand comunitario = ronda.getTableHand();
         //printDeck(dealer);
         deal(dealer, comunitario, 5);
-        System.out.println("Tu juego:\n" + juego);
         System.out.println("Comunitario: \n" + comunitario);
         System.out.println("");
-        allPossibleHands(juego, comunitario);
+        List<Hand> manos = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            System.out.println(ronda.getPlayers().get(i).getHand());
+        }
+        //compareHands(ronda);
     }
 
 }

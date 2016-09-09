@@ -8,6 +8,7 @@ package businessLogic;
 import static businessLogic.DeckFactory.createHand;
 import data.Card;
 import data.Hand;
+import data.Round;
 
 /**
  *
@@ -63,16 +64,15 @@ public class HandAnalyser {
     /**
      *
      * @param hand
-     * @return indice de la carta màs alta
      */
-    public static Card highCard(Hand hand) {
-        int maxCard = hand.getCard(0).getValue(), cardIndex = 0;
+    public static int highCard(Hand hand) {
+        int maxCard = hand.getCard(0).getValue(), highCard = 0;
         for (int i = 0; i < 5; i++) {
             if (hand.getCard(i).getValue() > maxCard) {
-                cardIndex = i;
+                highCard = i;
             }
         }
-        return hand.getCard(cardIndex);
+        return (highCard);
     }
 
     /**
@@ -105,6 +105,10 @@ public class HandAnalyser {
                 hand++;
             }
         }
+    }
+
+    public static void compareHands(Round round) {
+
     }
 
 }
