@@ -52,6 +52,16 @@ public class Round {
         return tableHand;
     }
 
+    public Player getPlayer(int i) {
+        return players.get(i);
+    }
+
+    public Hand getPlayerHand(int i) {
+        return players.get(i).getHand();
+    }
+
+ 
+
     public Round(Round previousRound) {
         //stub
         //Crear ronda "Heredando" los valores de una ronda anterior

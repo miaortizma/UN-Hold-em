@@ -5,16 +5,21 @@
  */
 package data;
 
+import static businessLogic.HandComparator.compare;
+import java.util.Collections;
+
 /**
  *
  * @author OnePoker UN Estudiante
  */
-public class Hand extends AbstractDeck {
+public class Hand extends AbstractDeck implements Comparable<Hand> {
 
-    private String rank;
+    private int rank;
+    private String rankName;
 
     public Hand(String type) {
         super(type);
+        this.rank = -1;
     }
 
     public int[] getCardRanks() {
@@ -37,14 +42,14 @@ public class Hand extends AbstractDeck {
     /**
      * @return the rank
      */
-    public String getRank() {
+    public int getRank() {
         return rank;
     }
 
     /**
      * @param rank the rank to set
      */
-    public void setRank(String rank) {
+    public void setRank(int rank) {
         this.rank = rank;
     }
 
@@ -56,11 +61,35 @@ public class Hand extends AbstractDeck {
 
     @Override
     public String toString() {
+        Collections.sort(getCards());
         String out = "";
+
+        if (getRank() > -1) {
+            out += getRankName() + " \t";
+        }
         for (int i = 0; i < getSize(); i++) {
             out += getCard(i).toString();
         }
         return out;
+    }
+
+    @Override
+    public int compareTo(Hand hand) {
+        return compare(this, hand);
+    }
+
+    /**
+     * @return the rankName
+     */
+    public String getRankName() {
+        return rankName;
+    }
+
+    /**
+     * @param rankName the rankName to set
+     */
+    public void setRankName(String rankName) {
+        this.rankName = rankName;
     }
 
 }

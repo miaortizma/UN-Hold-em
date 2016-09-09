@@ -6,8 +6,9 @@
 package businessLogic;
 
 import static businessLogic.DealingAssistant.*;
-import static businessLogic.HandAnalyser.allPossibleHands;
+import static businessLogic.HandAnalyser.bestHand;
 import data.*;
+import java.util.Collections;
 import java.util.List;
 import static ui.UI.*;
 
@@ -89,8 +90,15 @@ public class RoundHandler {
             System.out.println(tableHand);
         }
 
-        allPossibleHands(round.getPlayers().get(0).getHand(), round.getTableHand());
+    }
 
+    public static void compareHands(Round round) {
+        for (Player plyr : round.getPlayers()) {
+            plyr.setHand(bestHand(plyr.getHand(), round.getTableHand()));
+        }
+
+        System.out.println("\n\nCOMPARING PLAYER HANDS");
+        Collections.sort(round.getPlayers(),Collections.reverseOrder());
     }
 
 }

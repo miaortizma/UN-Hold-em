@@ -6,8 +6,9 @@
 package businessLogic;
 
 import static businessLogic.DeckFactory.createHand;
-import data.Card;
 import data.Hand;
+import java.util.Collections;
+import java.util.HashMap;
 
 /**
  *
@@ -15,7 +16,32 @@ import data.Hand;
  */
 public class HandAnalyser {
 
-    private static final String[] HANDS = {"4 of a Kind", "Straight Flush", "Straight", "Flush", "High Card", "1 Pair", "2 Pair", "Royal Flush", "3 of a Kind", "Full House"};
+    public static final String[] HANDS = {"4 of a Kind", "Straight Flush", "Straight", "Flush", "High Card", "1 Pair", "2 Pair", "Royal Flush", "3 of a Kind", "Full House"};
+    public static final HashMap<String, Integer> RANKS = new HashMap<>();
+
+    static {
+        //HIGH CARD
+        RANKS.put(HANDS[4], 0);
+        //1 PAIR
+        RANKS.put(HANDS[5], 1);
+        //2 PAIR
+        RANKS.put(HANDS[6], 2);
+        //3 OF A KIND
+        RANKS.put(HANDS[7], 3);
+        //STRAIGHT
+        RANKS.put(HANDS[2], 4);
+        //FLUSH
+        RANKS.put(HANDS[3], 5);
+        //FULL HOUSE
+        RANKS.put(HANDS[9], 6);
+        //4 OF A KIND
+        RANKS.put(HANDS[0], 7);
+        //STRAIGHT FLUSH
+        RANKS.put(HANDS[1], 8);
+        //ROYAL FLUSH
+        RANKS.put(HANDS[8], 9);
+
+    }
 
     /**
      * Reference Author @subskybox
@@ -27,7 +53,7 @@ public class HandAnalyser {
      * @param hand
      * @return
      */
-    public static String rankHand(Hand hand) {
+    public static void rankHand(Hand hand) {
         int[] ranks = hand.getCardRanks();
         int[] suits = hand.getCardSuits();
         long s = 0, v = 0, o;
@@ -36,18 +62,13 @@ public class HandAnalyser {
             o = (long) Math.pow(2, (ranks[i] - 2) * 4);
             v += o * (((v / o) & 15) + 1);
         }
-
         //0x403c Ace low Straight
         //(s / (s & -s) == 31) Straight
         v = v % 15 - ((s / (s & -s) == 31) || (s == 0x403c) ? 3 : 1);
         //0x7c00 Royal Flush
         v -= (allEqual(suits) ? 1 : 0) * ((s == 0x7c00) ? -5 : 1);
-        return getHands()[(int) v];
-
-    }
-
-    public static String[] getHands() {
-        return HANDS;
+        hand.setRankName(HANDS[(int) v]);
+        hand.setRank(RANKS.get(HANDS[(int) v]));
     }
 
     public static boolean allEqual(int[] x) {
@@ -63,29 +84,21 @@ public class HandAnalyser {
     /**
      *
      * @param hand
-     * @return indice de la carta màs alta
      */
-    public static Card highCard(Hand hand) {
-        int maxCard = hand.getCard(0).getValue(), cardIndex = 0;
-        for (int i = 0; i < 5; i++) {
-            if (hand.getCard(i).getValue() > maxCard) {
-                cardIndex = i;
-            }
-        }
-        return hand.getCard(cardIndex);
-    }
-
     /**
      * http://stackoverflow.com/questions/33859993/get-all-possible-5-card-poker-hands-given-7-cards
      *
      * @param playerHand
      * @param comunitary
+     * @return
      */
-    public static void allPossibleHands(Hand playerHand, Hand comunitary) {
+    public static Hand bestHand(Hand playerHand, Hand comunitary) {
         Hand merge = createHand("array");
+        Hand bestHand = comunitary;
+        rankHand(comunitary);
         merge.addAll(playerHand);
         merge.addAll(comunitary);
-        Hand[] allHands = new Hand[21];
+
         int hand = 0;
         // select first card not to be in the hand
         for (int firstCard = 0; firstCard < 7; firstCard++) {
@@ -98,13 +111,15 @@ public class HandAnalyser {
                         temp.addCard(merge.getCard(i));
                     }
                 }
-                allHands[hand] = temp;
-                System.out.println(temp);
-                System.out.println((hand) + ": " + rankHand(temp));
+                Collections.sort(temp.getCards());
+                rankHand(temp);
+                bestHand = bestHand.compareTo(temp) > 0 ? bestHand : temp;
+
                 // next hand
                 hand++;
             }
         }
+        return bestHand;
     }
 
 }
