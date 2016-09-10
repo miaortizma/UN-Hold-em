@@ -11,6 +11,7 @@ import static businessLogic.DealingAssistant.deal;
 import static businessLogic.DealingAssistant.dealToPlayers;
 import static businessLogic.RoundHandler.compareHands;
 import data.Round;
+import static ui.UI.printHands;
 import static ui.UI.printPlayers;
 
 /**
@@ -32,6 +33,7 @@ public class HandAnalyserTest {
         printPlayers(ronda);
         compareHands(ronda);
         printPlayers(ronda);
+        printHands();
     }
 
 }
