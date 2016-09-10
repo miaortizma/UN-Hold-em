@@ -4,6 +4,14 @@ Most important Progress:
 - Poker Hand Calculator
 - Poker Hand Comparator
 
+Contacts:
+- Miguel Angel miaortizma@unal.edu.co
+- 
+Course Assignment, Object Oriented Programming (2016375) / 2016-2
+-https://sites.google.com/site/oopunal20162/contents
+Professor
+Ing. Sebastian Alejandro Velasco Dimate
+savelascod@unal.edu.co
 Props to:
 @subskybox
 http://www.codeproject.com/Articles/569271/A-Poker-hand-analyzer-in-JavaScript-using-bit-math
