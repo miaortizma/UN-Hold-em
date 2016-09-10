@@ -37,8 +37,8 @@ public class GameEngine {
      */
     public static void main(String[] args) {
         getInstance();
-        //startGame();
-        tests();
+        startGame();
+        //tests();
     }
 
     public static void startGame() {
@@ -60,6 +60,7 @@ public class GameEngine {
                     }
                     case 3: {
                         printCommands();
+                        break;
                     }
                     default: {
                         throw new IllegalArgumentException("Not a valid command", null);
