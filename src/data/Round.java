@@ -5,8 +5,10 @@
  */
 package data;
 
-import static businessLogic.DeckFactory.createDeck;
+import static businessLogic.DeckFactory.createDealingDeck;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -19,12 +21,13 @@ public class Round {
     private Hand tableHand;
     private List<Player> players;
     private int pot;
+    private boolean tie;
 
     public Round() {
         //System.out.println("Starting new round");
         players = new ArrayList<>();
-        tableHand = new Hand("Table deck");
-        dealingDeck = createDeck("dealingDeck");
+        tableHand = new Hand("array");
+        dealingDeck = createDealingDeck("dealingdeck");
 
         for (int i = 0; i < 5; i++) {
             players.add(new Player());
@@ -60,11 +63,23 @@ public class Round {
         return players.get(i).getHand();
     }
 
- 
-
     public Round(Round previousRound) {
         //stub
         //Crear ronda "Heredando" los valores de una ronda anterior
         //Permitiria guardar en memoria rondas pasadas 
+    }
+
+    /**
+     * @return the tie
+     */
+    public boolean isTie() {
+        return tie;
+    }
+
+    /**
+     * @param tie the tie to set
+     */
+    public void setTie(boolean tie) {
+        this.tie = tie;
     }
 }

@@ -17,11 +17,12 @@ import static ui.UI.*;
  */
 public class GameEngine {
 
-    public static final Random RND = new Random();
-    private static GameEngine instance = null;
+    public static Random RND;
+    private static GameEngine instance;
     private static Tournament tournament;
 
     private GameEngine() {
+        Random RND = new Random();
     }
 
     private static GameEngine getInstance() {
@@ -35,6 +36,7 @@ public class GameEngine {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        getInstance();
         //startGame();
         tests();
     }
@@ -74,17 +76,6 @@ public class GameEngine {
 
     private static void tests() {
         HandAnalyserTest.test();
-    }
-
-    public static void askUser() {
-        while (true) {
-            try {
-
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-                printError();
-            }
-        }
     }
 
     public static boolean checkCommand(String input, boolean print) {

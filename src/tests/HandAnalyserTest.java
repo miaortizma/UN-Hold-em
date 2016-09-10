@@ -28,6 +28,7 @@ public class HandAnalyserTest {
         //printDeck(dealer);
         deal(dealer, comunitario, 5);
         System.out.println("Comunitario: \n" + comunitario);
+        //bestHand(ronda.getPlayerHand(0),comunitario);
         printPlayers(ronda);
         compareHands(ronda);
         printPlayers(ronda);
