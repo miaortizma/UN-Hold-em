@@ -37,8 +37,8 @@ public class GameEngine {
      */
     public static void main(String[] args) {
         getInstance();
-        //startGame();
-        tests();
+        startGame();
+        //tests();
     }
 
     public static void startGame() {
@@ -47,9 +47,13 @@ public class GameEngine {
 
         while (true) {
             try {
-                printMenu();
+                printMainMenu();
                 menu = askMainMenu();
                 switch (menu) {
+                    case 0:{
+                        //do nothing
+                        break;
+                    }
                     case 1: {
                         playRound(new Round());
                         break;
@@ -97,6 +101,10 @@ public class GameEngine {
                 if (print) {
                     printHelp();
                 }
+                return true;
+            }
+            case "<Test>":{
+                HandAnalyserTest.test();
                 return true;
             }
             default: {
