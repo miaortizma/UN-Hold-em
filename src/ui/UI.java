@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ui;
 
 import static businessLogic.GameEngine.checkCommand;
@@ -11,7 +6,6 @@ import data.Round;
 import java.util.Scanner;
 
 public class UI {
-//Mi version del menu:
 
     private static final Scanner IN = new Scanner(System.in);
     private static String inputUI;
@@ -129,6 +123,8 @@ public class UI {
     }
 
     /**
+     * Prints the round players and their hands used to test at the start and
+     * end of round
      *
      * @param ronda
      */
