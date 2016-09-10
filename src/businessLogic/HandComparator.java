@@ -16,8 +16,13 @@ import java.util.List;
  */
 public class HandComparator {
 
-    //  public static int compareHighCard(Hand hand, Hand anotherHand) {
-    // }
+    /**
+     *
+     * @param hand
+     * @param anotherHand
+     * @return 1 if hand ranks higher than anotherHand, 0 if both rank equal, -1
+     * if anotherHand ranks higher
+     */
     public static int compare(Hand hand, Hand anotherHand) {
         /*System.out.println("COMPARING:");
         System.out.println(hand + "\t" + anotherHand);
@@ -44,7 +49,7 @@ public class HandComparator {
                         ArrayList<Integer> kicker = new ArrayList<>();
                         kicker.add(thisHighCard);
                         //System.out.println(kicker.toString());
-                        out = compareKicker(hand, anotherHand, kicker);
+                        out = compareKickers(hand, anotherHand, kicker);
                     } else {
                         out = -1;
                     }
@@ -56,10 +61,14 @@ public class HandComparator {
         return out;
     }
 
+    /**
+     *
+     * @param hand
+     * @return highest ranking card
+     */
     public static int highCard(Hand hand) {
         int maxCard = hand.getCard(0).getValue();
-
-        for (int i = 0; i < hand.getSize(); i++) {
+        for (int i = 1; i < hand.getSize(); i++) {
             maxCard = hand.getCard(i).getValue() > maxCard ? hand.getCard(i).getValue() : maxCard;
         }
         return maxCard;
@@ -83,6 +92,13 @@ public class HandComparator {
         }
     }
 
+    /**
+     * Only works for a sorted hand
+     *
+     * @param hand
+     * @param size
+     * @return
+     */
     public static int highestThree(Hand hand, int size) {
         if (size == 3) {
             return hand.getCard(0).getValue();
@@ -93,6 +109,14 @@ public class HandComparator {
         }
     }
 
+    /**
+     * hand and anotherHand rankName is "1 Pair" or "2 Pair"
+     *
+     * @param hand
+     * @param anotherHand
+     * @return 1 if hand ranks higher than anotherHand, 0 if both rank equal, -1
+     * if anotherHand ranks higher
+     */
     public static int comparePair(Hand hand, Hand anotherHand) {
         int out;
         int thisPair = highestPair(hand, hand.getSize());
@@ -105,7 +129,7 @@ public class HandComparator {
         } else if (thisPair == anotherPair) {
             // System.out.println("SAME RANK");
             List<Integer> kicker = new ArrayList<>();
-            out = compareKicker(hand, anotherHand, kicker);
+            out = compareKickers(hand, anotherHand, kicker);
         } else {
             out = -1;
         }
@@ -113,6 +137,14 @@ public class HandComparator {
         return out;
     }
 
+    /**
+     * hand and anotherHand rankName is "Three of a kind"
+     *
+     * @param hand
+     * @param anotherHand
+     * @return 1 if hand ranks higher than anotherHand, 0 if both rank equal, -1
+     * if anotherHand ranks higher
+     */
     public static int compareThree(Hand hand, Hand anotherHand) {
         int out;
         int thisThree = highestThree(hand, hand.getSize());
@@ -121,14 +153,22 @@ public class HandComparator {
             out = 1;
         } else if (thisThree == anotherThree) {
             List<Integer> kicker = new ArrayList<>();
-            out = compareKicker(hand, anotherHand, kicker);
+            out = compareKickers(hand, anotherHand, kicker);
         } else {
             out = -1;
         }
         return out;
     }
 
-    public static int compareKicker(Hand hand, Hand anotherHand, List<Integer> pair) {
+    /**
+     *
+     * @param hand
+     * @param anotherHand
+     * @param pair
+     * @return 1 if hand kickers rank higher than anotherHand, 0 if both hands
+     * kickers rank equal, -1 if anotherHand kickers rank higher
+     */
+    public static int compareKickers(Hand hand, Hand anotherHand, List<Integer> pair) {
         //System.out.println(">");
         ArrayList<Integer> handKickers = new ArrayList<>();
         ArrayList<Integer> anotherKickers = new ArrayList<>();
@@ -142,7 +182,7 @@ public class HandComparator {
                 break;
             }
         }
-       // System.out.println("KICKERS");
+        // System.out.println("KICKERS");
         //System.out.println(handKickers.toString() + "\t" + anotherKickers.toString());
         return out;
     }
@@ -151,9 +191,10 @@ public class HandComparator {
      *
      * @param hand
      * @param filter
-     * @return
+     * @return highest next kicker that is not in filter
      */
     public static int kicker(Hand hand, List<Integer> filter) {
+        //if kicker returns -1 then no comparation was made, then compareKickers should terminate
         int kicker = -1;
         for (int i = 0; i < hand.getSize(); i++) {
             Card temp = hand.getCard(i);
