@@ -6,7 +6,6 @@ Most important Progress:
 
 Contacts:
 - Miguel Angel miaortizma@unal.edu.co
-- 
 Course Assignment, Object Oriented Programming (2016375) / 2016-2
 -https://sites.google.com/site/oopunal20162/contents
 Professor
