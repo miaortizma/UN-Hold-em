@@ -50,11 +50,11 @@ public class UI {
         System.out.println("");
     }
 
-    public static int askMenu() throws Exception {
+    public static int askMainMenu() throws Exception {
         if (in.hasNextInt()) {
             int x = in.nextInt();
             in.nextLine();
-            if (x < 1 || x > 2) {
+            if (x < 1 || x > 3) {
                 throw new Exception();
             }
             return x;
@@ -107,6 +107,7 @@ public class UI {
     }
 
     public static void printCommands() {
+        System.out.println(">");
         System.out.println(COMMANDS);
     }
 
