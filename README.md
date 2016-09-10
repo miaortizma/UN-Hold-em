@@ -2,7 +2,7 @@
 Welcome, this is  POO implementation of a Poker Game, a project of students of Universidad Nacional de Colombia Project. 
 
 Most important Progress:
-- Poker Hand Calculator
+- Poker Hand Calculator (Props to: @subskybox)
 - Poker Hand Comparator
 
 Authors:
@@ -12,7 +12,7 @@ Course Info:
 - Object Oriented Programming (2016375) / 2016-2. https://sites.google.com/site/oopunal20162/contents
 - Professor: Ing. Sebastian Alejandro Velasco Dimate savelascod@unal.edu.co
 
-- Props to:
+- References:
 @subskybox
 http://www.codeproject.com/Articles/569271/A-Poker-hand-analyzer-in-JavaScript-using-bit-math
 @Aracurunir
