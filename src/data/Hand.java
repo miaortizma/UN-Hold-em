@@ -5,9 +5,7 @@
  */
 package data;
 
-import static businessLogic.HandComparator.comparePair;
-import static businessLogic.HandComparator.compareThree;
-import static businessLogic.HandComparator.highCard;
+import static businessLogic.HandComparator.compare;
 import java.util.Collections;
 
 /**
@@ -77,31 +75,7 @@ public class Hand extends AbstractDeck implements Comparable<Hand> {
 
     @Override
     public int compareTo(Hand hand) {
-        int out;
-        if (hand.getRank() > this.getRank()) {
-            return -1;
-        } else if (hand.getRank() == this.getRank()) {
-            switch (rank) {
-                case 1:
-                case 2:
-                    return comparePair(this, hand);
-                case 3:
-                    return compareThree(this, hand);
-                default:
-                    int thisHighCard = highCard(this);
-                    int handHighCard = highCard(hand);
-                    if (thisHighCard >= handHighCard) {
-                        out = thisHighCard == handHighCard ? 0 : 1;
-                    } else {
-                        out = -1;
-                    }
-                    break;
-            }
-        } else {
-            return 1;
-        }
-
-        return out;
+        return compare(this, hand);
     }
 
     /**

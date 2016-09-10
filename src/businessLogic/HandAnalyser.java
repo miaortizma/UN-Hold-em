@@ -6,7 +6,6 @@
 package businessLogic;
 
 import static businessLogic.DeckFactory.createHand;
-import data.Card;
 import data.Hand;
 import java.util.Collections;
 import java.util.HashMap;

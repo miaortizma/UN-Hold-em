@@ -17,8 +17,31 @@ import java.util.List;
  */
 public class HandComparator {
 
-    public static int compareRank(Hand hand, Hand anotherHand) {
-        return 1;
+    public static int compare(Hand hand, Hand anotherHand) {
+        int out;
+        if (hand.getRank() < anotherHand.getRank()) {
+            return -1;
+        } else if (hand.getRank() == hand.getRank()) {
+            switch (hand.getRank()) {
+                case 1:
+                case 2:
+                    return comparePair(hand, anotherHand);
+                case 3:
+                    return compareThree(hand, anotherHand);
+                default:
+                    int thisHighCard = highCard(hand);
+                    int handHighCard = highCard(hand);
+                    if (thisHighCard >= handHighCard) {
+                        out = thisHighCard == handHighCard ? 0 : 1;
+                    } else {
+                        out = -1;
+                    }
+                    break;
+            }
+        } else {
+            return 1;
+        }
+        return out;
     }
 
     public static int highCard(Hand hand) {
@@ -38,7 +61,7 @@ public class HandComparator {
      * @return
      */
     public static int highestPair(Hand clone, int size) {
-       // System.out.println(clone.getCard(size - 1) + "" + clone.getCard(size - 2));
+        // System.out.println(clone.getCard(size - 1) + "" + clone.getCard(size - 2));
         if (size == 2) {
             return clone.getCard(0).getValue();
         } else if (clone.getCard(size - 1).getValue() == clone.getCard(size - 2).getValue()) {
