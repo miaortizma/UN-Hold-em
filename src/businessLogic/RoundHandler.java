@@ -27,8 +27,6 @@ public class RoundHandler {
             round.addToPot(25);
         }
     }
-    
-   
 
     public static void roundMenu() {
         int menu = 0;
@@ -37,6 +35,10 @@ public class RoundHandler {
                 printRoundMenu();
                 menu = askRoundMenu();
                 switch (menu) {
+                    case 0: {
+                        //do nothing
+                        break;
+                    }
                     case 1: {
                         break;
                     }
@@ -60,8 +62,6 @@ public class RoundHandler {
     }
 
     public static void playRound(Round round) {
-        //tratando de imprimir cartas unicode
-
         DealingDeck dealingDeck = round.getDealingDeck();
         Hand tableHand = round.getTableHand();
         burnCard(dealingDeck);
