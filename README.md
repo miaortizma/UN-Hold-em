@@ -1,5 +1,5 @@
 # UN-Hold-em
-Welcome, this is  POO implementation of a Poker Game, a project of students of Universidad Nacional de Colombia Project. 
+Welcome, this is  a Object Oriented implementation of a Poker Game, a project of students of Universidad Nacional de Colombia Project. 
 
 Most important Progress:
 - Poker Hand Calculator (Props to: @subskybox)
