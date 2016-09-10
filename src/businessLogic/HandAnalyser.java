@@ -5,7 +5,6 @@
  */
 package businessLogic;
 
-import static businessLogic.DeckFactory.cloneHand;
 import static businessLogic.DeckFactory.createHand;
 import data.Card;
 import data.Hand;
@@ -17,10 +16,10 @@ import java.util.HashMap;
  * @author OnePoker UN Estudiante
  */
 public class HandAnalyser {
-    
+
     public static final String[] HANDS = {"4 of a Kind", "Straight Flush", "Straight", "Flush", "High Card", "1 Pair", "2 Pair", "Royal Flush", "3 of a Kind", "Full House"};
     public static final HashMap<String, Integer> RANKS = new HashMap<>();
-    
+
     static {
         //HIGH CARD
         RANKS.put(HANDS[4], 0);
@@ -42,7 +41,7 @@ public class HandAnalyser {
         RANKS.put(HANDS[1], 8);
         //ROYAL FLUSH
         RANKS.put(HANDS[8], 9);
-        
+
     }
 
     /**
@@ -72,7 +71,7 @@ public class HandAnalyser {
         hand.setRankName(HANDS[(int) v]);
         hand.setRank(RANKS.get(HANDS[(int) v]));
     }
-    
+
     public static boolean allEqual(int[] x) {
         int first = x[0];
         for (int i = 0; i < x.length; i++) {
@@ -100,7 +99,7 @@ public class HandAnalyser {
         rankHand(comunitary);
         merge.addAll(playerHand);
         merge.addAll(comunitary);
-        
+
         int hand = 0;
         // select first card not to be in the hand
         for (int firstCard = 0; firstCard < 7; firstCard++) {
@@ -123,5 +122,5 @@ public class HandAnalyser {
         }
         return bestHand;
     }
-    
+
 }
