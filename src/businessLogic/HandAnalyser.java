@@ -23,6 +23,7 @@ public class HandAnalyser {
     public static final String[] HANDS = {"4 of a Kind", "Straight Flush", "Straight", "Flush", "High Card", "1 Pair", "2 Pair", "Royal Flush", "3 of a Kind", "Full House"};
     public static final HashMap<String, Integer> RANKS = new HashMap<>();
 
+    //maps HANDS into RANKS
     static {
         //HIGH CARD
         RANKS.put(HANDS[4], 0);
@@ -52,13 +53,13 @@ public class HandAnalyser {
      * http://stackoverflow.com/questions/2829883/7-card-poker-hand-evaluator
      * http://www.codeproject.com/Articles/569271/A-Poker-hand-analyzer-in-JavaScript-using-bit-math
      *
+     * Sets rankName and rank of the input hand, given it is a 5 cards Hand
      *
      *
      * //0x403c Ace low Straight //(s / (s & -s) == 31) Straight //0x7c00
      * RoyalFlush
      *
      * @param hand
-     * @return
      */
     public static void rankHand(Hand hand) {
         int[] ranks = hand.getCardRanks();
@@ -86,15 +87,11 @@ public class HandAnalyser {
     }
 
     /**
-     *
-     * @param hand
-     */
-    /**
      * http://stackoverflow.com/questions/33859993/get-all-possible-5-card-poker-hands-given-7-cards
      *
      * @param playerHand
      * @param comunitary
-     * @return
+     * @return bestHand and kickers of the bestHand
      */
     public static List<Hand> bestHand(Hand playerHand, Hand comunitary) {
         Hand merge = createHand("array");
