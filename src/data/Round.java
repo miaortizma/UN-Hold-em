@@ -2,17 +2,20 @@ package data;
 
 import static businessLogic.DeckFactory.createDealingDeck;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
  *
- * @author OnePoker UN 
+ * @author OnePoker UN
  */
 public class Round {
 
     private DealingDeck dealingDeck;
     private Hand tableHand;
     private List<Player> players;
+    private HashMap<Player, Integer> position;
+    private HashMap<Player, Integer> bets;
     private int pot;
     private boolean tie;
 
@@ -24,6 +27,7 @@ public class Round {
 
         for (int i = 0; i < 5; i++) {
             players.add(new Player());
+            position.put(players.get(i), i);
         }
         this.pot = 0;
     }

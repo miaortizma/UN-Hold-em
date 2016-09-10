@@ -9,10 +9,23 @@ public class UI {
 
     private static final Scanner IN = new Scanner(System.in);
     private static String inputUI;
-    private static final String COMMANDS = "\nType <Exit> at any time to exit \nType <Info> to know about this project\nType <Help> if you need some help\n";
+    private static final String COMMANDS = "\n"
+            + "Type <Exit> at any time to exit \n"
+            + "Type <Info> to know about this project\n"
+            + "Type <Help> if you need some help\n"
+            + "Type <Hands> to print Hands";
     public static final String[] RANKS = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
     public static final String[] SUITS = {"\u2660", "\u2663", "\u2764", "\u2666"};
     static final String DECORATOR = "/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/";
+    public static final String BOTTOMDEALER = "D";
+    public static final String BIGBLIND = "\u0E4F";
+    public static final String LITTLEBLIND = "\u263B";
+
+    public static void printTest() {
+        System.out.println(BOTTOMDEALER);
+        System.out.println(BIGBLIND);
+        System.out.println(LITTLEBLIND);
+    }
 
     public static void printWelcome() {
         System.out.println("\nWelcome to UN Hold' em");
@@ -87,13 +100,13 @@ public class UI {
 
     public static void printMainMenu() {
         System.out.println("ººººººººMenuºººººººº ");
-        System.out.println("(1) - Start a round? \t (2) - Never played poker before? \t (3) - Command List");
+        System.out.println("(1) - Start a round? \t (2) - Never played poker before? \t (3) - Command List\t(4) - Exit");
         System.out.print("Your option here:");
     }
 
     public static int askMainMenu() throws Exception {
         int x = askInt("");
-        if (x < 0 || x > 3) {
+        if (x < 0 || x > 4) {
             throw new Exception();
         }
         return x;
@@ -132,10 +145,6 @@ public class UI {
         System.out.println("PLAYERS SIZE: " + ronda.getPlayersSize());
         for (Player plyr : ronda.getPlayers()) {
             System.out.print(plyr);
-            if (plyr.getKickers() != null) {
-                System.out.print("Kickers: ");
-                System.out.println(plyr.getKickers());
-            }
             System.out.println("");
         }
     }
