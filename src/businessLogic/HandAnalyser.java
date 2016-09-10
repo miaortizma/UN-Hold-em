@@ -54,6 +54,9 @@ public class HandAnalyser {
      *
      *
      *
+     * //0x403c Ace low Straight //(s / (s & -s) == 31) Straight //0x7c00
+     * RoyalFlush
+     *
      * @param hand
      * @return
      */
@@ -66,10 +69,7 @@ public class HandAnalyser {
             o = (long) Math.pow(2, (ranks[i] - 2) * 4);
             v += o * (((v / o) & 15) + 1);
         }
-        //0x403c Ace low Straight
-        //(s / (s & -s) == 31) Straight
         v = v % 15 - ((s / (s & -s) == 31) || (s == 0x403c) ? 3 : 1);
-        //0x7c00 Royal Flush
         v -= (allEqual(suits) ? 1 : 0) * ((s == 0x7c00) ? -5 : 1);
         hand.setRankName(HANDS[(int) v]);
         hand.setRank(RANKS.get(HANDS[(int) v]));

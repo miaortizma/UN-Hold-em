@@ -64,6 +64,21 @@ public class UI {
             throw new Exception();
         }
     }
+    
+    public static int askRoundMenu() throws Exception {
+        if (in.hasNextInt()) {
+            int x = in.nextInt();
+            in.nextLine();
+            if (x < 1 || x > 3) {
+                throw new Exception();
+            }
+            return x;
+        } else {
+            inputUI = in.nextLine();
+            checkCommand(inputUI, true);
+            throw new Exception();
+        }
+    }
 
     public static String askMsg(String question) {
 
@@ -107,7 +122,6 @@ public class UI {
     }
 
     public static void printCommands() {
-        System.out.println(">");
         System.out.println(COMMANDS);
     }
 

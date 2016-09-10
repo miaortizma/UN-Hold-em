@@ -37,8 +37,8 @@ public class GameEngine {
      */
     public static void main(String[] args) {
         getInstance();
-        startGame();
-        //tests();
+        //startGame();
+        tests();
     }
 
     public static void startGame() {
@@ -48,7 +48,7 @@ public class GameEngine {
         while (true) {
             try {
                 printMenu();
-                menu = askMenu();
+                menu = askMainMenu();
                 switch (menu) {
                     case 1: {
                         playRound(new Round());

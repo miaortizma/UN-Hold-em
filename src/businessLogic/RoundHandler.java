@@ -33,7 +33,7 @@ public class RoundHandler {
         while (menu == 0) {
             try {
                 printRoundMenu();
-                menu = askMenu();
+                menu = askRoundMenu();
                 switch (menu) {
                     case 1: {
                         break;
