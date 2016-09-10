@@ -7,11 +7,11 @@ Most important Progress:
 
 Contacts:
 - Miguel Angel miaortizma@unal.edu.co
--https://sites.google.com/site/oopunal20162/contents
--Professor
--Ing. Sebastian Alejandro Velasco Dimate
-savelascod@unal.edu.co
--Props to:
+- https://sites.google.com/site/oopunal20162/contents
+- Professor
+- Ing. Sebastian Alejandro Velasco Dimate savelascod@unal.edu.co
+
+- Props to:
 @subskybox
 http://www.codeproject.com/Articles/569271/A-Poker-hand-analyzer-in-JavaScript-using-bit-math
 @Aracurunir
