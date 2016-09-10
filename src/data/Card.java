@@ -11,7 +11,7 @@ import ui.UI;
  *
  * @author OnePoker UN &
  */
-public class Card {
+public class Card implements Comparable<Card> {
 
     /**
      * Notes/ To DO
@@ -92,7 +92,10 @@ public class Card {
     @Override
     public String toString() {
         return UI.RANKS[this.value - 2] + "" + UI.SUITS[this.suit] + "\t";
-
     }
 
+    @Override
+    public int compareTo(Card card) {
+        return getValue() > card.getValue() ? 1 : -1;
+    }
 }

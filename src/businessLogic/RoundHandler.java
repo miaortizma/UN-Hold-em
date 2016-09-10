@@ -6,8 +6,9 @@
 package businessLogic;
 
 import static businessLogic.DealingAssistant.*;
-import static businessLogic.HandAnalyser.allPossibleHands;
+import static businessLogic.HandAnalyser.bestHand;
 import data.*;
+import java.util.Collections;
 import java.util.List;
 import static ui.UI.*;
 
@@ -26,16 +27,17 @@ public class RoundHandler {
             round.addToPot(25);
         }
     }
+    
+   
 
     public static void roundMenu() {
         int menu = 0;
-        while (true) {
+        while (menu == 0) {
             try {
                 printRoundMenu();
-                menu = askMenu();
+                menu = askRoundMenu();
                 switch (menu) {
                     case 1: {
-                        playRound(new Round());
                         break;
                     }
                     case 2: {
@@ -68,6 +70,7 @@ public class RoundHandler {
         System.out.println("Your cards are: ");
         System.out.println("" + round.getPlayers().get(0).getHand());
         for (int i = 0; i < 3; i++) {
+
             roundMenu();
             switch (i) {
                 case 0: {
@@ -88,9 +91,20 @@ public class RoundHandler {
             }
             System.out.println(tableHand);
         }
+        compareHands(round);
+        printPlayers(round);
 
-        allPossibleHands(round.getPlayers().get(0).getHand(), round.getTableHand());
+    }
 
+    public static void compareHands(Round round) {
+        for (Player plyr : round.getPlayers()) {
+            List<Hand> possibleHands = bestHand(plyr.getHand(), round.getTableHand());
+            plyr.setHand(possibleHands.get(0));
+            plyr.setKickers(possibleHands.get(1));
+        }
+
+        System.out.println("\n\nCOMPARING PLAYER HANDS");
+        Collections.sort(round.getPlayers(), Collections.reverseOrder());
     }
 
 }

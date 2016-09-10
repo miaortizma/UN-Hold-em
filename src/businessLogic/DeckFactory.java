@@ -16,16 +16,16 @@ import data.Hand;
  */
 public class DeckFactory {
 
-    public static DealingDeck createDeck(String deckType) {
+    public static DealingDeck createDealingDeck(String deckType) {
         if (deckType.equalsIgnoreCase("DEALINGDECK")) {
-            DealingDeck dealingDeck = new DealingDeck("Dealing deck");
+            DealingDeck dealingDeck = new DealingDeck("array");
             for (int i = 0; i < 52; i++) {
                 dealingDeck.addCard(new Card(i));
             }
             shuffleDeck(dealingDeck);
             return dealingDeck;
         } else {
-            return new DealingDeck("Hola");
+            return new DealingDeck(deckType);
         }
     }
 
@@ -39,10 +39,29 @@ public class DeckFactory {
             royal.addCard(new Card(13, suit));
             royal.addCard(new Card(14, suit));
             return royal;
+        } else if (handType.equals("nullLinked")) {
+            Hand linked = new Hand("linked");
+            for (int i = 0; i < 5; i++) {
+                linked.addCard(new Card(5, 3));
+            }
+            return linked;
         } else {
-            return new Hand("Hola");
+            return new Hand(handType);
         }
+    }
 
+    public static Hand cloneHand(Hand hand) {
+        //System.out.println(hand.getCards().getClass().toString());
+        Hand clone = new Hand("linked");
+        clone.setRank(hand.getRank());
+        clone.setRankName(hand.getRankName());
+        clone.addAll(hand);
+        return clone;
+    }
+
+    public static Hand createKicker(Hand merge, Hand bestHand) {
+        merge.getCards().removeAll(bestHand.getCards());
+        return merge;
     }
 
 }

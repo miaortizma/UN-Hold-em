@@ -23,9 +23,12 @@ public abstract class AbstractDeck {
         } else if (type.equalsIgnoreCase("array")) {
             cards = new ArrayList<>();
         } else {
-            cards = new ArrayList<>();
+            System.out.println("INVALID DECK CONSTRUCTOR TYPE");
+            cards = null;
         }
     }
+
+
 
     public Card getCard(int i) {
         return this.cards.get(i);
@@ -41,6 +44,10 @@ public abstract class AbstractDeck {
 
     public int getSize() {
         return cards.size();
+    }
+
+    public Card pop() {
+        return cards.remove(cards.size() - 1);
     }
 
 }
