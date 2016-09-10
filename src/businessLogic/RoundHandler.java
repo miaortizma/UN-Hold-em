@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package businessLogic;
 
 import static businessLogic.DealingAssistant.*;
+import static businessLogic.GameEngine.checkCommand;
 import static businessLogic.HandAnalyser.bestHand;
 import data.*;
 import java.util.Collections;
@@ -14,7 +10,7 @@ import static ui.UI.*;
 
 /**
  *
- * @author OnePoker UN &
+ * @author OnePoker UN 
  */
 public class RoundHandler {
 
@@ -27,8 +23,6 @@ public class RoundHandler {
             round.addToPot(25);
         }
     }
-    
-   
 
     public static void roundMenu() {
         int menu = 0;
@@ -37,14 +31,29 @@ public class RoundHandler {
                 printRoundMenu();
                 menu = askRoundMenu();
                 switch (menu) {
+                    case 0: {
+                        //do nothing
+                        break;
+                    }
                     case 1: {
+                        //check
                         break;
                     }
                     case 2: {
-                        printHelp();
+                        //raise
                         break;
                     }
                     case 3: {
+                        //fold
+                        break;
+                    }
+                    case 4: {
+                        //all in
+                        break;
+                    }
+                    case 5: {
+                        //retire
+                        checkCommand("<Exit>", true);
                     }
                     default: {
                         throw new IllegalArgumentException("Not a valid command", null);
@@ -59,9 +68,15 @@ public class RoundHandler {
         }
     }
 
+    /**
+     * NOTES / TO DO Goes through: -Dealing. -Burn Card -Shows player(0) his
+     * cards -Flop,turn and river. (Comunitary hand) -Comparing player hands
+     * (Doesn't do nothing about ties and also note that in the way that
+     * collections sort to print the players they are sorted in reverse order)
+     *
+     * @param round
+     */
     public static void playRound(Round round) {
-        //tratando de imprimir cartas unicode
-
         DealingDeck dealingDeck = round.getDealingDeck();
         Hand tableHand = round.getTableHand();
         burnCard(dealingDeck);
@@ -96,6 +111,16 @@ public class RoundHandler {
 
     }
 
+    /**
+     * NOTES/ TO DO: -Should add some variable to notify that there is a tie
+     * -Should add different method that controls who wins etc. sets each round
+     * player hand as its possible Hand after merging its hand and the
+     * comunitary hand, sets each player kickers.
+     *
+     * Sorts the list of players (The criteria is their hands and kickers)
+     *
+     * @param round
+     */
     public static void compareHands(Round round) {
         for (Player plyr : round.getPlayers()) {
             List<Hand> possibleHands = bestHand(plyr.getHand(), round.getTableHand());

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ui;
 
 import static businessLogic.GameEngine.checkCommand;
@@ -11,16 +6,13 @@ import data.Round;
 import java.util.Scanner;
 
 public class UI {
-//Mi version del menu:
 
-    private static Scanner in = new Scanner(System.in);
+    private static final Scanner IN = new Scanner(System.in);
     private static String inputUI;
-    public static final String[] RANKS = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
     private static final String COMMANDS = "\nType <Exit> at any time to exit \nType <Info> to know about this project\nType <Help> if you need some help\n";
-    static String userMenu;
-    static boolean onGame = true;
+    public static final String[] RANKS = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
     public static final String[] SUITS = {"\u2660", "\u2663", "\u2764", "\u2666"};
-    static final String Decorator = "/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/";
+    static final String DECORATOR = "/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/";
 
     public static void printWelcome() {
         System.out.println("\nWelcome to UN Hold' em");
@@ -38,70 +30,36 @@ public class UI {
         System.out.println("Please try again");
     }
 
-    public static void printRoundMenu() {
-        System.out.println("(1) - Check \t (2) - Raise  \t (3) - Fold \t (4) - All in \t (5)- Retire");
-
+    public static String askMsg(String question) {
+        System.out.print(question);
+        inputUI = IN.nextLine();
+        checkCommand(inputUI, true);
+        return inputUI;
     }
 
     public static int askInt(String question) throws Exception {
         System.out.print(question);
-        if (in.hasNextInt()) {
-            int x = in.nextInt();
-            in.nextLine();
+        if (IN.hasNextInt()) {
+            int x = IN.nextInt();
+            IN.nextLine();
             return x;
+        } else if (checkCommand(IN.nextLine(), true)) {
+            //if input is a command do nothing
+            return 0;
         } else {
-            checkCommand(in.next(), true);
             throw new Exception("Not a number");
         }
     }
 
     public static void printHelp() {
-        System.out.println(Decorator);
+        System.out.println(DECORATOR);
         System.out.println("Poker Hold'em is a game of bets in which each player has two cards and the goal is to assemble the \n best set of five cards between yours and the five comunitary cards.");
         System.out.println("The comunitary cards are showed to all the players in this way: After each round of bets, a card \n of the deck is 'burned'(discarded)");
         System.out.println("and three cards(first round) or one card(other rounds) are showed until five cards were at sight.");
         System.out.println("You can match the bet, backing out, or check (pass) on your turn");
         System.out.println("bet more if you have a good hand in the game and win more points ");
-        System.out.println(Decorator);
+        System.out.println(DECORATOR);
         printHands();
-    }
-
-    public static int askMainMenu() throws Exception {
-        if (in.hasNextInt()) {
-            int x = in.nextInt();
-            in.nextLine();
-            if (x < 1 || x > 3) {
-                throw new Exception();
-            }
-            return x;
-        } else {
-            inputUI = in.nextLine();
-            checkCommand(inputUI, true);
-            throw new Exception();
-        }
-    }
-
-    public static int askRoundMenu() throws Exception {
-        if (in.hasNextInt()) {
-            int x = in.nextInt();
-            in.nextLine();
-            if (x < 1 || x > 3) {
-                throw new Exception();
-            }
-            return x;
-        } else {
-            inputUI = in.nextLine();
-            checkCommand(inputUI, true);
-            throw new Exception();
-        }
-    }
-
-    public static String askMsg(String question) {
-
-        System.out.print(question);
-        inputUI = in.nextLine();
-        checkCommand(inputUI, true);
-        return inputUI;
     }
 
     public static void printHands() {
@@ -119,7 +77,7 @@ public class UI {
         System.out.println("* A kicker is the higher card on the hand, it helps to decide who wins in case of tie with the hands");
         System.out.println("P.S.: If two or more player have the same hand, wins the higher one, if the hands are completely the same \n the prize is divided among the winners. Also, if two or more player have hands that are composed of other hands like \n double pair(two pairs) or full house(Three of a kind and a pair) and there is a tie, the sub-hand are compared until \n the kicker if it's necessary and wins the higher of them.");
         System.out.println("We hope you enjoy it! :D");
-        System.out.println(Decorator);
+        System.out.println(DECORATOR);
 
     }
 
@@ -127,52 +85,35 @@ public class UI {
         System.out.println(COMMANDS);
     }
 
-    public static void printMenu() {
+    public static void printMainMenu() {
         System.out.println("ººººººººMenuºººººººº ");
         System.out.println("(1) - Start a round? \t (2) - Never played poker before? \t (3) - Command List");
         System.out.print("Your option here:");
-        userMenu = in.nextLine();
-        userOpAnaliser();
+    }
+
+    public static int askMainMenu() throws Exception {
+        int x = askInt("");
+        if (x < 0 || x > 3) {
+            throw new Exception();
+        }
+        return x;
 
     }
 
-    public static void userOpAnaliser() {
-        if (userMenu.equalsIgnoreCase("EXIT")) {
-            onGame = false;
-            printExit();
-        } else if (userMenu.equalsIgnoreCase("INFO")) {
-            printInfo();
-        } else if (userMenu.equalsIgnoreCase("HELP")) {
-            printHelp();
-        } else {
-            menuHandler(userMenu);
+    public static int askRoundMenu() throws Exception {
+        int x = askInt("");
+        if (x < 0 || x > 5) {
+            throw new Exception();
         }
+        return x;
     }
 
-    public static void menuHandler(String userMenu) {
-        switch (Integer.parseInt(userMenu)) {
-
-            case 1:
-                //Empezar una ronda
-                break;
-            case 2:
-                printHelp();
-                printMenu();
-                break;
-
-            case 3:
-                printCommands();
-                break;
-            default:
-                System.out.println("Please choose an option :)");
-                printMenu();
-                break;
-        }
+    public static void printRoundMenu() {
+        System.out.println("(1) - Check \t (2) - Raise  \t (3) - Fold \t (4) - All in \t (5)- Retire");
 
     }
 
     public static void printExit() {
-
         System.out.println("\nThanks, see you later");
     }
 
@@ -181,17 +122,9 @@ public class UI {
         System.out.println("One Poker");
     }
 
-    public static void startGame() {
-        printWelcome();
-        while (onGame) {
-
-            printMenu();
-
-        }
-
-    }
-
     /**
+     * Prints the round players and their hands used to test at the start and
+     * end of round
      *
      * @param ronda
      */

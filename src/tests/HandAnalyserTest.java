@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tests;
 
 import data.DealingDeck;
@@ -11,6 +6,7 @@ import static businessLogic.DealingAssistant.deal;
 import static businessLogic.DealingAssistant.dealToPlayers;
 import static businessLogic.RoundHandler.compareHands;
 import data.Round;
+import static ui.UI.printHands;
 import static ui.UI.printPlayers;
 
 /**
@@ -32,6 +28,7 @@ public class HandAnalyserTest {
         printPlayers(ronda);
         compareHands(ronda);
         printPlayers(ronda);
+        printHands();
     }
 
 }
