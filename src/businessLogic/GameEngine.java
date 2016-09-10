@@ -48,7 +48,7 @@ public class GameEngine {
         while (true) {
             try {
                 printMenu();
-                menu = askMenu();
+                menu = askMainMenu();
                 switch (menu) {
                     case 1: {
                         playRound(new Round());
@@ -60,6 +60,7 @@ public class GameEngine {
                     }
                     case 3: {
                         printCommands();
+                        break;
                     }
                     default: {
                         throw new IllegalArgumentException("Not a valid command", null);

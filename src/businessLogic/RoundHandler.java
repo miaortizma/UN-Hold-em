@@ -27,13 +27,15 @@ public class RoundHandler {
             round.addToPot(25);
         }
     }
+    
+   
 
     public static void roundMenu() {
         int menu = 0;
         while (menu == 0) {
             try {
                 printRoundMenu();
-                menu = askMenu();
+                menu = askRoundMenu();
                 switch (menu) {
                     case 1: {
                         break;
