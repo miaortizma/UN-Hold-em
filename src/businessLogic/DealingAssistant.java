@@ -3,7 +3,6 @@ package businessLogic;
 import data.*;
 import java.util.List;
 import java.util.Random;
-import static ui.UI.printDeck;
 
 /**
  *
@@ -11,9 +10,9 @@ import static ui.UI.printDeck;
  */
 public class DealingAssistant {
 
-    public static void burnCard(DealingDeck deck) {
+    public static void burnCard(AbstractDeck deck) {
         //System.out.println("Card burned!");
-        deck.getCards().remove(deck.getSize() - 1);
+        deck.pop();
     }
 
     public static Card deal(DealingDeck deck) {

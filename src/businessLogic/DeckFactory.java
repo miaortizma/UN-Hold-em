@@ -42,7 +42,14 @@ public class DeckFactory {
         } else {
             return new Hand("Hola");
         }
+    }
 
+    public static Hand cloneHand(Hand hand) {
+        Hand clone = new Hand("");
+        clone.setRank(hand.getRank());
+        clone.setRankName(hand.getRankName());
+        clone.addAll(hand);
+        return clone;
     }
 
 }

@@ -5,9 +5,11 @@
  */
 package businessLogic;
 
+import static businessLogic.DeckFactory.cloneHand;
 import static businessLogic.DeckFactory.createHand;
 import data.Hand;
-import data.Round;
+import java.util.Collections;
+import java.util.HashMap;
 
 /**
  *
@@ -16,7 +18,31 @@ import data.Round;
 public class HandAnalyser {
 
     public static final String[] HANDS = {"4 of a Kind", "Straight Flush", "Straight", "Flush", "High Card", "1 Pair", "2 Pair", "Royal Flush", "3 of a Kind", "Full House"};
-    
+    public static final HashMap<String, Integer> RANKS = new HashMap<>();
+
+    static {
+        //HIGH CARD
+        RANKS.put(HANDS[4], 0);
+        //1 PAIR
+        RANKS.put(HANDS[5], 1);
+        //2 PAIR
+        RANKS.put(HANDS[6], 2);
+        //3 OF A KIND
+        RANKS.put(HANDS[8], 3);
+        //STRAIGHT
+        RANKS.put(HANDS[2], 4);
+        //FLUSH
+        RANKS.put(HANDS[3], 5);
+        //FULL HOUSE
+        RANKS.put(HANDS[9], 6);
+        //4 OF A KIND
+        RANKS.put(HANDS[0], 7);
+        //STRAIGHT FLUSH
+        RANKS.put(HANDS[1], 8);
+        //ROYAL FLUSH
+        RANKS.put(HANDS[6], 9);
+
+    }
 
     /**
      * Reference Author @subskybox
@@ -37,17 +63,13 @@ public class HandAnalyser {
             o = (long) Math.pow(2, (ranks[i] - 2) * 4);
             v += o * (((v / o) & 15) + 1);
         }
-
         //0x403c Ace low Straight
         //(s / (s & -s) == 31) Straight
         v = v % 15 - ((s / (s & -s) == 31) || (s == 0x403c) ? 3 : 1);
         //0x7c00 Royal Flush
         v -= (allEqual(suits) ? 1 : 0) * ((s == 0x7c00) ? -5 : 1);
-        hand.setRank((int) v);
-    }
-
-    public static String[] getHands() {
-        return HANDS;
+        hand.setRankName(HANDS[(int) v]);
+        hand.setRank(RANKS.get(HANDS[(int) v]));
     }
 
     public static boolean allEqual(int[] x) {
@@ -65,13 +87,30 @@ public class HandAnalyser {
      * @param hand
      */
     public static int highCard(Hand hand) {
-        int maxCard = hand.getCard(0).getValue(), highCard = 0;
-        for (int i = 0; i < 5; i++) {
-            if (hand.getCard(i).getValue() > maxCard) {
-                highCard = i;
-            }
+        if (hand.getRank() == 1 || hand.getRank() == 2) {
+            Hand clone = cloneHand(hand);
+            Collections.sort(clone.getCards());
+            return pairHighCard(clone);
         }
-        return (highCard);
+        int maxCard = hand.getCard(0).getValue(), cardValue = 0;
+
+        for (int i = 0; i < hand.getSize(); i++) {
+            cardValue = hand.getCard(i).getValue();
+            maxCard = cardValue > maxCard ? cardValue : maxCard;
+        }
+        return maxCard;
+    }
+
+    public static int pairHighCard(Hand clone) {
+        if (clone.getSize() == 2) {
+            return clone.getCard(0).getValue();
+        }
+        if (clone.getCard(clone.getSize() - 1) == clone.getCard(clone.getSize() - 2)) {
+            return clone.pop().getValue();
+        } else {
+            clone.pop();
+            return highCard(clone);
+        }
     }
 
     /**
@@ -79,6 +118,7 @@ public class HandAnalyser {
      *
      * @param playerHand
      * @param comunitary
+     * @return
      */
     public static Hand bestHand(Hand playerHand, Hand comunitary) {
         Hand merge = createHand("array");
@@ -100,19 +140,13 @@ public class HandAnalyser {
                     }
                 }
                 rankHand(temp);
-                System.out.println(hand+"  "+HANDS[temp.getRank()] + " " + temp);
-                bestHand = bestHand.compareTo(temp) > 0 ? temp : bestHand;
-                System.out.println("\nBEST HAND :" +HANDS[bestHand.getRank()]+ bestHand);
-                System.out.println("");
+                bestHand = bestHand.compareTo(temp) > 0 ? bestHand : temp;
+
                 // next hand
                 hand++;
             }
         }
         return bestHand;
-    }
-
-    public static void compareHands(Round round) {
-
     }
 
 }

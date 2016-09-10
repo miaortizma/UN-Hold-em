@@ -43,4 +43,8 @@ public abstract class AbstractDeck {
         return cards.size();
     }
 
+    public Card pop() {
+        return cards.remove(cards.size() - 1);
+    }
+
 }

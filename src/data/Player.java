@@ -9,7 +9,7 @@ package data;
  *
  * @author OnePoker UN &
  */
-public class Player {
+public class Player implements Comparable<Player> {
 
     private static int count;
     private int id;
@@ -31,6 +31,10 @@ public class Player {
         return this.hand;
     }
 
+    public void setHand(Hand hand) {
+        this.hand = hand;
+    }
+
     public Player() {
         this.id = +count;
         hand = new Hand("Player " + this.id + " Deck");
@@ -40,5 +44,15 @@ public class Player {
 
     public int getId() {
         return this.id;
+    }
+
+    @Override
+    public String toString() {
+        return "#" + getId() + "  " + getHand();
+    }
+
+    @Override
+    public int compareTo(Player player) {
+        return this.getHand().compareTo(player.getHand());
     }
 }

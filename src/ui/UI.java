@@ -121,7 +121,16 @@ public class UI {
                 + " at least some of which remain hidden until the end of the hand.\n"
                 + "Poker games vary in the number of cards dealt, the number of shared or \"community\" cards, \n"
                 + "the number of cards that remain hidden, and the betting procedures.");
+    }
 
+    /**
+     *
+     * @param ronda
+     */
+    public static void printPlayers(Round ronda) {
+        for (Player plyr : ronda.getPlayers()) {
+            System.out.println(plyr);
+        }
     }
 
 }

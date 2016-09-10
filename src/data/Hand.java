@@ -6,6 +6,7 @@
 package data;
 
 import static businessLogic.HandAnalyser.highCard;
+import java.util.Collections;
 
 /**
  *
@@ -14,9 +15,11 @@ import static businessLogic.HandAnalyser.highCard;
 public class Hand extends AbstractDeck implements Comparable<Hand> {
 
     private int rank;
+    private String rankName;
 
     public Hand(String type) {
         super(type);
+        this.rank = -1;
     }
 
     public int[] getCardRanks() {
@@ -58,7 +61,12 @@ public class Hand extends AbstractDeck implements Comparable<Hand> {
 
     @Override
     public String toString() {
+        Collections.sort(getCards());
         String out = "";
+
+        if (getRank() > -1) {
+            out += getRankName() + "  ";
+        }
         for (int i = 0; i < getSize(); i++) {
             out += getCard(i).toString();
         }
@@ -67,7 +75,47 @@ public class Hand extends AbstractDeck implements Comparable<Hand> {
 
     @Override
     public int compareTo(Hand hand) {
-        return hand.getRank() > this.getRank() ? -1 : 1;
+        int out;
+        //System.out.println("COMPARING: " + this + "\t" + hand);
+        // System.out.println("RANKS : " + this.getRankName() + "\t" + hand.getRankName());
+        if (hand.getRank() > this.getRank()) {
+            out = -1;
+        } else if (hand.getRank() == this.getRank()) {
+            if (hand.getRank() == 1) {
+
+            }
+            {
+
+            }
+            int thisHighCard = highCard(this);
+            int handHighCard = highCard(hand);
+            //  System.out.println("HIGH CARDS : " + highCard(this) + "\t" + highCard(hand));
+            if (thisHighCard >= handHighCard) {
+                out = thisHighCard == handHighCard ? 0 : 1;
+            } else {
+                out = -1;
+            }
+        } else {
+            out = 1;
+        }
+        if (out == -1) {
+            // System.out.println("CHANGE");
+        }
+        return out;
+    }
+
+    /**
+     * @return the rankName
+     */
+    public String getRankName() {
+        return rankName;
+    }
+
+    /**
+     * @param rankName the rankName to set
+     */
+    public void setRankName(String rankName) {
+        this.rankName = rankName;
     }
 
 }
