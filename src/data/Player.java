@@ -19,7 +19,6 @@ public class Player implements Comparable<Player> {
     private int credits;
     private Hand hand;
     private Hand kickers;
-    private Round round;
     //rango
     private int elo;
 
