@@ -6,6 +6,7 @@
 package businessLogic;
 
 import static businessLogic.DealingAssistant.*;
+import static businessLogic.GameEngine.checkCommand;
 import static businessLogic.HandAnalyser.bestHand;
 import data.*;
 import java.util.Collections;
@@ -40,13 +41,24 @@ public class RoundHandler {
                         break;
                     }
                     case 1: {
+                        //check
                         break;
                     }
                     case 2: {
-                        printHelp();
+                        //raise
                         break;
                     }
                     case 3: {
+                        //fold
+                        break;
+                    }
+                    case 4: {
+                        //all in
+                        break;
+                    }
+                    case 5: {
+                        //retire
+                        checkCommand("<Exit>", true);
                     }
                     default: {
                         throw new IllegalArgumentException("Not a valid command", null);
