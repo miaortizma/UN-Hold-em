@@ -5,7 +5,9 @@
  */
 package data;
 
-import static businessLogic.HandAnalyser.highCard;
+import static businessLogic.HandComparator.comparePair;
+import static businessLogic.HandComparator.compareThree;
+import static businessLogic.HandComparator.highCard;
 import java.util.Collections;
 
 /**
@@ -65,7 +67,7 @@ public class Hand extends AbstractDeck implements Comparable<Hand> {
         String out = "";
 
         if (getRank() > -1) {
-            out += getRankName() + "  ";
+            out += getRankName() + " \t";
         }
         for (int i = 0; i < getSize(); i++) {
             out += getCard(i).toString();
@@ -76,31 +78,29 @@ public class Hand extends AbstractDeck implements Comparable<Hand> {
     @Override
     public int compareTo(Hand hand) {
         int out;
-        //System.out.println("COMPARING: " + this + "\t" + hand);
-        // System.out.println("RANKS : " + this.getRankName() + "\t" + hand.getRankName());
         if (hand.getRank() > this.getRank()) {
-            out = -1;
+            return -1;
         } else if (hand.getRank() == this.getRank()) {
-            if (hand.getRank() == 1) {
-
-            }
-            {
-
-            }
-            int thisHighCard = highCard(this);
-            int handHighCard = highCard(hand);
-            //  System.out.println("HIGH CARDS : " + highCard(this) + "\t" + highCard(hand));
-            if (thisHighCard >= handHighCard) {
-                out = thisHighCard == handHighCard ? 0 : 1;
-            } else {
-                out = -1;
+            switch (rank) {
+                case 1:
+                case 2:
+                    return comparePair(this, hand);
+                case 3:
+                    return compareThree(this, hand);
+                default:
+                    int thisHighCard = highCard(this);
+                    int handHighCard = highCard(hand);
+                    if (thisHighCard >= handHighCard) {
+                        out = thisHighCard == handHighCard ? 0 : 1;
+                    } else {
+                        out = -1;
+                    }
+                    break;
             }
         } else {
-            out = 1;
+            return 1;
         }
-        if (out == -1) {
-            // System.out.println("CHANGE");
-        }
+
         return out;
     }
 

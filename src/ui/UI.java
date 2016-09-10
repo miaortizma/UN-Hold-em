@@ -128,6 +128,7 @@ public class UI {
      * @param ronda
      */
     public static void printPlayers(Round ronda) {
+        System.out.println("PLAYERS SIZE: " + ronda.getPlayersSize());
         for (Player plyr : ronda.getPlayers()) {
             System.out.println(plyr);
         }

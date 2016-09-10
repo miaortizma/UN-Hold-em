@@ -7,6 +7,7 @@ package businessLogic;
 
 import static businessLogic.DeckFactory.cloneHand;
 import static businessLogic.DeckFactory.createHand;
+import data.Card;
 import data.Hand;
 import java.util.Collections;
 import java.util.HashMap;
@@ -16,10 +17,10 @@ import java.util.HashMap;
  * @author OnePoker UN Estudiante
  */
 public class HandAnalyser {
-
+    
     public static final String[] HANDS = {"4 of a Kind", "Straight Flush", "Straight", "Flush", "High Card", "1 Pair", "2 Pair", "Royal Flush", "3 of a Kind", "Full House"};
     public static final HashMap<String, Integer> RANKS = new HashMap<>();
-
+    
     static {
         //HIGH CARD
         RANKS.put(HANDS[4], 0);
@@ -28,7 +29,7 @@ public class HandAnalyser {
         //2 PAIR
         RANKS.put(HANDS[6], 2);
         //3 OF A KIND
-        RANKS.put(HANDS[8], 3);
+        RANKS.put(HANDS[7], 3);
         //STRAIGHT
         RANKS.put(HANDS[2], 4);
         //FLUSH
@@ -40,8 +41,8 @@ public class HandAnalyser {
         //STRAIGHT FLUSH
         RANKS.put(HANDS[1], 8);
         //ROYAL FLUSH
-        RANKS.put(HANDS[6], 9);
-
+        RANKS.put(HANDS[8], 9);
+        
     }
 
     /**
@@ -71,7 +72,7 @@ public class HandAnalyser {
         hand.setRankName(HANDS[(int) v]);
         hand.setRank(RANKS.get(HANDS[(int) v]));
     }
-
+    
     public static boolean allEqual(int[] x) {
         int first = x[0];
         for (int i = 0; i < x.length; i++) {
@@ -86,33 +87,6 @@ public class HandAnalyser {
      *
      * @param hand
      */
-    public static int highCard(Hand hand) {
-        if (hand.getRank() == 1 || hand.getRank() == 2) {
-            Hand clone = cloneHand(hand);
-            Collections.sort(clone.getCards());
-            return pairHighCard(clone);
-        }
-        int maxCard = hand.getCard(0).getValue(), cardValue = 0;
-
-        for (int i = 0; i < hand.getSize(); i++) {
-            cardValue = hand.getCard(i).getValue();
-            maxCard = cardValue > maxCard ? cardValue : maxCard;
-        }
-        return maxCard;
-    }
-
-    public static int pairHighCard(Hand clone) {
-        if (clone.getSize() == 2) {
-            return clone.getCard(0).getValue();
-        }
-        if (clone.getCard(clone.getSize() - 1) == clone.getCard(clone.getSize() - 2)) {
-            return clone.pop().getValue();
-        } else {
-            clone.pop();
-            return highCard(clone);
-        }
-    }
-
     /**
      * http://stackoverflow.com/questions/33859993/get-all-possible-5-card-poker-hands-given-7-cards
      *
@@ -126,7 +100,7 @@ public class HandAnalyser {
         rankHand(comunitary);
         merge.addAll(playerHand);
         merge.addAll(comunitary);
-
+        
         int hand = 0;
         // select first card not to be in the hand
         for (int firstCard = 0; firstCard < 7; firstCard++) {
@@ -139,6 +113,7 @@ public class HandAnalyser {
                         temp.addCard(merge.getCard(i));
                     }
                 }
+                Collections.sort(temp.getCards());
                 rankHand(temp);
                 bestHand = bestHand.compareTo(temp) > 0 ? bestHand : temp;
 
@@ -148,5 +123,5 @@ public class HandAnalyser {
         }
         return bestHand;
     }
-
+    
 }

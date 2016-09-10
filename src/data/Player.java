@@ -48,7 +48,7 @@ public class Player implements Comparable<Player> {
 
     @Override
     public String toString() {
-        return "#" + getId() + "  " + getHand();
+        return "#" + getId() + "\t" + getHand();
     }
 
     @Override
