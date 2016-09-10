@@ -30,13 +30,12 @@ public class RoundHandler {
 
     public static void roundMenu() {
         int menu = 0;
-        while (true) {
+        while (menu == 0) {
             try {
                 printRoundMenu();
                 menu = askMenu();
                 switch (menu) {
                     case 1: {
-                        playRound(new Round());
                         break;
                     }
                     case 2: {
@@ -69,6 +68,7 @@ public class RoundHandler {
         System.out.println("Your cards are: ");
         System.out.println("" + round.getPlayers().get(0).getHand());
         for (int i = 0; i < 3; i++) {
+
             roundMenu();
             switch (i) {
                 case 0: {
@@ -89,16 +89,20 @@ public class RoundHandler {
             }
             System.out.println(tableHand);
         }
+        compareHands(round);
+        printPlayers(round);
 
     }
 
     public static void compareHands(Round round) {
         for (Player plyr : round.getPlayers()) {
-            plyr.setHand(bestHand(plyr.getHand(), round.getTableHand()));
+            List<Hand> possibleHands = bestHand(plyr.getHand(), round.getTableHand());
+            plyr.setHand(possibleHands.get(0));
+            plyr.setKickers(possibleHands.get(1));
         }
 
         System.out.println("\n\nCOMPARING PLAYER HANDS");
-        Collections.sort(round.getPlayers(),Collections.reverseOrder());
+        Collections.sort(round.getPlayers(), Collections.reverseOrder());
     }
 
 }

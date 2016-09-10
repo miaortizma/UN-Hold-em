@@ -6,6 +6,7 @@
 package data;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,9 +24,12 @@ public abstract class AbstractDeck {
         } else if (type.equalsIgnoreCase("array")) {
             cards = new ArrayList<>();
         } else {
-            cards = new ArrayList<>();
+            System.out.println("INVALID DECK CONSTRUCTOR TYPE");
+            cards = null;
         }
     }
+
+
 
     public Card getCard(int i) {
         return this.cards.get(i);

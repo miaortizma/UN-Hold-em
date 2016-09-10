@@ -5,6 +5,8 @@
  */
 package data;
 
+import static businessLogic.DeckFactory.createHand;
+
 /**
  *
  * @author OnePoker UN &
@@ -16,6 +18,8 @@ public class Player implements Comparable<Player> {
     private String name;
     private int credits;
     private Hand hand;
+    private Hand kickers;
+    private Round round;
     //rango
     private int elo;
 
@@ -37,13 +41,20 @@ public class Player implements Comparable<Player> {
 
     public Player() {
         this.id = +count;
-        hand = new Hand("Player " + this.id + " Deck");
-        //System.out.println("Creating player with id: " + this.id);
+        hand = createHand("array");
         count++;
     }
 
     public int getId() {
         return this.id;
+    }
+
+    public void setKickers(Hand hand) {
+        this.kickers = hand;
+    }
+
+    public Hand getKickers() {
+        return this.kickers;
     }
 
     @Override
@@ -53,6 +64,18 @@ public class Player implements Comparable<Player> {
 
     @Override
     public int compareTo(Player player) {
-        return this.getHand().compareTo(player.getHand());
+        int out = this.getHand().compareTo(player.getHand());
+        //System.out.println(this.hand + "" + player.getHand());
+        if (out == 0) {
+            // System.out.println("DECISIVE KICKERS");
+            //System.out.println(this.getKickers() + "" + player.getKickers());
+            out = this.getKickers().compareTo(player.getKickers());
+        }
+        if (out == 0) {
+            System.out.println("TIE");
+        }
+
+        //System.out.println(out);
+        return out;
     }
 }

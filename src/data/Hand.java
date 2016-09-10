@@ -59,6 +59,10 @@ public class Hand extends AbstractDeck implements Comparable<Hand> {
         }
     }
 
+    public void set(int i, Card card) {
+        this.getCards().set(i, card);
+    }
+
     @Override
     public String toString() {
         Collections.sort(getCards());
@@ -75,7 +79,18 @@ public class Hand extends AbstractDeck implements Comparable<Hand> {
 
     @Override
     public int compareTo(Hand hand) {
-        return compare(this, hand);
+        int out = compare(this, hand);
+        /**System.out.println("COMPARING:");
+        System.out.println(this + "\t" + hand);
+        System.out.println(this.getRank() + "  " + hand.getRank());
+        System.out.println(out);
+        System.out.println("\n\n\n");
+       **/
+        if (hand.getRank() == 1) {
+            //System.out.println(out);
+        }
+        //System.out.println(out);
+        return out;
     }
 
     /**
