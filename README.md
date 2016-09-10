@@ -10,7 +10,7 @@ Authors:
 
 Course Info:
 - Object Oriented Programming (2016375) / 2016-2. https://sites.google.com/site/oopunal20162/contents
-- Professor :Ing. Sebastian Alejandro Velasco Dimate savelascod@unal.edu.co
+- Professor: Ing. Sebastian Alejandro Velasco Dimate savelascod@unal.edu.co
 
 - Props to:
 @subskybox
