@@ -130,7 +130,12 @@ public class UI {
     public static void printPlayers(Round ronda) {
         System.out.println("PLAYERS SIZE: " + ronda.getPlayersSize());
         for (Player plyr : ronda.getPlayers()) {
-            System.out.println(plyr);
+            System.out.print(plyr);
+            if (plyr.getKickers() != null) {
+                System.out.print("Kickers: ");
+                System.out.println(plyr.getKickers());
+            }
+            System.out.println("");
         }
     }
 

@@ -17,11 +17,17 @@ import java.util.List;
  */
 public class HandComparator {
 
+    //  public static int compareHighCard(Hand hand, Hand anotherHand) {
+    // }
     public static int compare(Hand hand, Hand anotherHand) {
+        /*System.out.println("COMPARING:");
+        System.out.println(hand + "\t" + anotherHand);
+        System.out.println(hand.getRank() + "\t" + anotherHand.getRank());
+         */
         int out;
         if (hand.getRank() < anotherHand.getRank()) {
             return -1;
-        } else if (hand.getRank() == hand.getRank()) {
+        } else if (hand.getRank() == anotherHand.getRank()) {
             switch (hand.getRank()) {
                 case 1:
                 case 2:
@@ -31,8 +37,13 @@ public class HandComparator {
                 default:
                     int thisHighCard = highCard(hand);
                     int handHighCard = highCard(hand);
-                    if (thisHighCard >= handHighCard) {
-                        out = thisHighCard == handHighCard ? 0 : 1;
+                    if (thisHighCard > handHighCard) {
+                        return 1;
+                    } else if (thisHighCard == handHighCard) {
+                        ArrayList<Integer> kicker = new ArrayList<>();
+                        kicker.add(thisHighCard);
+                        //System.out.println(kicker.toString());
+                        out = compareKicker(hand, anotherHand, kicker);
                     } else {
                         out = -1;
                     }
@@ -85,12 +96,13 @@ public class HandComparator {
         int out;
         int thisPair = highestPair(hand, hand.getSize());
         int anotherPair = highestPair(anotherHand, hand.getSize());
-        // System.out.println("COMPARING PAIR");
-        //System.out.println(hand + "\t" + anotherHand);
-        // System.out.println(thisPair + "\t" + anotherPair);
-        if (thisPair > anotherPair) {
+        /*System.out.println("COMPARING PAIR");
+        System.out.println(hand + "\t" + anotherHand);
+        System.out.println(thisPair + "\t" + anotherPair);
+         */ if (thisPair > anotherPair) {
             out = 1;
         } else if (thisPair == anotherPair) {
+            // System.out.println("SAME RANK");
             List<Integer> kicker = new ArrayList<>();
             out = compareKicker(hand, anotherHand, kicker);
         } else {
@@ -116,18 +128,21 @@ public class HandComparator {
     }
 
     public static int compareKicker(Hand hand, Hand anotherHand, List<Integer> pair) {
+        //System.out.println(">");
         ArrayList<Integer> handKickers = new ArrayList<>();
-        Collections.copy(handKickers, pair);
         ArrayList<Integer> anotherKickers = new ArrayList<>();
-        Collections.copy(anotherKickers, pair);
+        //System.out.println(pair.toString());
+        handKickers.addAll(pair);
+        anotherKickers.addAll(pair);
         int out = 0;
         while (out == 0) {
             out = Integer.compare(kicker(hand, handKickers), kicker(anotherHand, anotherKickers));
-            if (handKickers.size() > 5) {
+            if (handKickers.get(handKickers.size() - 1) == -1 || anotherKickers.get(anotherKickers.size() - 1) == -1) {
                 break;
             }
-            // System.out.println(">");
         }
+        System.out.println("KICKERS");
+        System.out.println(handKickers.toString() + "\t" + anotherKickers.toString());
         return out;
     }
 
@@ -138,7 +153,7 @@ public class HandComparator {
      * @return
      */
     public static int kicker(Hand hand, List<Integer> filter) {
-        int kicker = 0;
+        int kicker = -1;
         for (int i = 0; i < hand.getSize(); i++) {
             Card temp = hand.getCard(i);
             if (temp.getValue() > kicker && !filter.contains(temp.getValue())) {

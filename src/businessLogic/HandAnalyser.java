@@ -5,10 +5,14 @@
  */
 package businessLogic;
 
+import static businessLogic.DeckFactory.cloneHand;
 import static businessLogic.DeckFactory.createHand;
+import static businessLogic.DeckFactory.createKicker;
 import data.Hand;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -26,8 +30,8 @@ public class HandAnalyser {
         RANKS.put(HANDS[5], 1);
         //2 PAIR
         RANKS.put(HANDS[6], 2);
-        //3 OF A KIND
-        RANKS.put(HANDS[7], 3);
+        //ROYAL FLUSH
+        RANKS.put(HANDS[7], 9);
         //STRAIGHT
         RANKS.put(HANDS[2], 4);
         //FLUSH
@@ -38,8 +42,8 @@ public class HandAnalyser {
         RANKS.put(HANDS[0], 7);
         //STRAIGHT FLUSH
         RANKS.put(HANDS[1], 8);
-        //ROYAL FLUSH
-        RANKS.put(HANDS[8], 9);
+        //FULL HOUSE
+        RANKS.put(HANDS[8], 3);
 
     }
 
@@ -92,34 +96,46 @@ public class HandAnalyser {
      * @param comunitary
      * @return
      */
-    public static Hand bestHand(Hand playerHand, Hand comunitary) {
+    public static List<Hand> bestHand(Hand playerHand, Hand comunitary) {
         Hand merge = createHand("array");
         Hand bestHand = comunitary;
-        rankHand(comunitary);
+        rankHand(bestHand);
         merge.addAll(playerHand);
         merge.addAll(comunitary);
 
-        int hand = 0;
+        Hand temp = createHand("linked");
+        temp.addAll(comunitary);
+        int cardSelected = 0;
         // select first card not to be in the hand
         for (int firstCard = 0; firstCard < 7; firstCard++) {
             // select first card not to be in the hand
             for (int secondCard = firstCard + 1; secondCard < 7; secondCard++) {
                 // every card that is not the first or second will added to the hand
-                Hand temp = createHand("array");
+
                 for (int i = 0; i < 7; i++) {
                     if (i != firstCard && i != secondCard) {
-                        temp.addCard(merge.getCard(i));
+                        temp.set(cardSelected++, merge.getCard(i));
+                        //temp.addCard(merge.getCard(i));
+                        //System.out.println("TEMP:" + temp);
+                        //System.out.println("BEST:" + bestHand);
                     }
                 }
+                //System.out.println("TEMP:" + temp);
+                //System.out.println("BEST:" + bestHand);
                 Collections.sort(temp.getCards());
                 rankHand(temp);
-                bestHand = bestHand.compareTo(temp) > 0 ? bestHand : temp;
+                bestHand = bestHand.compareTo(temp) > 0 ? bestHand : cloneHand(temp);
 
                 // next hand
-                hand++;
+                cardSelected = 0;
             }
         }
-        return bestHand;
+        //System.out.println(bestHand);
+        //System.out.println("\n\n\n\n");
+        List<Hand> out = new ArrayList<>();
+        out.add(bestHand);
+        out.add(createKicker(merge, bestHand));
+        return out;
     }
 
 }

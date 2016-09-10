@@ -9,6 +9,7 @@ import data.DealingDeck;
 import data.Hand;
 import static businessLogic.DealingAssistant.deal;
 import static businessLogic.DealingAssistant.dealToPlayers;
+import static businessLogic.HandAnalyser.bestHand;
 import static businessLogic.RoundHandler.compareHands;
 import data.Round;
 import static ui.UI.printPlayers;
@@ -28,6 +29,7 @@ public class HandAnalyserTest {
         //printDeck(dealer);
         deal(dealer, comunitario, 5);
         System.out.println("Comunitario: \n" + comunitario);
+        //bestHand(ronda.getPlayerHand(0),comunitario);
         printPlayers(ronda);
         compareHands(ronda);
         printPlayers(ronda);
