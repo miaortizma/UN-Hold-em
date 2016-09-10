@@ -8,7 +8,6 @@ package businessLogic;
 import data.Hand;
 import data.Card;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -33,6 +32,8 @@ public class HandComparator {
                 case 2:
                     return comparePair(hand, anotherHand);
                 case 3:
+                    return compareThree(hand, anotherHand);
+                case 6:
                     return compareThree(hand, anotherHand);
                 default:
                     int thisHighCard = highCard(hand);
@@ -141,8 +142,8 @@ public class HandComparator {
                 break;
             }
         }
-        System.out.println("KICKERS");
-        System.out.println(handKickers.toString() + "\t" + anotherKickers.toString());
+       // System.out.println("KICKERS");
+        //System.out.println(handKickers.toString() + "\t" + anotherKickers.toString());
         return out;
     }
 

@@ -9,7 +9,6 @@ import data.DealingDeck;
 import data.Hand;
 import static businessLogic.DealingAssistant.deal;
 import static businessLogic.DealingAssistant.dealToPlayers;
-import static businessLogic.HandAnalyser.bestHand;
 import static businessLogic.RoundHandler.compareHands;
 import data.Round;
 import static ui.UI.printPlayers;

@@ -42,7 +42,7 @@ public class HandAnalyser {
         RANKS.put(HANDS[0], 7);
         //STRAIGHT FLUSH
         RANKS.put(HANDS[1], 8);
-        //FULL HOUSE
+        //3 OF A KIND
         RANKS.put(HANDS[8], 3);
 
     }

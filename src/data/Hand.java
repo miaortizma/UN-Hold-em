@@ -80,12 +80,12 @@ public class Hand extends AbstractDeck implements Comparable<Hand> {
     @Override
     public int compareTo(Hand hand) {
         int out = compare(this, hand);
-        System.out.println("COMPARING:");
+        /**System.out.println("COMPARING:");
         System.out.println(this + "\t" + hand);
         System.out.println(this.getRank() + "  " + hand.getRank());
         System.out.println(out);
         System.out.println("\n\n\n");
-
+       **/
         if (hand.getRank() == 1) {
             //System.out.println(out);
         }

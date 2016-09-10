@@ -67,8 +67,8 @@ public class Player implements Comparable<Player> {
         int out = this.getHand().compareTo(player.getHand());
         //System.out.println(this.hand + "" + player.getHand());
         if (out == 0) {
-            System.out.println("DECISIVE KICKERS");
-            System.out.println(this.getKickers() + "" + player.getKickers());
+            // System.out.println("DECISIVE KICKERS");
+            //System.out.println(this.getKickers() + "" + player.getKickers());
             out = this.getKickers().compareTo(player.getKickers());
         }
         if (out == 0) {
