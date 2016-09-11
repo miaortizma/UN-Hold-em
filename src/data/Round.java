@@ -24,9 +24,12 @@ public class Round {
         players = new ArrayList<>();
         tableHand = new Hand("array");
         dealingDeck = createDealingDeck("dealingdeck");
+        bets = new HashMap<>();
+        position = new HashMap<>();
 
         for (int i = 0; i < 5; i++) {
             players.add(new Player());
+            System.out.println(players.get(i));
             position.put(players.get(i), i);
         }
         this.pot = 0;
