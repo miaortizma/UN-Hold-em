@@ -86,9 +86,9 @@ public class HandAnalyser {
      *
      * @param playerHand
      * @param comunitary
-     * @return bestHand and kickers of the bestHand
+     * @return bestHand
      */
-    public static List<Hand> bestHand(Hand playerHand, Hand comunitary) {
+    public static Hand bestHand(Hand playerHand, Hand comunitary) {
         Hand merge = createHand("array");
         Hand bestHand = comunitary;
         rankHand(bestHand);
@@ -124,10 +124,7 @@ public class HandAnalyser {
         }
         //System.out.println(bestHand);
         //System.out.println("\n\n\n\n");
-        List<Hand> out = new ArrayList<>();
-        out.add(bestHand);
-        out.add(createKicker(merge, bestHand));
-        return out;
+        return bestHand;
     }
 
 }

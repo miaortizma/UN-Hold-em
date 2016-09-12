@@ -6,8 +6,8 @@ import static businessLogic.DealingAssistant.deal;
 import static businessLogic.DealingAssistant.dealToPlayers;
 import static businessLogic.RoundHandler.compareHands;
 import data.Round;
-import static ui.UI.printHands;
 import static ui.UI.printPlayers;
+import static ui.UI.printTest;
 
 /**
  *
@@ -28,7 +28,9 @@ public class HandAnalyserTest {
         printPlayers(ronda);
         compareHands(ronda);
         printPlayers(ronda);
-        printHands();
+        printTest();
+        System.out.println("\u2620");
+        //printHands();
     }
 
 }

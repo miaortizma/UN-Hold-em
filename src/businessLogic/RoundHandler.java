@@ -10,7 +10,7 @@ import static ui.UI.*;
 
 /**
  *
- * @author OnePoker UN 
+ * @author OnePoker UN
  */
 public class RoundHandler {
 
@@ -123,13 +123,23 @@ public class RoundHandler {
      */
     public static void compareHands(Round round) {
         for (Player plyr : round.getPlayers()) {
-            List<Hand> possibleHands = bestHand(plyr.getHand(), round.getTableHand());
-            plyr.setHand(possibleHands.get(0));
-            plyr.setKickers(possibleHands.get(1));
+            plyr.setHand(bestHand(plyr.getHand(), round.getTableHand()));
         }
 
         System.out.println("\n\nCOMPARING PLAYER HANDS");
         Collections.sort(round.getPlayers(), Collections.reverseOrder());
+    }
+
+    /**
+     * Assumes players is ordered
+     *
+     *
+     */
+    public static void checkTies(Round round) {
+        int x = 0;
+
+        //if (round.getPlayer(0)) {
+        //
     }
 
 }

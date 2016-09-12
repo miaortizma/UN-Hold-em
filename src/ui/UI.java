@@ -146,25 +146,22 @@ public class UI {
         System.out.println("PLAYERS SIZE: " + ronda.getPlayersSize());
         for (Player plyr : ronda.getPlayers()) {
             System.out.print(plyr);
-            if (plyr.getKickers() != null) {
-                System.out.print("Kickers: ");
-                System.out.println(plyr.getKickers());
-            }
             System.out.println("");
         }
     }
-    
+
     /**
      * Prints the board with the bottoms
+     *
      * @param pos rank of between 0 to 7
      * @param jugadores length is always 8
-     *      
+     *
      */
     public static void printBoard(int pos, String[] jugadores) {
         String[] botones = new String[8];
         boolean bigBlind = false;
         boolean littleBlind = false;
-        
+
         for (int i = pos; i > pos - botones.length; i--) {
             if (!(jugadores[(i + 8) % 8].equals("    "))) {
                 if (i == pos) {

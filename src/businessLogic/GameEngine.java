@@ -49,7 +49,7 @@ public class GameEngine {
                 printMainMenu();
                 menu = askMainMenu();
                 switch (menu) {
-                    case 0:{
+                    case 0: {
                         //do nothing
                         break;
                     }
@@ -64,6 +64,9 @@ public class GameEngine {
                     case 3: {
                         printCommands();
                         break;
+                    }
+                    case 4: {
+                        checkCommand("<Exit>", true);
                     }
                     default: {
                         throw new IllegalArgumentException("Not a valid command", null);
@@ -102,8 +105,12 @@ public class GameEngine {
                 }
                 return true;
             }
-            case "<Test>":{
+            case "<Test>": {
                 HandAnalyserTest.test();
+                return true;
+            }
+            case "<Hands>": {
+                printHands();
                 return true;
             }
             default: {
