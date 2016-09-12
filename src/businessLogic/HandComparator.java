@@ -28,7 +28,9 @@ public class HandComparator {
             return -1;
         } else if (hand.getRank() == anotherHand.getRank()) {
             switch (hand.getRank()) {
+                // 1 pair
                 case 1:
+                 //2 pair
                 case 2:
                     return comparePair(hand, anotherHand);
                 case 3:

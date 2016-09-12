@@ -10,7 +10,7 @@ import static ui.UI.*;
 
 /**
  *
- * @author OnePoker UN 
+ * @author OnePoker UN
  */
 public class RoundHandler {
 
@@ -18,7 +18,7 @@ public class RoundHandler {
         //stub
         int userBet = askInt("Bet: ");
         List<Player> players = round.getPlayers();
-        System.out.println("Betting time");
+        //System.out.println("Betting time");
         for (int i = 0; i < players.size(); i++) {
             round.addToPot(25);
         }
@@ -61,8 +61,8 @@ public class RoundHandler {
 
                 }
             } catch (Exception ex) {
-                System.out.println(ex.getMessage());
-                ex.printStackTrace();
+                //System.out.println(ex.getMessage());
+                //ex.printStackTrace();
                 printError();
             }
         }
@@ -80,34 +80,29 @@ public class RoundHandler {
         DealingDeck dealingDeck = round.getDealingDeck();
         Hand tableHand = round.getTableHand();
         burnCard(dealingDeck);
-
+        round.getPlayer(0).setHumanPlayer(true);
         dealToPlayers(round);
-        System.out.println("Your cards are: ");
-        System.out.println("" + round.getPlayers().get(0).getHand());
+        printStandings(round);
         for (int i = 0; i < 3; i++) {
-
-            roundMenu();
             switch (i) {
                 case 0: {
-                    System.out.println("The flop: ");
                     deal(dealingDeck, tableHand, 3);
                     break;
                 }
                 case 1: {
-                    System.out.println("The turn:  ");
                     deal(dealingDeck, tableHand, 1);
                     break;
                 }
                 case 2: {
-                    System.out.println("The river:  ");
                     deal(dealingDeck, tableHand, 1);
                     break;
                 }
             }
-            System.out.println(tableHand);
+            printBoard(i, round);
+            roundMenu();
         }
         compareHands(round);
-        printPlayers(round);
+        printStandings(round);
 
     }
 
@@ -123,13 +118,21 @@ public class RoundHandler {
      */
     public static void compareHands(Round round) {
         for (Player plyr : round.getPlayers()) {
-            List<Hand> possibleHands = bestHand(plyr.getHand(), round.getTableHand());
-            plyr.setHand(possibleHands.get(0));
-            plyr.setKickers(possibleHands.get(1));
+            plyr.setHand(bestHand(plyr.getHand(), round.getTableHand()));
         }
-
-        System.out.println("\n\nCOMPARING PLAYER HANDS");
         Collections.sort(round.getPlayers(), Collections.reverseOrder());
+    }
+
+    /**
+     * Assumes players is ordered
+     *
+     *
+     */
+    public static void checkTies(Round round) {
+        int x = 0;
+
+        //if (round.getPlayer(0)) {
+        //
     }
 
 }
