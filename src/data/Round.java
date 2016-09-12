@@ -14,8 +14,6 @@ public class Round {
     private DealingDeck dealingDeck;
     private Hand tableHand;
     private List<Player> players;
-    private HashMap<Player, Integer> position;
-    private HashMap<Player, Integer> bets;
     private int pot;
     private boolean tie;
 
@@ -24,13 +22,10 @@ public class Round {
         players = new ArrayList<>();
         tableHand = new Hand("array");
         dealingDeck = createDealingDeck("dealingdeck");
-        bets = new HashMap<>();
-        position = new HashMap<>();
 
         for (int i = 0; i < 5; i++) {
             players.add(new Player());
             System.out.println(players.get(i));
-            position.put(players.get(i), i);
         }
         this.pot = 0;
     }
