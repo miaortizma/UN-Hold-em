@@ -31,7 +31,7 @@ public class DealingAssistant {
     public static void dealToPlayers(Round round) {
         List<Player> players = round.getPlayers();
         DealingDeck deck = round.getDealingDeck();
-        System.out.println("Dealing time");
+        //System.out.println("Dealing time");
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
             deal(deck, player.getHand(), 2);
@@ -40,6 +40,7 @@ public class DealingAssistant {
     }
 
     public static void shuffleDeck(DealingDeck deck) {
+        deck.setShuffled(true);
         //System.out.println("Shuffling DealingDeck !!");
         Random rnd = new Random();
         List<Card> cards = deck.getCards();

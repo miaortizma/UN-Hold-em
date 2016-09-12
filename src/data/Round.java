@@ -1,8 +1,8 @@
 package data;
 
 import static businessLogic.DeckFactory.createDealingDeck;
+import static businessLogic.DeckFactory.createHand;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -11,31 +11,34 @@ import java.util.List;
  */
 public class Round {
 
-    private DealingDeck dealingDeck;
-    private Hand tableHand;
-    private List<Player> players;
+    private final DealingDeck dealingDeck;
+    private final Hand tableHand;
+    private final List<Player> players;
     private int pot;
     private boolean tie;
 
     public Round() {
         //System.out.println("Starting new round");
         players = new ArrayList<>();
-        tableHand = new Hand("array");
+        tableHand = createHand("array");
         dealingDeck = createDealingDeck("dealingdeck");
-
         for (int i = 0; i < 5; i++) {
             players.add(new Player());
-            System.out.println(players.get(i));
+
+            this.pot = 0;
         }
-        this.pot = 0;
     }
 
     public void addToPot(int bet) {
-        this.pot += bet;
+        this.setPot(this.getPot() + bet);
     }
 
     public List<Player> getPlayers() {
         return players;
+    }
+
+    public void removePlayer(Player player) {
+        this.players.remove(player);
     }
 
     public int getPlayersSize() {
@@ -59,7 +62,11 @@ public class Round {
     }
 
     public Round(Round previousRound) {
-        //stub
+        this.players = previousRound.getPlayers();
+        this.pot = previousRound.getPot();
+        this.dealingDeck = createDealingDeck("array");
+        this.tableHand = createHand("array");
+//stub
         //Crear ronda "Heredando" los valores de una ronda anterior
         //Permitiria guardar en memoria rondas pasadas 
     }
@@ -76,5 +83,30 @@ public class Round {
      */
     public void setTie(boolean tie) {
         this.tie = tie;
+    }
+
+    /**
+     * @return the pot
+     */
+    public int getPot() {
+        return pot;
+    }
+
+    /**
+     * @param pot the pot to set
+     */
+    public void setPot(int pot) {
+        this.pot = pot;
+    }
+
+    @Override
+    public String toString() {
+        String out = "";
+        out += "Players: ";
+        for (Player plyr : players) {
+            out += "" + plyr + "|";
+        }
+        out += "\nPot: " + getPot();
+        return out;
     }
 }

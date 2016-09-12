@@ -31,19 +31,15 @@ public class GameEngine {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        //getInstance();
-        //startGame();
-        String[] otroNombre = {"pos1","pos2","pos3","pos4","pos5","    ","pos7","    "};
-        for(int i=0;i<8;i++){
-            printBoard(i, otroNombre);
-        }
+        getInstance();
+        startGame();
+
         //tests();
     }
 
     public static void startGame() {
         int menu = 0;
         printWelcome();
-
         while (true) {
             try {
                 printMainMenu();
@@ -74,8 +70,8 @@ public class GameEngine {
 
                 }
             } catch (Exception ex) {
-                System.out.println(ex.getMessage());
-                ex.printStackTrace();
+                //System.out.println(ex.getMessage());
+                //ex.printStackTrace();
                 printError();
             }
         }
