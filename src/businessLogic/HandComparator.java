@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * if(out == 0) means if there is a tie
  *
  * @author OnePoker UN
  */
@@ -13,24 +14,19 @@ public class HandComparator {
 
     /**
      *
-     * @param hand
-     * @param anotherHand
+     * @param hand the first hand to compare
+     * @param anotherHand the second hand to compare
      * @return 1 if hand ranks higher than anotherHand, 0 if both rank equal, -1
      * if anotherHand ranks higher
      */
     public static int compare(Hand hand, Hand anotherHand) {
-        /*System.out.println("COMPARING:");
-        System.out.println(hand + "\t" + anotherHand);
-        System.out.println(hand.getRank() + "\t" + anotherHand.getRank());
-         */
         int out;
-        if (hand.getRank() < anotherHand.getRank()) {
-            return -1;
-        } else if (hand.getRank() == anotherHand.getRank()) {
+        out = Integer.compare(hand.getRank(), anotherHand.getRank());
+        if (out == 0) {
             switch (hand.getRank()) {
                 // 1 pair
                 case 1:
-                 //2 pair
+                //2 pair
                 case 2:
                     return comparePair(hand, anotherHand);
                 case 3:
@@ -40,28 +36,19 @@ public class HandComparator {
                 default:
                     int thisHighCard = highCard(hand);
                     int handHighCard = highCard(hand);
-                    if (thisHighCard > handHighCard) {
-                        return 1;
-                    } else if (thisHighCard == handHighCard) {
-                        ArrayList<Integer> kicker = new ArrayList<>();
-                        kicker.add(thisHighCard);
-                        //System.out.println(kicker.toString());
-                        out = compareKickers(hand, anotherHand, kicker);
-                    } else {
-                        out = -1;
+                    out = Integer.compare(thisHighCard, handHighCard);
+                    if (out == 0) {
+                        return compareKickers(hand, anotherHand, thisHighCard);
                     }
-                    break;
             }
-        } else {
-            return 1;
         }
         return out;
     }
 
     /**
      *
-     * @param hand
-     * @return highest ranking card
+     * @param hand the hand
+     * @return highest ranking card in hand
      */
     public static int highCard(Hand hand) {
         int maxCard = hand.getCard(0).getValue();
@@ -74,35 +61,38 @@ public class HandComparator {
     /**
      * Only works for a sorted hand
      *
-     * @param clone
-     * @param size
-     * @return
+     * @param hand the hand
+     * @param sizeFilter the position that have been checked
+     * @return highestPair in hand
      */
-    public static int highestPair(Hand clone, int size) {
-        // System.out.println(clone.getCard(size - 1) + "" + clone.getCard(size - 2));
-        if (size == 2) {
-            return clone.getCard(0).getValue();
-        } else if (clone.getCard(size - 1).getValue() == clone.getCard(size - 2).getValue()) {
-            return clone.getCard(size - 1).getValue();
+    public static int highestPair(Hand hand, int sizeFilter) {
+        if (sizeFilter == 2) {
+            return hand.getCard(0).getValue();
+        } else if (hand.getCard(sizeFilter - 1).getValue() == hand.getCard(sizeFilter - 2).getValue()) {
+            return hand.getCard(sizeFilter - 1).getValue();
         } else {
-            return highestPair(clone, size - 1);
+            return highestPair(hand, sizeFilter - 1);
         }
     }
 
     /**
+     * NOTES/ TO DO: Create unit tests for highestPair and highestThree there
+     * may be an error
+     */
+    /**
      * Only works for a sorted hand
      *
-     * @param hand
-     * @param size
-     * @return
+     * @param hand the hand
+     * @param sizeFilter the position that have been checked
+     * @return highest three of a kind in hand
      */
-    public static int highestThree(Hand hand, int size) {
-        if (size == 3) {
+    public static int highestThree(Hand hand, int sizeFilter) {
+        if (sizeFilter == 3) {
             return hand.getCard(0).getValue();
-        } else if (hand.getCard(size - 1).getValue() == hand.getCard(size - 2).getValue() && hand.getCard(size - 1).getValue() == hand.getCard(size - 3).getValue()) {
-            return hand.getCard(size - 1).getValue();
+        } else if (hand.getCard(sizeFilter - 1).getValue() == hand.getCard(sizeFilter - 2).getValue() && hand.getCard(sizeFilter - 1).getValue() == hand.getCard(sizeFilter - 3).getValue()) {
+            return hand.getCard(sizeFilter - 1).getValue();
         } else {
-            return highestThree(hand, size - 1);
+            return highestThree(hand, sizeFilter - 1);
         }
     }
 
@@ -118,19 +108,20 @@ public class HandComparator {
         int out;
         int thisPair = highestPair(hand, hand.getSize());
         int anotherPair = highestPair(anotherHand, hand.getSize());
-        /*System.out.println("COMPARING PAIR");
-        System.out.println(hand + "\t" + anotherHand);
-        System.out.println(thisPair + "\t" + anotherPair);
-         */ if (thisPair > anotherPair) {
-            out = 1;
-        } else if (thisPair == anotherPair) {
-            // System.out.println("SAME RANK");
-            List<Integer> kicker = new ArrayList<>();
-            out = compareKickers(hand, anotherHand, kicker);
-        } else {
-            out = -1;
+        out = Integer.compare(thisPair, anotherPair);
+        if (out == 0) {
+            if (hand.getRank() == 2) {
+                thisPair = highestPair(hand, 3);
+                anotherPair = highestPair(anotherHand, 3);
+                out = Integer.compare(thisPair, anotherPair);
+                if (out == 0) {
+                    return compareKickers(hand, anotherHand, thisPair);
+                }
+            } else {
+                out = compareKickers(hand, anotherHand, thisPair);
+            }
         }
-        //System.out.println(out);
+
         return out;
     }
 
@@ -146,32 +137,26 @@ public class HandComparator {
         int out;
         int thisThree = highestThree(hand, hand.getSize());
         int anotherThree = highestThree(anotherHand, hand.getSize());
-        if (thisThree > anotherThree) {
-            out = 1;
-        } else if (thisThree == anotherThree) {
-            List<Integer> kicker = new ArrayList<>();
-            out = compareKickers(hand, anotherHand, kicker);
-        } else {
-            out = -1;
+        out = Integer.compare(thisThree, anotherThree);
+        if (out == 0) {
+            return compareKickers(hand, anotherHand, thisThree);
         }
         return out;
     }
 
     /**
      *
-     * @param hand
+     * @param hand the hand
      * @param anotherHand
-     * @param pair
+     * @param startingKicker
      * @return 1 if hand kickers rank higher than anotherHand, 0 if both hands
      * kickers rank equal, -1 if anotherHand kickers rank higher
      */
-    public static int compareKickers(Hand hand, Hand anotherHand, List<Integer> pair) {
-        //System.out.println(">");
-        ArrayList<Integer> handKickers = new ArrayList<>();
-        ArrayList<Integer> anotherKickers = new ArrayList<>();
-        //System.out.println(pair.toString());
-        handKickers.addAll(pair);
-        anotherKickers.addAll(pair);
+    public static int compareKickers(Hand hand, Hand anotherHand, int startingKicker) {
+        ArrayList<Integer> foo = new ArrayList<>();
+        foo.add(startingKicker);
+        ArrayList<Integer> handKickers = (ArrayList) foo.clone();
+        ArrayList<Integer> anotherKickers = (ArrayList) foo.clone();
         int out = 0;
         while (out == 0) {
             out = Integer.compare(kicker(hand, handKickers), kicker(anotherHand, anotherKickers));
@@ -179,8 +164,6 @@ public class HandComparator {
                 break;
             }
         }
-        // System.out.println("KICKERS");
-        //System.out.println(handKickers.toString() + "\t" + anotherKickers.toString());
         return out;
     }
 
