@@ -13,6 +13,7 @@ public class Card implements Comparable<Card> {
      *
      *
      */
+    //The value of a card cannot be changed after being instantiated
     private final int value;
     private final int suit;
 
@@ -86,7 +87,7 @@ public class Card implements Comparable<Card> {
 
     @Override
     public String toString() {
-        return UI.RANKS[this.value - 2] + "" + UI.SUITS[this.suit] + "\t";
+        return UI.RANKS[this.value - 2] + "" + UI.SUITS[this.suit] + " ";
     }
 
     @Override

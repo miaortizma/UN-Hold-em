@@ -10,7 +10,7 @@ import java.util.List;
  */
 public abstract class AbstractDeck {
 
-    private final List<Card> cards;
+    private List<Card> cards;
 
     public AbstractDeck(String type) {
         if (type.equalsIgnoreCase("linked")) {
@@ -23,14 +23,12 @@ public abstract class AbstractDeck {
         }
     }
 
-
-
     public Card getCard(int i) {
-        return this.cards.get(i);
+        return this.getCards().get(i);
     }
 
     public void addCard(Card card) {
-        this.cards.add(card);
+        this.getCards().add(card);
     }
 
     public List<Card> getCards() {
@@ -38,11 +36,27 @@ public abstract class AbstractDeck {
     }
 
     public int getSize() {
-        return cards.size();
+        return getCards().size();
     }
 
     public Card pop() {
-        return cards.remove(cards.size() - 1);
+        return getCards().remove(getCards().size() - 1);
+    }
+
+    /**
+     * @param cards the cards to set
+     */
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
+    }
+
+    @Override
+    public String toString() {
+        String out = "";
+        for (int i = 0; i < getSize(); i++) {
+            out += getCard(i).toString();
+        }
+        return out;
     }
 
 }

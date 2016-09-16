@@ -35,19 +35,19 @@ public class GameEngine {
     public static void main(String[] args) {
         getInstance();
         startGame();
+
         //tests();
     }
 
     public static void startGame() {
         int menu = 0;
         printWelcome();
-
         while (true) {
             try {
                 printMainMenu();
                 menu = askMainMenu();
                 switch (menu) {
-                    case 0:{
+                    case 0: {
                         //do nothing
                         break;
                     }
@@ -63,14 +63,17 @@ public class GameEngine {
                         printCommands();
                         break;
                     }
+                    case 4: {
+                        checkCommand("<Exit>", true);
+                    }
                     default: {
                         throw new IllegalArgumentException("Not a valid command", null);
                     }
 
                 }
             } catch (Exception ex) {
-                System.out.println(ex.getMessage());
-                ex.printStackTrace();
+                //System.out.println(ex.getMessage());
+                //ex.printStackTrace();
                 printError();
             }
         }
@@ -100,8 +103,12 @@ public class GameEngine {
                 }
                 return true;
             }
-            case "<Test>":{
+            case "<Test>": {
                 HandAnalyserTest.test();
+                return true;
+            }
+            case "<Hands>": {
+                printHands();
                 return true;
             }
             default: {

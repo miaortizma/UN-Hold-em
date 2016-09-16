@@ -6,18 +6,31 @@ package data;
  */
 public class DealingDeck extends AbstractDeck {
 
-    private String name;
+    private boolean shuffled;
 
     public DealingDeck(String type) {
         super(type);
     }
 
-    public String getName() {
-        return this.name;
+    /**
+     * @return the shuffled
+     */
+    public boolean isShuffled() {
+        return shuffled;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    /**
+     * @param shuffled the shuffled to set
+     */
+    public void setShuffled(boolean shuffled) {
+        this.shuffled = shuffled;
+    }
+
+    @Override
+    public String toString() {
+        String out = shuffled ? "Shuffled deck: " : "Not shuffled Deck";
+        out += super.toString();
+        return out;
     }
 
 }

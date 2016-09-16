@@ -5,7 +5,7 @@ import java.util.Collections;
 
 /**
  *
- * @author OnePoker UN 
+ * @author OnePoker UN
  */
 public class Hand extends AbstractDeck implements Comparable<Hand> {
 
@@ -64,23 +64,21 @@ public class Hand extends AbstractDeck implements Comparable<Hand> {
         String out = "";
 
         if (getRank() > -1) {
-            out += getRankName() + " \t";
+            out += getRankName() + " ";
         }
-        for (int i = 0; i < getSize(); i++) {
-            out += getCard(i).toString();
-        }
+        out += super.toString();
         return out;
     }
 
     @Override
     public int compareTo(Hand hand) {
         int out = compare(this, hand);
-        /**System.out.println("COMPARING:");
-        System.out.println(this + "\t" + hand);
-        System.out.println(this.getRank() + "  " + hand.getRank());
-        System.out.println(out);
-        System.out.println("\n\n\n");
-       **/
+        /**
+         * System.out.println("COMPARING:"); System.out.println(this + "\t" +
+         * hand); System.out.println(this.getRank() + " " + hand.getRank());
+         * System.out.println(out); System.out.println("\n\n\n");
+         *
+         */
         if (hand.getRank() == 1) {
             //System.out.println(out);
         }
