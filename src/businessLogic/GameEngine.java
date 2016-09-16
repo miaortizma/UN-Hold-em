@@ -6,9 +6,8 @@ import data.*;
 import java.util.Random;
 import static ui.UI.*;
 
-
 /**
- * 
+ *
  *
  * @author OnePoker UN
  */
@@ -35,8 +34,6 @@ public class GameEngine {
     public static void main(String[] args) {
         getInstance();
         startGame();
-
-        //tests();
     }
 
     public static void startGame() {
@@ -45,12 +42,11 @@ public class GameEngine {
         while (true) {
             try {
                 printMainMenu();
-                menu = askMainMenu();
+                menu = askInt("\nOption: ");
+                if (menu < 1 || menu > 4) {
+                    throw new IllegalArgumentException("Not a menu option");
+                }
                 switch (menu) {
-                    case 0: {
-                        //do nothing
-                        break;
-                    }
                     case 1: {
                         playRound(new Round());
                         break;
@@ -67,14 +63,12 @@ public class GameEngine {
                         checkCommand("<Exit>", true);
                     }
                     default: {
-                        throw new IllegalArgumentException("Not a valid command", null);
+                        throw new IllegalArgumentException("Not a valid command");
                     }
 
                 }
             } catch (Exception ex) {
-                //System.out.println(ex.getMessage());
-                //ex.printStackTrace();
-                printError();
+                printError(ex);
             }
         }
     }
