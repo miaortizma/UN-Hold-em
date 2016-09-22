@@ -70,20 +70,15 @@ public class Hand extends AbstractDeck implements Comparable<Hand> {
         return out;
     }
 
+    /**
+     * Uses {@link businessLogic.HandComparator#compare(data.Hand, data.Hand) }
+     *
+     * @param hand the hand to be compared
+     * @return 1 if this ranks higher than hand 0 if they rank equal -1 if hand ranks higher than this(hand)
+     */
     @Override
     public int compareTo(Hand hand) {
-        int out = compare(this, hand);
-        /**
-         * System.out.println("COMPARING:"); System.out.println(this + "\t" +
-         * hand); System.out.println(this.getRank() + " " + hand.getRank());
-         * System.out.println(out); System.out.println("\n\n\n");
-         *
-         */
-        if (hand.getRank() == 1) {
-            //System.out.println(out);
-        }
-        //System.out.println(out);
-        return out;
+        return compare(this, hand);
     }
 
     /**

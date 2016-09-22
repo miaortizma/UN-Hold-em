@@ -2,12 +2,9 @@ package businessLogic;
 
 import static businessLogic.DeckFactory.cloneHand;
 import static businessLogic.DeckFactory.createHand;
-import static businessLogic.DeckFactory.createKicker;
 import data.Hand;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  *
@@ -40,21 +37,15 @@ public class HandAnalyser {
         RANKS.put(HANDS[1], 8);
         //3 OF A KIND
         RANKS.put(HANDS[8], 3);
-
     }
 
     /**
-     * Reference Author @subskybox
-     * http://stackoverflow.com/questions/2829883/7-card-poker-hand-evaluator
-     * http://www.codeproject.com/Articles/569271/A-Poker-hand-analyzer-in-JavaScript-using-bit-math
+     * Reference Author @subskybox See
+     * <a href = "http://www.codeproject.com/Articles/569271/A-Poker-hand-analyzer-in-JavaScript-using-bit-math"></a>
      *
      * Sets rankName and rank of the input hand, given it is a 5 cards Hand
      *
-     *
-     * //0x403c Ace low Straight //(s / (s & -s) == 31) Straight //0x7c00
-     * RoyalFlush
-     *
-     * @param hand
+     * @param hand the hand to be ranked
      */
     public static void rankHand(Hand hand) {
         int[] ranks = hand.getCardRanks();
@@ -82,11 +73,16 @@ public class HandAnalyser {
     }
 
     /**
-     * http://stackoverflow.com/questions/33859993/get-all-possible-5-card-poker-hands-given-7-cards
+     * <p>
+     * See :
+     * <a href = "http://stackoverflow.com/questions/33859993/get-all-possible-5-card-poker-hands-given-7-cards"></a>
+     * for the combinatorics Uses {@link data.Hand#compareTo(data.Hand) }
+     * Uses {@link  businessLogic.HandComparator#compare(data.Hand, data.Hand)}
+     * </p>
      *
-     * @param playerHand
-     * @param comunitary
-     * @return bestHand
+     * @param playerHand  the player Hand
+     * @param comunitary the tableHand
+     * @return bestHand the best hand that can be obtained from
      */
     public static Hand bestHand(Hand playerHand, Hand comunitary) {
         Hand merge = createHand("array");
@@ -98,32 +94,19 @@ public class HandAnalyser {
         Hand temp = createHand("linked");
         temp.addAll(comunitary);
         int cardSelected = 0;
-        // select first card not to be in the hand
         for (int firstCard = 0; firstCard < 7; firstCard++) {
-            // select first card not to be in the hand
             for (int secondCard = firstCard + 1; secondCard < 7; secondCard++) {
-                // every card that is not the first or second will added to the hand
-
                 for (int i = 0; i < 7; i++) {
                     if (i != firstCard && i != secondCard) {
                         temp.set(cardSelected++, merge.getCard(i));
-                        //temp.addCard(merge.getCard(i));
-                        //System.out.println("TEMP:" + temp);
-                        //System.out.println("BEST:" + bestHand);
                     }
                 }
-                //System.out.println("TEMP:" + temp);
-                //System.out.println("BEST:" + bestHand);
                 Collections.sort(temp.getCards());
                 rankHand(temp);
-                bestHand = bestHand.compareTo(temp) > 0 ? bestHand : cloneHand(temp);
-
-                // next hand
+                bestHand = HandComparator.compare(bestHand, temp) > 0 ? bestHand : cloneHand(temp);
                 cardSelected = 0;
             }
         }
-        //System.out.println(bestHand);
-        //System.out.println("\n\n\n\n");
         return bestHand;
     }
 

@@ -54,7 +54,7 @@ public abstract class AbstractDeck {
     public String toString() {
         String out = "";
         for (int i = 0; i < getSize(); i++) {
-            out += getCard(i).toString();
+            out += getCard(i).toString() + " ";
         }
         return out;
     }

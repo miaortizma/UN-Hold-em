@@ -142,7 +142,7 @@ public class UI {
      * Prints the round players and their hands used to test at the start and
      * end of round
      *
-     * @param ronda
+     * @param ronda the round to print must have finished
      */
     public static void printStandings(Round ronda) {
         //System.out.println("PLAYERS SIZE: " + ronda.getPlayersSize());
@@ -170,7 +170,7 @@ public class UI {
      * Prints the board with the bottoms
      *
      * @param pos rank of between 0 to 7
-     * @param players length is always 8
+     * @param ronda the round
      *
      */
     public static void printBoard(int pos, Round ronda) {
