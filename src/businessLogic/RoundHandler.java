@@ -15,10 +15,9 @@ import static ui.UI.*;
 public class RoundHandler {
 
     public static void reiceveBets(Round round) throws Exception {
-        //stub
         int userBet = askInt("Bet: ");
         List<Player> players = round.getPlayers();
-        //System.out.println("Betting time");
+
         for (int i = 0; i < players.size(); i++) {
             round.addToPot(25);
         }
@@ -29,12 +28,12 @@ public class RoundHandler {
         while (menu == 0) {
             try {
                 printRoundMenu();
-                menu = askRoundMenu();
+                menu = askInt("Option: ");
+                if (menu < 1 || menu > 5) {
+                    throw new IllegalArgumentException("Not a menu option");
+                }
                 switch (menu) {
-                    case 0: {
-                        //do nothing
-                        break;
-                    }
+
                     case 1: {
                         //check
                         break;
@@ -61,9 +60,7 @@ public class RoundHandler {
 
                 }
             } catch (Exception ex) {
-                //System.out.println(ex.getMessage());
-                //ex.printStackTrace();
-                printError();
+                printError(ex);
             }
         }
     }

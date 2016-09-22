@@ -40,27 +40,28 @@ public class UI {
         printCommands();
     }
 
-    public static void printError() {
-        System.out.println("Please try again");
+    public static void printError(Exception ex) {
+        if ("Command".equals(ex.getMessage())) {
+            return;
+        }
+        System.out.print("Error: ");
+        System.out.println(ex.getMessage());
     }
 
-    public static String askMsg(String question) {
+    public static String askMsg(String question) throws Exception {
         System.out.print(question);
         inputUI = IN.nextLine();
-        checkCommand(inputUI, true);
+        if (checkCommand(inputUI, true)) {
+            throw new Exception("Command");
+        }
         return inputUI;
     }
 
     public static int askInt(String question) throws Exception {
-        System.out.print(question);
-        if (IN.hasNextInt()) {
-            int x = IN.nextInt();
-            IN.nextLine();
-            return x;
-        } else if (checkCommand(IN.nextLine(), true)) {
-            //if input is a command do nothing
-            return 0;
-        } else {
+        askMsg(question);
+        try {
+            return Integer.parseInt(inputUI);
+        } catch (Exception e) {
             throw new Exception("Not a number");
         }
     }
@@ -103,24 +104,6 @@ public class UI {
         System.out.println("ººººººººMenuºººººººº ");
         System.out.println("(1) - Start a round? \t (2) - Never played poker before? \t (3) - Command List\n(4) - Exit");
         System.out.print("Your option here:");
-    }
-
-    public static int askMainMenu() throws Exception {
-        int x = askInt("");
-        if (x < 0 || x > 4) {
-            throw new Exception();
-        }
-        return x;
-
-    }
-
-    //Can make a single method and check validity of input inside businessLogic
-    public static int askRoundMenu() throws Exception {
-        int x = askInt("");
-        if (x < 0 || x > 5) {
-            throw new Exception();
-        }
-        return x;
     }
 
     public static void printRoundMenu() {
