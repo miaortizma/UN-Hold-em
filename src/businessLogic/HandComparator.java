@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * if(out == 0) means if there is a tie
+ * Encapsulates {@link data.Hand#compareTo(data.Hand) }
  *
  * @author OnePoker UN
  */

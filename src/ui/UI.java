@@ -59,11 +59,7 @@ public class UI {
 
     public static int askInt(String question) throws Exception {
         askMsg(question);
-        try {
-            return Integer.parseInt(inputUI);
-        } catch (Exception e) {
-            throw new Exception("Not a number");
-        }
+        return Integer.parseInt(inputUI);
     }
 
     public static void printHelp() {
@@ -102,12 +98,12 @@ public class UI {
 
     public static void printMainMenu() {
         System.out.println("ººººººººMenuºººººººº ");
-        System.out.println("(1) - Start a round? \t (2) - Never played poker before? \t (3) - Command List\n(4) - Exit");
+        System.out.println("(1) Start a round? \t (2) Never played poker before? \t (3) Command List\n(4) Exit");
         System.out.print("Your option here:");
     }
 
     public static void printRoundMenu() {
-        System.out.println("(1) - Check \t (2) - Raise  \t (3) - Fold \t (4) - All in \t (5)- Retire");
+        System.out.println("(1) Check \t (2) Raise  \t (3) Fold \t (4) All in \t (5) Retire");
         System.out.println("Note: currently only option (5) is functional\n(Type any from 1 to 4 to check the progress of a poker round)");
 
     }
@@ -162,34 +158,6 @@ public class UI {
             players[i] = ronda.getPlayer(i);
         }
         String[] botones = new String[8];
-        /*boolean bigBlind = false;
-        boolean littleBlind = false;
-        
-
-        for (int i = pos; i > pos - botones.length; i--) {
-            if (!(players[(i + 8) % 8] == (null))) {
-                if (i == pos) {
-                    System.out.println("HERE: " + i);
-                    botones[(i + 8) % 8] = BIGBLIND;
-                    bigBlind = true;
-                } else if (bigBlind) {
-                    
-                    System.out.println("HERE: >" + i);
-                    botones[(i + 8) % 8] = LITTLEBLIND;
-                    bigBlind = false;
-                    littleBlind = true;
-                } else if (littleBlind) {
-                    
-                    System.out.println("HERE:>> " + i);
-                    botones[(i + 8) % 8] = DEALER;
-                    littleBlind = false;
-                } else {
-                    botones[(i + 8) % 8] = " ";
-                }
-            } else {
-                botones[(i + 8) % 8] = " ";
-            }
-        }*/
         switch (pos) {
             case 0: {
                 System.out.println("YOU ARE PLAYER #" + ronda.getPlayer(0).getId());

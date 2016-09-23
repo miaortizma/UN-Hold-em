@@ -77,6 +77,14 @@ public class GameEngine {
         HandAnalyserTest.test();
     }
 
+    /**
+     * Checks if input is a command
+     *
+     * @param input the input to be tested
+     * @param print sometimes commands are called by system internals, so there
+     * is no need to print commands(Subject to change)
+     * @return true if input is a command, false otherwise
+     */
     public static boolean checkCommand(String input, boolean print) {
         switch (input) {
             case "<Exit>": {
@@ -110,5 +118,4 @@ public class GameEngine {
             }
         }
     }
-
 }
