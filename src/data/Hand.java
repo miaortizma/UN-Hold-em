@@ -4,7 +4,7 @@ import static businessLogic.HandComparator.compare;
 import java.util.Collections;
 
 /**
- *
+ *  
  * @author OnePoker UN
  */
 public class Hand extends AbstractDeck implements Comparable<Hand> {

@@ -2,12 +2,9 @@ package businessLogic;
 
 import static businessLogic.DeckFactory.cloneHand;
 import static businessLogic.DeckFactory.createHand;
-import static businessLogic.DeckFactory.createKicker;
 import data.Hand;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  *
@@ -49,7 +46,6 @@ public class HandAnalyser {
      * http://www.codeproject.com/Articles/569271/A-Poker-hand-analyzer-in-JavaScript-using-bit-math
      *
      * Sets rankName and rank of the input hand, given it is a 5 cards Hand
-     *
      *
      * //0x403c Ace low Straight //(s / (s & -s) == 31) Straight //0x7c00
      * RoyalFlush
@@ -103,17 +99,11 @@ public class HandAnalyser {
             // select first card not to be in the hand
             for (int secondCard = firstCard + 1; secondCard < 7; secondCard++) {
                 // every card that is not the first or second will added to the hand
-
                 for (int i = 0; i < 7; i++) {
                     if (i != firstCard && i != secondCard) {
                         temp.set(cardSelected++, merge.getCard(i));
-                        //temp.addCard(merge.getCard(i));
-                        //System.out.println("TEMP:" + temp);
-                        //System.out.println("BEST:" + bestHand);
                     }
                 }
-                //System.out.println("TEMP:" + temp);
-                //System.out.println("BEST:" + bestHand);
                 Collections.sort(temp.getCards());
                 rankHand(temp);
                 bestHand = bestHand.compareTo(temp) > 0 ? bestHand : cloneHand(temp);
@@ -122,9 +112,23 @@ public class HandAnalyser {
                 cardSelected = 0;
             }
         }
-        //System.out.println(bestHand);
-        //System.out.println("\n\n\n\n");
         return bestHand;
+    }
+    
+    /**
+     * Only works for a ordered hand
+     * 
+     * @param hand
+     * @return 
+     */
+    public static boolean isSuitedConnector(Hand hand){
+       if(hand.getSize() == 2){
+           int[] suits = hand.getCardSuits();
+           int[] ranks = hand.getCardRanks();
+           return (suits[0]==suits[1])&&((ranks[0] == (ranks[1] - 1)));
+       }else{
+           throw new IllegalArgumentException("Suited connectors are only for two cards");
+       }
     }
 
 }

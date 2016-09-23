@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Encapsulates {@link data.Hand#compareTo(data.Hand) }
  *
  * @author OnePoker UN
  */
@@ -30,7 +31,7 @@ public class HandComparator {
             switch (hand.getRank()) {
                 // 1 pair
                 case 1:
-                 //2 pair
+                //2 pair
                 case 2:
                     return comparePair(hand, anotherHand);
                 case 3:
