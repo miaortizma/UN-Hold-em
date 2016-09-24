@@ -1,6 +1,6 @@
 package businessLogic;
 
-import static businessLogic.DealingAssistant.shuffleDeck;
+import static businessLogic.HandAnalyser.shuffleDeck;
 import data.Card;
 import data.DealingDeck;
 import data.Hand;

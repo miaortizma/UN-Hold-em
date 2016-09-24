@@ -1,8 +1,10 @@
 package businessLogic;
 
-import static businessLogic.DealingAssistant.*;
 import static businessLogic.GameEngine.checkCommand;
 import static businessLogic.HandAnalyser.bestHand;
+import static businessLogic.HandAnalyser.burnCard;
+import static businessLogic.HandAnalyser.deal;
+import static businessLogic.HandAnalyser.dealToPlayers;
 import data.*;
 import java.util.Collections;
 import java.util.List;
