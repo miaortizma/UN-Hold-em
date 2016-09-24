@@ -2,12 +2,7 @@ package businessLogic;
 
 import static businessLogic.DeckFactory.cloneHand;
 import static businessLogic.DeckFactory.createHand;
-import data.AbstractDeck;
-import data.Card;
-import data.DealingDeck;
-import data.Hand;
-import data.Player;
-import data.Round;
+import data.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,7 +13,7 @@ import java.util.Random;
  *
  * @author OnePoker UN Estudiante
  */
-public class HandAnalyser {
+public class DeckHelper {
 
     public static final String[] HANDS = {"4 of a Kind", "Straight Flush", "Straight", "Flush", "High Card", "1 Pair", "2 Pair", "Royal Flush", "3 of a Kind", "Full House"};
     public static final HashMap<String, Integer> RANKS = new HashMap<>();
