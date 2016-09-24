@@ -1,6 +1,6 @@
 package data;
 
-import static businessLogic.HandAnalyser.compare;
+import static businessLogic.DeckHelper.compare;
 import java.util.Collections;
 
 /**

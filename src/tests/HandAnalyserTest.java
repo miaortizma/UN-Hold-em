@@ -2,8 +2,8 @@ package tests;
 
 import data.DealingDeck;
 import data.Hand;
-import static businessLogic.HandAnalyser.deal;
-import static businessLogic.HandAnalyser.dealToPlayers;
+import static businessLogic.DeckHelper.deal;
+import static businessLogic.DeckHelper.dealToPlayers;
 import static businessLogic.RoundHandler.compareHands;
 import data.Round;
 import static ui.UI.printStandings;
