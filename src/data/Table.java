@@ -9,19 +9,21 @@ import java.util.List;
  *
  * @author OnePoker UN
  */
-public class Round {
+public class Table {
 
     private final DealingDeck dealingDeck;
     private final Hand tableHand;
     private final List<Player> players;
+    private int dealerPos;
     private int pot;
     private boolean tie;
 
-    public Round() {
+    public Table() {
         //System.out.println("Starting new round");
         players = new ArrayList<>();
         tableHand = createHand("array");
         dealingDeck = createDealingDeck("dealingdeck");
+        dealerPos = 1;
         for (int i = 0; i < 5; i++) {
             players.add(new Player());
 
@@ -61,7 +63,7 @@ public class Round {
         return players.get(i).getHand();
     }
 
-    public Round(Round previousRound) {
+    public Table(Table previousRound) {
         this.players = previousRound.getPlayers();
         this.pot = previousRound.getPot();
         this.dealingDeck = createDealingDeck("array");
@@ -108,5 +110,19 @@ public class Round {
         }
         out += "\nPot: " + getPot();
         return out;
+    }
+
+    /**
+     * @return the dealerPos
+     */
+    public int getDealerPos() {
+        return dealerPos;
+    }
+
+    /**
+     * @param dealerPos the dealerPos to set
+     */
+    public void setDealerPos(int dealerPos) {
+        this.dealerPos = dealerPos;
     }
 }

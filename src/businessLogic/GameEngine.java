@@ -1,7 +1,7 @@
 package businessLogic;
 
 import tests.HandAnalyserTest;
-import static businessLogic.RoundHandler.*;
+import static businessLogic.TableHandler.*;
 import data.*;
 import java.util.Random;
 import static ui.UI.*;
@@ -48,7 +48,7 @@ public class GameEngine {
                 }
                 switch (menu) {
                     case 1: {
-                        playRound(new Round());
+                        playRound(new Table());
                         break;
                     }
                     case 2: {

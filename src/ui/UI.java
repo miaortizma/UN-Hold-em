@@ -2,7 +2,7 @@ package ui;
 
 import static businessLogic.GameEngine.checkCommand;
 import data.Player;
-import data.Round;
+import data.Table;
 import java.util.Scanner;
 
 public class UI {
@@ -121,23 +121,23 @@ public class UI {
      * Prints the round players and their hands used to test at the start and
      * end of round
      *
-     * @param ronda the round to print must have finished
+     * @param table the round to print must have finished
      */
-    public static void printStandings(Round ronda) {
-        //System.out.println("PLAYERS SIZE: " + ronda.getPlayersSize());
+    public static void printStandings(Table table) {
+        //System.out.println("PLAYERS SIZE: " + table.getPlayersSize());
         System.out.println("At the end of a round a winner is choosen, if there is a tie the pot is splitted");
         System.out.println("Each player can form a \"Best hand\" combining his cards with the comunitary hand");
         System.out.println("The player(s) with the best hand wins");
 
         System.out.println("\nStandings(from best to worst):");
-        for (Player plyr : ronda.getPlayers()) {
+        for (Player plyr : table.getPlayers()) {
             System.out.print("Player ");
             System.out.print(plyr);
             System.out.println("");
         }
-        if (ronda.getPlayer(0).getId() % 5 == 0) {
+        if (table.getPlayer(0).getId() % 5 == 0) {
             System.out.println("You win");
-        } else if (ronda.getPlayer(1).compareTo(ronda.getPlayer(0)) == 0) {
+        } else if (table.getPlayer(1).compareTo(table.getPlayer(0)) == 0) {
             System.out.println("Tie");
         } else {
             System.out.println("You lose");
@@ -149,18 +149,18 @@ public class UI {
      * Prints the board with the bottoms
      *
      * @param pos rank of between 0 to 7
-     * @param ronda the round
+     * @param table the round
      *
      */
-    public static void printBoard(int pos, Round ronda) {
+    public static void printBoard(int pos, Table table) {
         Player[] players = new Player[8];
-        for (int i = 0; i < ronda.getPlayersSize(); i++) {
-            players[i] = ronda.getPlayer(i);
+        for (int i = 0; i < table.getPlayersSize(); i++) {
+            players[i] = table.getPlayer(i);
         }
         String[] botones = new String[8];
         switch (pos) {
             case 0: {
-                System.out.println("YOU ARE PLAYER #" + ronda.getPlayer(0).getId());
+                System.out.println("YOU ARE PLAYER #" + table.getPlayer(0).getId());
                 System.out.println("2 cards are dealt to each player");
                 System.out.println("The flop: ");
                 break;
@@ -183,8 +183,8 @@ public class UI {
 
         String handTableStr = "";
         int count = 5;
-        for (int i = 0; i < ronda.getTableHand().getSize(); i++, count--) {
-            handTableStr += ronda.getTableHand().getCard(i).toString();
+        for (int i = 0; i < table.getTableHand().getSize(); i++, count--) {
+            handTableStr += table.getTableHand().getCard(i).toString();
         }
         for (int i = 0; i < count; i++) {
             handTableStr += "  ";

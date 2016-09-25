@@ -47,11 +47,10 @@ public class Player implements Comparable<Player> {
     public String toString() {
         String out = "";
         if (getName() == null) {
-            out += "#" + getId();
+            out += "" + getId();
         } else {
             out += getName();
         }
-        out += " " + getHand();
         return out;
     }
 

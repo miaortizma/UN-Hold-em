@@ -10,15 +10,15 @@ import java.util.List;
 public class Tournament {
 
     private String defaultDifficulty;
-    private List<Round> rounds;
+    private List<Table> rounds;
 
     public Tournament() {
         rounds = new ArrayList<>();
-        rounds.add(new Round());
+        rounds.add(new Table());
 
     }
 
-    public Round getRound() {
+    public Table getRound() {
         return getRounds().get(getRounds().size() - 1);
     }
 
@@ -43,14 +43,14 @@ public class Tournament {
     /**
      * @return the rounds
      */
-    public List<Round> getRounds() {
+    public List<Table> getRounds() {
         return rounds;
     }
 
     /**
      * @param rounds the rounds to set
      */
-    public void setRounds(List<Round> rounds) {
+    public void setRounds(List<Table> rounds) {
         this.rounds = rounds;
     }
 }
