@@ -3,17 +3,17 @@ package data;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  *
  * @author OnePoker UN
+ * @param <T>
  */
-public abstract class AbstractDeck {
+public class Deck<T extends Card> {
 
     private List<Card> cards;
 
-    public AbstractDeck(String type) {
+    public Deck(String type) {
         if (type.equalsIgnoreCase("linked")) {
             cards = new LinkedList<>();
         } else if (type.equalsIgnoreCase("array")) {
@@ -22,6 +22,10 @@ public abstract class AbstractDeck {
             System.out.println("INVALID DECK CONSTRUCTOR TYPE");
             cards = null;
         }
+    }
+
+    public int size() {
+        return cards.size();
     }
 
     public Card getCard(int i) {

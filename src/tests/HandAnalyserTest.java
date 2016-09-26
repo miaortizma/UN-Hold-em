@@ -2,12 +2,13 @@ package tests;
 
 import static businessLogic.DeckHelper.deal;
 import static businessLogic.DeckHelper.dealToPlayers;
-import static businessLogic.TableHandler.compareHands;
-import data.DealingDeck;
+import static businessLogic.GameEngine.compareHands;
+import data.PokerDeck;
 import data.Hand;
 import data.Table;
 import static ui.UI.printStandings;
 import static ui.UI.printTest;
+import static businessLogic.DeckHelper.deal;
 
 /**
  *
@@ -19,7 +20,7 @@ public class HandAnalyserTest {
 
         Table table = new Table();
         dealToPlayers(table);
-        DealingDeck dealer = table.getDealingDeck();
+        PokerDeck dealer = table.getDealingDeck();
         Hand comunitario = table.getTableHand();
         //printDeck(dealer);
         deal(dealer, comunitario, 5);

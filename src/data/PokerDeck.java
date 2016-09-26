@@ -4,11 +4,11 @@ package data;
  *
  * @author OnePoker UN
  */
-public class DealingDeck extends AbstractDeck {
+public class PokerDeck extends Deck<Card> {
 
     private boolean shuffled;
 
-    public DealingDeck(String type) {
+    public PokerDeck(String type) {
         super(type);
     }
 

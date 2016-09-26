@@ -28,15 +28,15 @@ public class UI {
     }
 
     public static void printWelcome() {
-        System.out.println("\nWelcome to UN Hold' em");
-        String ascci = ".------..------..------..------..------..------..------..------..------.\n"
+        //System.out.println("\nWelcome to UN Hold' em");
+        String ascciArt = ".------..------..------..------..------..------..------..------..------.\n"
                 + "|U.--. ||N.--. ||H.--. ||O.--. ||L.--. ||D.--. ||'.--. ||E.--. ||M.--. |\n"
                 + "| (\\/) || :(): || :/\\: || :/\\: || :/\\: || :/\\: || :/\\: || (\\/) || (\\/) |\n"
                 + "| :\\/: || ()() || (__) || :\\/: || (__) || (__) || :\\/: || :\\/: || :\\/: |\n"
                 + "| '--'U|| '--'N|| '--'H|| '--'O|| '--'L|| '--'D|| '--''|| '--'E|| '--'M|\n"
                 + "`------'`------'`------'`------'`------'`------'`------'`------'`------'\n"
                 + " ";
-        System.out.print(ascci);
+        System.out.print(ascciArt);
         printCommands();
     }
 
@@ -44,6 +44,7 @@ public class UI {
         if ("Command".equals(ex.getMessage())) {
             return;
         }
+        ex.printStackTrace();
         System.out.print("Error: ");
         System.out.println(ex.getMessage());
     }
@@ -96,15 +97,17 @@ public class UI {
         System.out.println(COMMANDS);
     }
 
-    public static void printMainMenu() {
+    public static void printMainMenu(Table table) {
         System.out.println("ººººººººMenuºººººººº ");
-        System.out.println("(1) Start a round? \t (2) Never played poker before? \t (3) Command List\n(4) Exit");
-        System.out.print("Your option here:");
+        if (table != null) {
+            System.out.println("(1) Play next Hand \t (2) Never played poker before? \t (3) Command List\n(4) Retire");
+        } else {
+            System.out.println("(1) Start a Tournament \t (2) Never played poker before? \t (3) Command List\n(4) Retire");
+        }
     }
 
-    public static void printRoundMenu() {
-        System.out.println("(1) Check \t (2) Raise  \t (3) Fold \t (4) All in \t (5) Retire");
-        System.out.println("Note: currently only option (5) is functional\n(Type any from 1 to 4 to check the progress of a poker round)");
+    public static void printRoundMenu(Table table) {
+        System.out.println("(1) Check (" + table.getMinBet() + ")\t (2) Raise  \t (3) Fold \t (4) All in \t (5) Retire");
 
     }
 
@@ -123,26 +126,33 @@ public class UI {
      *
      * @param table the round to print must have finished
      */
-    public static void printStandings(Table table) {
-        //System.out.println("PLAYERS SIZE: " + table.getPlayersSize());
+    public static void printRoundStandings(Table table) {
         System.out.println("At the end of a round a winner is choosen, if there is a tie the pot is splitted");
         System.out.println("Each player can form a \"Best hand\" combining his cards with the comunitary hand");
         System.out.println("The player(s) with the best hand wins");
 
-        System.out.println("\nStandings(from best to worst):");
+        System.out.println("\nRound Standings(from best to worst):");
         for (Player plyr : table.getPlayers()) {
-            System.out.print("Player ");
-            System.out.print(plyr);
-            System.out.println("");
+            System.out.println("Player " + plyr.getId() + " - " + plyr.getHand().toString());
         }
-        if (table.getPlayer(0).getId() % 5 == 0) {
-            System.out.println("You win");
-        } else if (table.getPlayer(1).compareTo(table.getPlayer(0)) == 0) {
+        System.out.println("");
+        if (table.getPlayer(1).compareTo(table.getPlayer(0)) == 0) {
             System.out.println("Tie");
+            System.out.println("Player " + table.getPlayer(0).getId() + " wins (" + (int) table.getPot() / 2 + ")");
+            System.out.println("Player " + table.getPlayer(1).getId() + " wins (" + (int) table.getPot() / 2 + ")");
         } else {
-            System.out.println("You lose");
+            System.out.println("Player " + table.getPlayer(0).getId() + " wins (" + (int) table.getPot() + ")");
         }
-        System.out.println("Type <Hands> to check how Hand are ranked");
+        System.out.println("\nType <Hands> to check how Hand are ranked\n");
+    }
+
+    public static void printStandings(Table table) {
+        for (int i = 0; i < 8; i++) {
+            if (table.getSeats()[i] != null) {
+                System.out.println(table.getSeats()[i]);
+            }
+        }
+        System.out.println("");
     }
 
     /**
@@ -153,15 +163,17 @@ public class UI {
      *
      */
     public static void printBoard(int pos, Table table) {
-        Player[] players = new Player[8];
-        for (int i = 0; i < table.getPlayersSize(); i++) {
-            players[i] = table.getPlayer(i);
+        String[] players = new String[8];
+        for (int i = 0; i < 8; i++) {
+            if (i < table.getPlayersSize()) {
+                players[i] = table.getPlayer(i).toString();
+            } else {
+                players[i] = "\t";
+            }
         }
         String[] botones = new String[8];
         switch (pos) {
             case 0: {
-                System.out.println("YOU ARE PLAYER #" + table.getPlayer(0).getId());
-                System.out.println("2 cards are dealt to each player");
                 System.out.println("The flop: ");
                 break;
             }
@@ -174,40 +186,32 @@ public class UI {
                 break;
             }
         }
-        botones[0] = BIGBLIND;
-        botones[1] = LITTLEBLIND;
-        botones[2] = DEALER;
+        int dealerPos = table.getDealerPos();
+        botones[dealerPos - 2] = BIGBLIND;
+        botones[dealerPos - 1] = LITTLEBLIND;
+        botones[dealerPos] = DEALER;
         for (int i = 3; i < 8; i++) {
             botones[i] = "";
         }
-
-        String handTableStr = "";
-        int count = 5;
-        for (int i = 0; i < table.getTableHand().getSize(); i++, count--) {
-            handTableStr += table.getTableHand().getCard(i).toString();
-        }
-        for (int i = 0; i < count; i++) {
-            handTableStr += "  ";
-        }
-        String foo = handTableStr.length() > 16 ? "\t" : "\t\t";
-        System.out.println("  ############################################## ");
-        System.out.println(" #\t  " + printPlayer(players[0]) + "\t" + printPlayer(players[1]) + "\t" + printPlayer(players[2]) + "\t\t#");
-        System.out.println("# \t\t" + botones[0] + " \t" + botones[1] + "\t" + botones[2] + "\t\t #");
-        System.out.println("#" + printPlayer(players[7]) + "  " + botones[7] + "\t  " + handTableStr + " " + botones[3] + foo + printPlayer(players[3]) + "\t #"
-        );
-        System.out.println("#  \t" + botones[6] + "\t" + botones[5] + "\t " + botones[4] + "\t\t\t #");
-        System.out.println(" #\t" + printPlayer(players[6]) + "\t" + printPlayer(players[5]) + "\t\t" + printPlayer(players[4]) + "\t\t# ");
-        System.out.println("  ##############################################");
+        String tableDecorator = "  ##############################################  ";
+        System.out.printf("%-56s\n"
+                + " #\t  " + players[0] + "\t" + players[1] + "\t" + players[2] + "\t\t#\n"
+                + "# \t\t" + botones[0] + " \t" + botones[1] + "\t" + botones[2] + "\t\t #\n"
+                + "#" + players[7] + "  " + botones[7] + "\t%-16s " + botones[3] + "\t" + players[3] + "\t #\n"
+                + "#  \t" + botones[6] + "\t" + botones[5] + "\t " + botones[4] + "\t\t\t #\n"
+                + " #\t" + players[6] + "\t" + players[5] + players[4] + "\t\t# \n"
+                + "%-56s\n", tableDecorator, table.getTableHand().toString(), tableDecorator);
     }
 
-    public static String printPlayer(Player player) {
-        if (player == null) {
-            return "   ";
-        } else if (player.isHumanPlayer()) {
-            return player.toString();
-        } else {
-            return "#" + player.getId();
-        }
+    public static void printUser(Table table) {
+        System.out.println("***********************");
+        System.out.println("Cards\tCredits");
+        System.out.println(table.getPlayerHand(0) + "\t" + table.getPlayer(0).getCredits());
+        System.out.println("***********************");
+    }
+
+    public static void printMsg(String msg) {
+        System.out.println(msg);
     }
 
 }

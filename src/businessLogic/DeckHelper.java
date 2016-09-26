@@ -2,9 +2,9 @@ package businessLogic;
 
 import static businessLogic.DeckFactory.cloneHand;
 import static businessLogic.DeckFactory.createHand;
-import data.AbstractDeck;
+import data.Deck;
 import data.Card;
-import data.DealingDeck;
+import data.PokerDeck;
 import data.Hand;
 import data.Player;
 import data.Table;
@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import static ui.UI.printMsg;
 
 /**
  *
@@ -91,7 +92,7 @@ public class DeckHelper {
      * Uses {@link  businessLogic.HandComparator#compare(data.Hand, data.Hand)}
      * </p>
      *
-     * @param playerHand  the player Hand
+     * @param playerHand the player Hand
      * @param comunitary the tableHand
      * @return bestHand the best hand that can be obtained from
      */
@@ -121,23 +122,23 @@ public class DeckHelper {
         }
         return bestHand;
     }
-    
+
     /**
      * Only works for a ordered hand
-     * 
+     *
      * @param hand
-     * @return 
+     * @return
      */
-    public static boolean isSuitedConnector(Hand hand){
-       if(hand.getSize() == 2){
-           int[] suits = hand.getCardSuits();
-           int[] ranks = hand.getCardRanks();
-           return (suits[0]==suits[1])&&((ranks[0] == (ranks[1] - 1)));
-       }else{
-           throw new IllegalArgumentException("Suited connectors are only for two cards");
-       }
+    public static boolean isSuitedConnector(Hand hand) {
+        if (hand.getSize() == 2) {
+            int[] suits = hand.getCardSuits();
+            int[] ranks = hand.getCardRanks();
+            return (suits[0] == suits[1]) && ((ranks[0] == (ranks[1] - 1)));
+        } else {
+            throw new IllegalArgumentException("Suited connectors are only for two cards");
+        }
     }
-    
+
     /**
      *
      * @param hand the first hand to compare
@@ -311,20 +312,20 @@ public class DeckHelper {
         filter.add(kicker);
         return kicker;
     }
-    
-    public static void burnCard(AbstractDeck deck) {
+
+    public static void burnCard(Deck deck) {
         //System.out.println("Card burned!");
         deck.pop();
     }
 
-    public static Card deal(DealingDeck deck) {
+    public static Card deal(PokerDeck deck) {
         if (deck.getCards().isEmpty()) {
             throw new IllegalArgumentException("Empty deck", null);
         }
-        return deck.getCards().remove(deck.getSize() - 1);
+        return (Card) deck.getCards().remove(deck.getSize() - 1);
     }
 
-    public static void deal(DealingDeck deck, Hand mano, int i) {
+    public static void deal(PokerDeck deck, Hand mano, int i) {
         for (int j = 0; j < i; j++) {
             mano.addCard(deal(deck));
         }
@@ -332,18 +333,15 @@ public class DeckHelper {
 
     public static void dealToPlayers(Table round) {
         List<Player> players = round.getPlayers();
-        DealingDeck deck = round.getDealingDeck();
-        //System.out.println("Dealing time");
+        PokerDeck deck = round.getDealingDeck();
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
             deal(deck, player.getHand(), 2);
         }
-
     }
 
-    public static void shuffleDeck(DealingDeck deck) {
+    public static void shuffleDeck(PokerDeck deck) {
         deck.setShuffled(true);
-        //System.out.println("Shuffling DealingDeck !!");
         Random rnd = new Random();
         List<Card> cards = deck.getCards();
         int index;
