@@ -6,27 +6,22 @@ package data;
  */
 public class Card implements Comparable<Card> {
 
-    private final Rank rank;
+    private final CardRank rank;
     private final Suit suit;
 
-    public enum Rank {
-
+    public enum CardRank {
         DEUCE(2), THREE(3), FOUR(4), FIVE(5), SIX(6), SEVEN(7),
         EIGHT(8), NINE(9), TEN(10), JACK(11), QUEEN(12), KING(13), ACE(14);
-
         private final int value;
         private static final String[] toString = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "Q", "K", "A"};
-
         public int getValue() {
             return this.value;
         }
-
         @Override
         public String toString() {
             return toString[value - 2];
         }
-
-        Rank(int value) {
+        CardRank(int value) {
             this.value = value;
         }
     }
@@ -59,7 +54,7 @@ public class Card implements Comparable<Card> {
      * @param rank
      * @param suit
      */
-    public Card(Rank rank, Suit suit) {
+    public Card(CardRank rank, Suit suit) {
         this.rank = rank;
         this.suit = suit;
     }

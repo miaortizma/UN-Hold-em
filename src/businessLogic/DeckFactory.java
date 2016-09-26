@@ -12,9 +12,9 @@ import data.Hand;
 public class DeckFactory {
     
     public static Deck createDealingDeck() {
-        Deck dealingDeck = new Deck();
+        Deck dealingDeck = new Deck<>();
         for (Card.Suit suit : Card.Suit.values()) {
-            for (Card.Rank rank : Card.Rank.values()) {
+            for (Card.CardRank rank : Card.CardRank.values()) {
                 dealingDeck.addCard(new Card(rank, suit));
             }
         }
@@ -30,7 +30,6 @@ public class DeckFactory {
         //System.out.println(hand.getCards().getClass().toString());
         Hand clone = new Hand();
         clone.setRank(hand.getRank());
-        clone.setRankName(hand.getRankName());
         clone.addAll(hand);
         return clone;
     }

@@ -128,8 +128,14 @@ public class GameEngine {
         }
     }
 
+    /**
+     * Adds bet to table pot
+     *
+     * @param plyr
+     * @param bet
+     */
     public static void addBet(Player plyr, int bet) {
-        printMsg("Player " + plyr.getId() + " adds " + bet + " to pot!!\n");
+        printMsg("Player " + plyr.getId() + " adds " + bet + " to the pot!!\n");
         plyr.setCredits(plyr.getCredits() - bet);
         table.addToPot(bet);
     }
@@ -221,7 +227,7 @@ public class GameEngine {
         table.addToPot(table.getMinBet() + table.getMinBet() / 2);
         fold(table.getPlayer(2));
         raiseBet(table.getPlayer(3), 75);
-        
+
     }
 
     public static int holdCardsValue(Hand hand) {

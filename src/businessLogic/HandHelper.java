@@ -6,7 +6,6 @@ import data.Card;
 import data.Hand;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -14,33 +13,6 @@ import java.util.List;
  * @author OnePoker UN Estudiante
  */
 public class HandHelper {
-  
-    public static final String[] HANDS = {"4 of a Kind", "Straight Flush", "Straight", "Flush", "High Card", "1 Pair", "2 Pair", "Royal Flush", "3 of a Kind", "Full House"};
-    public static final HashMap<String, Integer> RANKS = new HashMap<>();
-
-    //maps HANDS into RANKS
-    static {
-        //HIGH CARD
-        RANKS.put(HANDS[4], 0);
-        //1 PAIR
-        RANKS.put(HANDS[5], 1);
-        //2 PAIR
-        RANKS.put(HANDS[6], 2);
-        //ROYAL FLUSH
-        RANKS.put(HANDS[7], 9);
-        //STRAIGHT
-        RANKS.put(HANDS[2], 4);
-        //FLUSH
-        RANKS.put(HANDS[3], 5);
-        //FULL HOUSE
-        RANKS.put(HANDS[9], 6);
-        //4 OF A KIND
-        RANKS.put(HANDS[0], 7);
-        //STRAIGHT FLUSH
-        RANKS.put(HANDS[1], 8);
-        //3 OF A KIND
-        RANKS.put(HANDS[8], 3);
-    }
 
     /**
      * Reference Author @subskybox See
@@ -52,8 +24,9 @@ public class HandHelper {
      * RoyalFlush
      *
      * @param hand
+     * @return
      */
-    public static void rankHand(Hand hand) {
+    public static Hand.HandRank rankHand(Hand hand) {
         int[] ranks = hand.getCardRanks();
         int[] suits = hand.getCardSuits();
         long s = 0, v = 0, o;
@@ -64,8 +37,41 @@ public class HandHelper {
         }
         v = v % 15 - ((s / (s & -s) == 31) || (s == 0x403c) ? 3 : 1);
         v -= (allEqual(suits) ? 1 : 0) * ((s == 0x7c00) ? -5 : 1);
-        hand.setRankName(HANDS[(int) v]);
-        hand.setRank(RANKS.get(HANDS[(int) v]));
+        switch ((int) v) {
+            case 4: {
+                return Hand.HandRank.HIGHCARD;
+            }
+            case 5: {
+                return Hand.HandRank.PAIR;
+            }
+            case 6: {
+                return Hand.HandRank.TWOPAIR;
+            }
+            case 7: {
+                return Hand.HandRank.ROYAL;
+            }
+            case 2: {
+                return Hand.HandRank.STRAIGHT;
+            }
+            case 3: {
+                return Hand.HandRank.FLUSH;
+            }
+            case 9: {
+                return Hand.HandRank.FULLHOUSE;
+            }
+            case 0: {
+                return Hand.HandRank.FOUR;
+            }
+            case 1: {
+                return Hand.HandRank.STRAIGHTFLUSH;
+            }
+            case 8: {
+                return Hand.HandRank.THREE;
+            }
+            default: {
+                throw new Error();
+            }
+        }
     }
 
     public static boolean allEqual(int[] x) {
@@ -93,7 +99,7 @@ public class HandHelper {
     public static Hand bestHand(Hand playerHand, Hand comunitary) {
         Hand merge = createHand("array");
         Hand bestHand = comunitary;
-        rankHand(bestHand);
+        bestHand.setRank(rankHand(bestHand));
         merge.addAll(playerHand);
         merge.addAll(comunitary);
 
@@ -109,7 +115,7 @@ public class HandHelper {
                     }
                 }
                 Collections.sort(temp.getCards());
-                rankHand(temp);
+                temp.setRank(rankHand(temp));
                 bestHand = compare(bestHand, temp) > 0 ? bestHand : cloneHand(temp);
                 cardSelected = 0;
             }
@@ -142,17 +148,18 @@ public class HandHelper {
      */
     public static int compare(Hand hand, Hand anotherHand) {
         int out;
-        out = Integer.compare(hand.getRank(), anotherHand.getRank());
+        out = Integer.compare(hand.getRank().getValue(), anotherHand.getRank().getValue());
         if (out == 0) {
             switch (hand.getRank()) {
                 // 1 pair
-                case 1:
+                case HIGHCARD:
                 //2 pair
-                case 2:
+                case PAIR:
+                case TWOPAIR:
                     return comparePair(hand, anotherHand);
-                case 3:
+                case THREE:
                     return compareThree(hand, anotherHand);
-                case 6:
+                case FULLHOUSE:
                     return compareThree(hand, anotherHand);
                 default:
                     int thisHighCard = highCard(hand);
@@ -231,7 +238,7 @@ public class HandHelper {
         int anotherPair = highestPair(anotherHand, hand.size());
         out = Integer.compare(thisPair, anotherPair);
         if (out == 0) {
-            if (hand.getRank() == 2) {
+            if (hand.getRank() == Hand.HandRank.TWOPAIR) {
                 thisPair = highestPair(hand, 3);
                 anotherPair = highestPair(anotherHand, 3);
                 out = Integer.compare(thisPair, anotherPair);

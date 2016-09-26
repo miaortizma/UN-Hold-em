@@ -145,6 +145,7 @@ public class UI {
     }
 
     public static void printStandings(Table table) {
+        System.out.println("Tournament Standings: ");
         for (int i = 0; i < 8; i++) {
             if (table.getSeats()[i] != null) {
                 System.out.println(table.getSeats()[i]);

@@ -13,12 +13,35 @@ import java.util.List;
 public class Hand<T extends Card> implements Comparable<Hand> {
 
     private final ArrayList<Card> hand;
-    private int rank;
-    private String rankName;
+    private HandRank rank;
+
+    public enum HandRank {
+
+        HIGHCARD(0), PAIR(1), TWOPAIR(2), THREE(3),
+        STRAIGHT(4), FLUSH(5), FULLHOUSE(6),
+        FOUR(7), STRAIGHTFLUSH(8), ROYAL(9);
+        private static final String[] toString = {"High Card", "1 Pair", "2 Pair", "3 of a Kind",
+            "Straight", "Flush", "Full House", "4 of a Kind", "Flush", "Royal Flush"};
+
+        private final int value;
+
+        public int getValue() {
+            return this.value;
+        }
+
+        HandRank(int value) {
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return toString[this.value];
+        }
+    }
 
     public Hand() {
         hand = new ArrayList<>();
-        this.rank = -1;
+        this.rank = null;
     }
 
     public int[] getCardRanks() {
@@ -40,14 +63,14 @@ public class Hand<T extends Card> implements Comparable<Hand> {
     /**
      * @return the rank
      */
-    public int getRank() {
+    public HandRank getRank() {
         return rank;
     }
 
     /**
      * @param rank the rank to set
      */
-    public void setRank(int rank) {
+    public void setRank(HandRank rank) {
         this.rank = rank;
     }
 
@@ -82,8 +105,8 @@ public class Hand<T extends Card> implements Comparable<Hand> {
         Collections.sort(getCards());
         String out = "";
 
-        if (getRank() > -1) {
-            out += getRankName() + " ";
+        if (getRank() != null) {
+            out += getRank().toString() + " ";
         }
         for (int i = 0; i < hand.size(); i++) {
             out += "" + hand.get(i);
@@ -101,20 +124,6 @@ public class Hand<T extends Card> implements Comparable<Hand> {
     @Override
     public int compareTo(Hand hand) {
         return compare(this, hand);
-    }
-
-    /**
-     * @return the rankName
-     */
-    public String getRankName() {
-        return rankName;
-    }
-
-    /**
-     * @param rankName the rankName to set
-     */
-    public void setRankName(String rankName) {
-        this.rankName = rankName;
     }
 
 }
