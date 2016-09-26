@@ -1,6 +1,9 @@
 package businessLogic;
 
-import static businessLogic.DeckHelper.*;
+import static businessLogic.DeckHelper.deal;
+import static businessLogic.DeckHelper.dealCard;
+import static businessLogic.DeckHelper.dealToPlayers;
+import static businessLogic.HandHelper.*;
 import tests.HandAnalyserTest;
 import data.*;
 import java.util.Collections;
@@ -166,7 +169,7 @@ public class GameEngine {
         int menu = 0;
         while (menu == 0) {
             try {
-                printRoundMenu(table);
+                printRoundMenu();
                 menu = askInt("Option: ");
                 if (menu < 1 || menu > 5) {
                     throw new IllegalArgumentException("Not a menu option");
@@ -250,9 +253,9 @@ public class GameEngine {
      *
      */
     public static void playRound() {
-        PokerDeck dealingDeck = table.getDealingDeck();
+        Deck dealingDeck = table.getDealingDeck();
         Hand tableHand = table.getTableHand();
-        burnCard(dealingDeck);
+        dealCard(dealingDeck);
         table.getPlayer(0).setHumanPlayer(true);
         dealToPlayers(table);
         printMsg("Dealt hold cards(You are player " + table.getPlayer(0).getId() + ")");

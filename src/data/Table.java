@@ -3,7 +3,6 @@ package data;
 import static businessLogic.DeckFactory.createDealingDeck;
 import static businessLogic.DeckFactory.createHand;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -12,7 +11,7 @@ import java.util.List;
  */
 public class Table {
 
-    private final PokerDeck dealingDeck;
+    private final Deck dealingDeck;
     private final Hand tableHand;
     private final List<Player> players;
     private final Player[] Seats;
@@ -23,7 +22,7 @@ public class Table {
     public Table() {
         players = new ArrayList<>();
         tableHand = createHand("array");
-        dealingDeck = createDealingDeck("dealingdeck");
+        dealingDeck = createDealingDeck();
         dealerPos = 2;
         minBet = 50;
         pot = 0;
@@ -43,7 +42,7 @@ public class Table {
                 Seats[i] = players.get(players.size() - 1);
             }
         }
-        this.dealingDeck = createDealingDeck("dealingdeck");
+        this.dealingDeck = createDealingDeck();
         this.tableHand = createHand("array");
         this.dealerPos = 2;
         this.minBet = 50;
@@ -66,7 +65,7 @@ public class Table {
         return players.size();
     }
 
-    public PokerDeck getDealingDeck() {
+    public Deck getDealingDeck() {
         return dealingDeck;
     }
 

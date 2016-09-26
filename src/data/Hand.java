@@ -1,25 +1,29 @@
 package data;
 
-import static businessLogic.DeckHelper.compare;
+import static businessLogic.HandHelper.compare;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  *
  * @author OnePoker UN
+ * @param <T>
  */
-public class Hand extends Deck<Card> implements Comparable<Hand> {
+public class Hand<T extends Card> implements Comparable<Hand> {
 
+    private final ArrayList<Card> hand;
     private int rank;
     private String rankName;
 
-    public Hand(String type) {
-        super(type);
+    public Hand() {
+        hand = new ArrayList<>();
         this.rank = -1;
     }
 
     public int[] getCardRanks() {
-        int[] ranks = new int[this.size()];
-        for (int i = 0; i < this.size(); i++) {
+        int[] ranks = new int[hand.size()];
+        for (int i = 0; i < hand.size(); i++) {
             ranks[i] = getCard(i).getValue();
         }
         return ranks;
@@ -28,7 +32,7 @@ public class Hand extends Deck<Card> implements Comparable<Hand> {
     public int[] getCardSuits() {
         int[] suits = new int[5];
         for (int i = 0; i < 5; i++) {
-            suits[i] = getCard(i).getSuit();
+            suits[i] = getCard(i).getSuit().getValue();
         }
         return suits;
     }
@@ -57,6 +61,22 @@ public class Hand extends Deck<Card> implements Comparable<Hand> {
         this.getCards().set(i, card);
     }
 
+    public Card getCard(int i) {
+        return this.hand.get(i);
+    }
+
+    public void addCard(Card card) {
+        this.hand.add(card);
+    }
+
+    public int size() {
+        return hand.size();
+    }
+
+    public List<Card> getCards() {
+        return this.hand;
+    }
+
     @Override
     public String toString() {
         Collections.sort(getCards());
@@ -65,7 +85,9 @@ public class Hand extends Deck<Card> implements Comparable<Hand> {
         if (getRank() > -1) {
             out += getRankName() + " ";
         }
-        out += super.toString();
+        for (int i = 0; i < hand.size(); i++) {
+            out += "" + hand.get(i);
+        }
         return out;
     }
 

@@ -14,8 +14,6 @@ public class UI {
             + "Type <Info> to know about this project\n"
             + "Type <Help> if you need some help\n"
             + "Type <Hands> to print Hands";
-    public static final String[] RANKS = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
-    public static final String[] SUITS = {"\u2660", "\u2663", "\u2764", "\u2666"};
     static final String DECORATOR = "/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/";
     public static final String DEALER = "D";
     public static final String BIGBLIND = "\u0E4F";
@@ -106,8 +104,8 @@ public class UI {
         }
     }
 
-    public static void printRoundMenu(Table table) {
-        System.out.println("(1) Check (" + table.getMinBet() + ")\t (2) Raise  \t (3) Fold \t (4) All in \t (5) Retire");
+    public static void printRoundMenu() {
+        System.out.println("(1) Check \t (2) Raise  \t (3) Fold \t (4) All in \t (5) Retire");
 
     }
 
@@ -207,6 +205,7 @@ public class UI {
         System.out.println("***********************");
         System.out.println("Cards\tCredits");
         System.out.println(table.getPlayerHand(0) + "\t" + table.getPlayer(0).getCredits());
+        System.out.println("Minimum bet: " + table.getMinBet());
         System.out.println("***********************");
     }
 

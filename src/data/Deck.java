@@ -1,7 +1,6 @@
 package data;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -11,57 +10,44 @@ import java.util.List;
  */
 public class Deck<T extends Card> {
 
-    private List<Card> cards;
+    private List<Card> deck;
 
-    public Deck(String type) {
-        if (type.equalsIgnoreCase("linked")) {
-            cards = new LinkedList<>();
-        } else if (type.equalsIgnoreCase("array")) {
-            cards = new ArrayList<>();
-        } else {
-            System.out.println("INVALID DECK CONSTRUCTOR TYPE");
-            cards = null;
-        }
-    }
-
-    public int size() {
-        return cards.size();
-    }
-
-    public Card getCard(int i) {
-        return this.getCards().get(i);
-    }
-
-    public void addCard(Card card) {
-        this.getCards().add(card);
-    }
-
-    public List<Card> getCards() {
-        return this.cards;
-    }
-
-    public int getSize() {
-        return getCards().size();
-    }
-
-    public Card pop() {
-        return getCards().remove(getCards().size() - 1);
+    public Deck() {
+        deck = new ArrayList<>();
     }
 
     /**
-     * @param cards the cards to set
+     * @return the deck
      */
-    public void setCards(List<Card> cards) {
-        this.cards = cards;
+    public List<Card> getDeck() {
+        return deck;
     }
 
-    @Override
-    public String toString() {
-        String out = "";
-        for (int i = 0; i < getSize(); i++) {
-            out += getCard(i).toString() + " ";
-        }
-        return out;
+    /**
+     * @param deck the deck to set
+     */
+    public void setDeck(List<Card> deck) {
+        this.deck = deck;
+    }
+
+    public void addCard(Card c) {
+        deck.add(c);
+    }
+
+    public int size() {
+        return deck.size();
+    }
+
+    public Card remove(int i) {
+        return deck.remove(i);
+    }
+
+    public Card getCard(int i) {
+        return deck.get(i);
+    }
+
+    public void set(int i, Card c) {
+        deck.set(i, c);
     }
 
 }
