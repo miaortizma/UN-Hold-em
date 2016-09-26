@@ -1,13 +1,13 @@
 package data;
 
-import static businessLogic.HandComparator.compare;
+import static businessLogic.DeckHelper.compare;
 import java.util.Collections;
 
 /**
  *
  * @author OnePoker UN
  */
-public class Hand extends AbstractDeck implements Comparable<Hand> {
+public class Hand extends Deck<Card> implements Comparable<Hand> {
 
     private int rank;
     private String rankName;
@@ -18,12 +18,11 @@ public class Hand extends AbstractDeck implements Comparable<Hand> {
     }
 
     public int[] getCardRanks() {
-        int[] ranks = new int[5];
-        for (int i = 0; i < 5; i++) {
+        int[] ranks = new int[this.size()];
+        for (int i = 0; i < this.size(); i++) {
             ranks[i] = getCard(i).getValue();
         }
         return ranks;
-
     }
 
     public int[] getCardSuits() {
@@ -70,20 +69,16 @@ public class Hand extends AbstractDeck implements Comparable<Hand> {
         return out;
     }
 
+    /**
+     * Uses {@link businessLogic.HandComparator#compare(data.Hand, data.Hand) }
+     *
+     * @param hand the hand to be compared
+     * @return 1 if this ranks higher than hand 0 if they rank equal -1 if hand
+     * ranks higher than this(hand)
+     */
     @Override
     public int compareTo(Hand hand) {
-        int out = compare(this, hand);
-        /**
-         * System.out.println("COMPARING:"); System.out.println(this + "\t" +
-         * hand); System.out.println(this.getRank() + " " + hand.getRank());
-         * System.out.println(out); System.out.println("\n\n\n");
-         *
-         */
-        if (hand.getRank() == 1) {
-            //System.out.println(out);
-        }
-        //System.out.println(out);
-        return out;
+        return compare(this, hand);
     }
 
     /**

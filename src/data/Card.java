@@ -4,30 +4,24 @@ import ui.UI;
 
 /**
  *
- * @author OnePoker UN 
+ * @author OnePoker UN
  */
 public class Card implements Comparable<Card> {
 
-    /**
-     * Notes/ To DO
-     *
-     *
-     */
+
     //The value of a card cannot be changed after being instantiated
     private final int value;
     private final int suit;
 
     /**
-     * 0 < value < 13 0 < i < 13 suit -> Spades 13 < i < 26 suit -> Clubs 26 < i
-     * < 39 suit -> Hearts 39 < i < 52 suit -> Diamonds
+     * Cards are ranked from 0 to 13(Aces(0) are turned into 14)      {@literal < value < 13 0 < i < 13 suit -> Spades 13 < i < 26 suit -> Clubs 26 < i
+     * < 39 suit -> Hearts 39 < i < 52 suit -> Diamonds}
      *
-     * @param i, -1 < i < 52
+     * @param i, {@literal -1 < i < 52}
      */
     public Card(int i) {
-        // System.out.println("Attempt to create card with value: "  + i);
         int newValue;
         this.suit = (i < 13) ? 0 : (i < 26) ? 1 : (i < 39) ? 2 : (i < 52) ? 3 : 4;
-        //System.out.println("Suit calculated as :" + this.suit);
         switch (this.suit) {
             case (0): {
                 newValue = i;
@@ -87,7 +81,7 @@ public class Card implements Comparable<Card> {
 
     @Override
     public String toString() {
-        return UI.RANKS[this.value - 2] + "" + UI.SUITS[this.suit] + " ";
+        return UI.RANKS[this.value - 2] + "" + UI.SUITS[this.suit];
     }
 
     @Override

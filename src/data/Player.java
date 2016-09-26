@@ -26,6 +26,19 @@ public class Player implements Comparable<Player> {
 
     }
 
+    public Player(Player oldPlayer) {
+        this.id = oldPlayer.getId();
+        this.elo = oldPlayer.getElo();
+        this.credits = oldPlayer.getCredits();
+        this.name = oldPlayer.getName();
+        this.hand = createHand("array");
+    }
+
+    public Player() {
+        this(++count, "");
+        hand = createHand("array");
+    }
+
     public Hand getHand() {
         return this.hand;
     }
@@ -34,25 +47,13 @@ public class Player implements Comparable<Player> {
         this.hand = hand;
     }
 
-    public Player() {
-        this.id = count++;
-        hand = createHand("array");
-    }
-
     public int getId() {
         return this.id;
     }
 
     @Override
     public String toString() {
-        String out = "";
-        if (getName() == null) {
-            out += "#" + getId();
-        } else {
-            out += getName();
-        }
-        out += " " + getHand();
-        return out;
+        return "Player " + this.getId() + " Credits: " + this.getCredits() + "\tElo: " + this.elo;
     }
 
     @Override
@@ -123,5 +124,4 @@ public class Player implements Comparable<Player> {
     public void setElo(int elo) {
         this.elo = elo;
     }
-
 }

@@ -3,30 +3,51 @@ package data;
 import static businessLogic.DeckFactory.createDealingDeck;
 import static businessLogic.DeckFactory.createHand;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  *
  * @author OnePoker UN
  */
-public class Round {
+public class Table {
 
-    private final DealingDeck dealingDeck;
+    private final PokerDeck dealingDeck;
     private final Hand tableHand;
     private final List<Player> players;
+    private final Player[] Seats;
+    private int dealerPos;
     private int pot;
-    private boolean tie;
+    private int minBet;
 
-    public Round() {
-        //System.out.println("Starting new round");
+    public Table() {
         players = new ArrayList<>();
         tableHand = createHand("array");
         dealingDeck = createDealingDeck("dealingdeck");
+        dealerPos = 2;
+        minBet = 50;
+        pot = 0;
+        Seats = new Player[8];
         for (int i = 0; i < 5; i++) {
             players.add(new Player());
-
-            this.pot = 0;
+            Seats[i] = players.get(i);
         }
+    }
+
+    public Table(Table oldTable) {
+        this.Seats = oldTable.getSeats();
+        this.players = new ArrayList<>();
+        for (int i = 0; i < oldTable.getSeats().length; i++) {
+            if (oldTable.getSeats()[i] != null) {
+                players.add(new Player(oldTable.getSeats()[i]));
+                Seats[i] = players.get(players.size() - 1);
+            }
+        }
+        this.dealingDeck = createDealingDeck("dealingdeck");
+        this.tableHand = createHand("array");
+        this.dealerPos = 2;
+        this.minBet = 50;
+        this.pot = 0;
     }
 
     public void addToPot(int bet) {
@@ -45,7 +66,7 @@ public class Round {
         return players.size();
     }
 
-    public DealingDeck getDealingDeck() {
+    public PokerDeck getDealingDeck() {
         return dealingDeck;
     }
 
@@ -59,30 +80,6 @@ public class Round {
 
     public Hand getPlayerHand(int i) {
         return players.get(i).getHand();
-    }
-
-    public Round(Round previousRound) {
-        this.players = previousRound.getPlayers();
-        this.pot = previousRound.getPot();
-        this.dealingDeck = createDealingDeck("array");
-        this.tableHand = createHand("array");
-//stub
-        //Crear ronda "Heredando" los valores de una ronda anterior
-        //Permitiria guardar en memoria rondas pasadas 
-    }
-
-    /**
-     * @return the tie
-     */
-    public boolean isTie() {
-        return tie;
-    }
-
-    /**
-     * @param tie the tie to set
-     */
-    public void setTie(boolean tie) {
-        this.tie = tie;
     }
 
     /**
@@ -108,5 +105,40 @@ public class Round {
         }
         out += "\nPot: " + getPot();
         return out;
+    }
+
+    /**
+     * @return the dealerPos
+     */
+    public int getDealerPos() {
+        return dealerPos;
+    }
+
+    /**
+     * @param dealerPos the dealerPos to set
+     */
+    public void setDealerPos(int dealerPos) {
+        this.dealerPos = dealerPos;
+    }
+
+    /**
+     * @return the minBet
+     */
+    public int getMinBet() {
+        return minBet;
+    }
+
+    /**
+     * @param minBet the minBet to set
+     */
+    public void setMinBet(int minBet) {
+        this.minBet = minBet;
+    }
+
+    /**
+     * @return the Seats
+     */
+    public Player[] getSeats() {
+        return Seats;
     }
 }

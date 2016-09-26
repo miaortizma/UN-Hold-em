@@ -2,7 +2,7 @@ package ui;
 
 import static businessLogic.GameEngine.checkCommand;
 import data.Player;
-import data.Round;
+import data.Table;
 import java.util.Scanner;
 
 public class UI {
@@ -28,41 +28,39 @@ public class UI {
     }
 
     public static void printWelcome() {
-        System.out.println("\nWelcome to UN Hold' em");
-        String ascci = ".------..------..------..------..------..------..------..------..------.\n"
+        //System.out.println("\nWelcome to UN Hold' em");
+        String ascciArt = ".------..------..------..------..------..------..------..------..------.\n"
                 + "|U.--. ||N.--. ||H.--. ||O.--. ||L.--. ||D.--. ||'.--. ||E.--. ||M.--. |\n"
                 + "| (\\/) || :(): || :/\\: || :/\\: || :/\\: || :/\\: || :/\\: || (\\/) || (\\/) |\n"
                 + "| :\\/: || ()() || (__) || :\\/: || (__) || (__) || :\\/: || :\\/: || :\\/: |\n"
                 + "| '--'U|| '--'N|| '--'H|| '--'O|| '--'L|| '--'D|| '--''|| '--'E|| '--'M|\n"
                 + "`------'`------'`------'`------'`------'`------'`------'`------'`------'\n"
                 + " ";
-        System.out.print(ascci);
+        System.out.print(ascciArt);
         printCommands();
     }
 
-    public static void printError() {
-        System.out.println("Please try again");
+    public static void printError(Exception ex) {
+        if ("Command".equals(ex.getMessage())) {
+            return;
+        }
+        ex.printStackTrace();
+        System.out.print("Error: ");
+        System.out.println(ex.getMessage());
     }
 
-    public static String askMsg(String question) {
+    public static String askMsg(String question) throws Exception {
         System.out.print(question);
         inputUI = IN.nextLine();
-        checkCommand(inputUI, true);
+        if (checkCommand(inputUI, true)) {
+            throw new Exception("Command");
+        }
         return inputUI;
     }
 
     public static int askInt(String question) throws Exception {
-        System.out.print(question);
-        if (IN.hasNextInt()) {
-            int x = IN.nextInt();
-            IN.nextLine();
-            return x;
-        } else if (checkCommand(IN.nextLine(), true)) {
-            //if input is a command do nothing
-            return 0;
-        } else {
-            throw new Exception("Not a number");
-        }
+        askMsg(question);
+        return Integer.parseInt(inputUI);
     }
 
     public static void printHelp() {
@@ -99,33 +97,17 @@ public class UI {
         System.out.println(COMMANDS);
     }
 
-    public static void printMainMenu() {
+    public static void printMainMenu(Table table) {
         System.out.println("ººººººººMenuºººººººº ");
-        System.out.println("(1) - Start a round? \t (2) - Never played poker before? \t (3) - Command List\n(4) - Exit");
-        System.out.print("Your option here:");
-    }
-
-    public static int askMainMenu() throws Exception {
-        int x = askInt("");
-        if (x < 0 || x > 4) {
-            throw new Exception();
+        if (table != null) {
+            System.out.println("(1) Play next Hand \t (2) Never played poker before? \t (3) Command List\n(4) Retire");
+        } else {
+            System.out.println("(1) Start a Tournament \t (2) Never played poker before? \t (3) Command List\n(4) Retire");
         }
-        return x;
-
     }
 
-    //Can make a single method and check validity of input inside businessLogic
-    public static int askRoundMenu() throws Exception {
-        int x = askInt("");
-        if (x < 0 || x > 5) {
-            throw new Exception();
-        }
-        return x;
-    }
-
-    public static void printRoundMenu() {
-        System.out.println("(1) - Check \t (2) - Raise  \t (3) - Fold \t (4) - All in \t (5)- Retire");
-        System.out.println("Note: currently only option (5) is functional\n(Type any from 1 to 4 to check the progress of a poker round)");
+    public static void printRoundMenu(Table table) {
+        System.out.println("(1) Check (" + table.getMinBet() + ")\t (2) Raise  \t (3) Fold \t (4) All in \t (5) Retire");
 
     }
 
@@ -142,75 +124,56 @@ public class UI {
      * Prints the round players and their hands used to test at the start and
      * end of round
      *
-     * @param ronda
+     * @param table the round to print must have finished
      */
-    public static void printStandings(Round ronda) {
-        //System.out.println("PLAYERS SIZE: " + ronda.getPlayersSize());
+    public static void printRoundStandings(Table table) {
         System.out.println("At the end of a round a winner is choosen, if there is a tie the pot is splitted");
         System.out.println("Each player can form a \"Best hand\" combining his cards with the comunitary hand");
         System.out.println("The player(s) with the best hand wins");
 
-        System.out.println("\nStandings(from best to worst):");
-        for (Player plyr : ronda.getPlayers()) {
-            System.out.print("Player ");
-            System.out.print(plyr);
-            System.out.println("");
+        System.out.println("\nRound Standings(from best to worst):");
+        for (Player plyr : table.getPlayers()) {
+            System.out.println("Player " + plyr.getId() + " - " + plyr.getHand().toString());
         }
-        if (ronda.getPlayer(0).getId() % 5 == 0) {
-            System.out.println("You win");
-        } else if (ronda.getPlayer(1).compareTo(ronda.getPlayer(0)) == 0) {
+        System.out.println("");
+        if (table.getPlayer(1).compareTo(table.getPlayer(0)) == 0) {
             System.out.println("Tie");
+            System.out.println("Player " + table.getPlayer(0).getId() + " wins (" + (int) table.getPot() / 2 + ")");
+            System.out.println("Player " + table.getPlayer(1).getId() + " wins (" + (int) table.getPot() / 2 + ")");
         } else {
-            System.out.println("You lose");
+            System.out.println("Player " + table.getPlayer(0).getId() + " wins (" + (int) table.getPot() + ")");
         }
-        System.out.println("Type <Hands> to check how Hand are ranked");
+        System.out.println("\nType <Hands> to check how Hand are ranked\n");
+    }
+
+    public static void printStandings(Table table) {
+        for (int i = 0; i < 8; i++) {
+            if (table.getSeats()[i] != null) {
+                System.out.println(table.getSeats()[i]);
+            }
+        }
+        System.out.println("");
     }
 
     /**
      * Prints the board with the bottoms
      *
      * @param pos rank of between 0 to 7
-     * @param players length is always 8
+     * @param table the round
      *
      */
-    public static void printBoard(int pos, Round ronda) {
-        Player[] players = new Player[8];
-        for (int i = 0; i < ronda.getPlayersSize(); i++) {
-            players[i] = ronda.getPlayer(i);
+    public static void printBoard(int pos, Table table) {
+        String[] players = new String[8];
+        for (int i = 0; i < 8; i++) {
+            if (i < table.getPlayersSize()) {
+                players[i] = table.getPlayer(i).toString();
+            } else {
+                players[i] = "\t";
+            }
         }
         String[] botones = new String[8];
-        /*boolean bigBlind = false;
-        boolean littleBlind = false;
-        
-
-        for (int i = pos; i > pos - botones.length; i--) {
-            if (!(players[(i + 8) % 8] == (null))) {
-                if (i == pos) {
-                    System.out.println("HERE: " + i);
-                    botones[(i + 8) % 8] = BIGBLIND;
-                    bigBlind = true;
-                } else if (bigBlind) {
-                    
-                    System.out.println("HERE: >" + i);
-                    botones[(i + 8) % 8] = LITTLEBLIND;
-                    bigBlind = false;
-                    littleBlind = true;
-                } else if (littleBlind) {
-                    
-                    System.out.println("HERE:>> " + i);
-                    botones[(i + 8) % 8] = DEALER;
-                    littleBlind = false;
-                } else {
-                    botones[(i + 8) % 8] = " ";
-                }
-            } else {
-                botones[(i + 8) % 8] = " ";
-            }
-        }*/
         switch (pos) {
             case 0: {
-                System.out.println("YOU ARE PLAYER #" + ronda.getPlayer(0).getId());
-                System.out.println("2 cards are dealt to each player");
                 System.out.println("The flop: ");
                 break;
             }
@@ -223,40 +186,32 @@ public class UI {
                 break;
             }
         }
-        botones[0] = BIGBLIND;
-        botones[1] = LITTLEBLIND;
-        botones[2] = DEALER;
+        int dealerPos = table.getDealerPos();
+        botones[dealerPos - 2] = BIGBLIND;
+        botones[dealerPos - 1] = LITTLEBLIND;
+        botones[dealerPos] = DEALER;
         for (int i = 3; i < 8; i++) {
             botones[i] = "";
         }
-
-        String handTableStr = "";
-        int count = 5;
-        for (int i = 0; i < ronda.getTableHand().getSize(); i++, count--) {
-            handTableStr += ronda.getTableHand().getCard(i).toString();
-        }
-        for (int i = 0; i < count; i++) {
-            handTableStr += "  ";
-        }
-        String foo = handTableStr.length() > 16 ? "\t" : "\t\t";
-        System.out.println("  ############################################## ");
-        System.out.println(" #\t  " + printPlayer(players[0]) + "\t" + printPlayer(players[1]) + "\t" + printPlayer(players[2]) + "\t\t#");
-        System.out.println("# \t\t" + botones[0] + " \t" + botones[1] + "\t" + botones[2] + "\t\t #");
-        System.out.println("#" + printPlayer(players[7]) + "  " + botones[7] + "\t  " + handTableStr + " " + botones[3] + foo + printPlayer(players[3]) + "\t #"
-        );
-        System.out.println("#  \t" + botones[6] + "\t" + botones[5] + "\t " + botones[4] + "\t\t\t #");
-        System.out.println(" #\t" + printPlayer(players[6]) + "\t" + printPlayer(players[5]) + "\t\t" + printPlayer(players[4]) + "\t\t# ");
-        System.out.println("  ##############################################");
+        String tableDecorator = "  ##############################################  ";
+        System.out.printf("%-56s\n"
+                + " #\t  " + players[0] + "\t" + players[1] + "\t" + players[2] + "\t\t#\n"
+                + "# \t\t" + botones[0] + " \t" + botones[1] + "\t" + botones[2] + "\t\t #\n"
+                + "#" + players[7] + "  " + botones[7] + "\t%-16s " + botones[3] + "\t" + players[3] + "\t #\n"
+                + "#  \t" + botones[6] + "\t" + botones[5] + "\t " + botones[4] + "\t\t\t #\n"
+                + " #\t" + players[6] + "\t" + players[5] + players[4] + "\t\t# \n"
+                + "%-56s\n", tableDecorator, table.getTableHand().toString(), tableDecorator);
     }
 
-    public static String printPlayer(Player player) {
-        if (player == null) {
-            return "   ";
-        } else if (player.isHumanPlayer()) {
-            return player.toString();
-        } else {
-            return "#" + player.getId();
-        }
+    public static void printUser(Table table) {
+        System.out.println("***********************");
+        System.out.println("Cards\tCredits");
+        System.out.println(table.getPlayerHand(0) + "\t" + table.getPlayer(0).getCredits());
+        System.out.println("***********************");
+    }
+
+    public static void printMsg(String msg) {
+        System.out.println(msg);
     }
 
 }

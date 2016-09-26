@@ -1,13 +1,14 @@
 package tests;
 
-import data.DealingDeck;
+import static businessLogic.DeckHelper.deal;
+import static businessLogic.DeckHelper.dealToPlayers;
+import static businessLogic.GameEngine.compareHands;
+import data.PokerDeck;
 import data.Hand;
-import static businessLogic.DealingAssistant.deal;
-import static businessLogic.DealingAssistant.dealToPlayers;
-import static businessLogic.RoundHandler.compareHands;
-import data.Round;
+import data.Table;
 import static ui.UI.printStandings;
 import static ui.UI.printTest;
+import static businessLogic.DeckHelper.deal;
 
 /**
  *
@@ -17,17 +18,17 @@ public class HandAnalyserTest {
 
     public static void test() {
 
-        Round ronda = new Round();
-        dealToPlayers(ronda);
-        DealingDeck dealer = ronda.getDealingDeck();
-        Hand comunitario = ronda.getTableHand();
+        Table table = new Table();
+        dealToPlayers(table);
+        PokerDeck dealer = table.getDealingDeck();
+        Hand comunitario = table.getTableHand();
         //printDeck(dealer);
         deal(dealer, comunitario, 5);
         System.out.println("Comunitario: \n" + comunitario);
-        //bestHand(ronda.getPlayerHand(0),comunitario);
-        printStandings(ronda);
-        compareHands(ronda);
-        printStandings(ronda);
+        //bestHand(table.getPlayerHand(0),comunitario);
+        printStandings(table);
+        compareHands(table);
+        printStandings(table);
         printTest();
         System.out.println("\u2620");
         //printHands();
