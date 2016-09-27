@@ -8,6 +8,8 @@ import tests.HandAnalyserTest;
 import data.*;
 import java.util.Collections;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static ui.UI.*;
 
 /**
@@ -138,6 +140,11 @@ public class GameEngine {
         printMsg("Player " + plyr.getId() + " adds " + bet + " to the pot!!\n");
         plyr.setCredits(plyr.getCredits() - bet);
         table.addToPot(bet);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public static void checkBet(Player plyr) {
@@ -151,8 +158,7 @@ public class GameEngine {
 
     public static void raiseBet(Player plyr, int bet) {
         if (bet < table.getMinBet()) {
-            printMsg("Raise must be higher than minimum bet");
-            printMsg("Minimum bet: " + table.getMinBet());
+            throw new IllegalArgumentException("Raise must be higher than minimum bet");
         } else {
             printMsg("Player " + plyr.getId() + " raises " + (bet - table.getMinBet()));
             table.setMinBet(bet);
@@ -187,14 +193,15 @@ public class GameEngine {
                     }
                     case 2: {
                         int raise = 0;
-                        while (raise < table.getMinBet()) {
+                        while (raise == 0) {
                             try {
                                 raise = askInt("Raise: ");
+                                raiseBet(table.getPlayer(0), raise);
                             } catch (Exception ex) {
+                                raise = 0;
                                 printError(ex);
                             }
                         }
-                        raiseBet(table.getPlayer(0), raise);
                         break;
                     }
                     case 3: {
@@ -206,7 +213,6 @@ public class GameEngine {
                         break;
                     }
                     case 5: {
-                        //retire
                         checkCommand("<Exit>", true);
                     }
                     default: {
@@ -227,7 +233,6 @@ public class GameEngine {
         table.addToPot(table.getMinBet() + table.getMinBet() / 2);
         fold(table.getPlayer(2));
         raiseBet(table.getPlayer(3), 75);
-
     }
 
     public static int holdCardsValue(Hand hand) {

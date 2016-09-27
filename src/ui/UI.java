@@ -42,7 +42,7 @@ public class UI {
         if ("Command".equals(ex.getMessage())) {
             return;
         }
-        ex.printStackTrace();
+        //ex.printStackTrace();
         System.out.print("Error: ");
         System.out.println(ex.getMessage());
     }
