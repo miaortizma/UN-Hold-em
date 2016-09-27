@@ -1,23 +1,27 @@
 package ui;
 
-import static businessLogic.GameEngine.checkCommand;
+import static business.GameEngine.checkCommand;
 import data.Player;
 import data.Table;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.Scanner;
 
 public class UI {
 
     private static final Scanner IN = new Scanner(System.in);
     private static String inputUI;
+    private static PrintStream sout;
+    private static ByteArrayOutputStream baos;
     private static final String COMMANDS = "\n"
             + "Type <Exit> at any time to exit \n"
             + "Type <Info> to know about this project\n"
             + "Type <Help> if you need some help\n"
             + "Type <Hands> to print Hands";
     static final String DECORATOR = "/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/";
-    public static final String DEALER = "D";
-    public static final String BIGBLIND = "\u0E4F";
-    public static final String LITTLEBLIND = "\u263B";
+    private static final String DEALER = "D";
+    private static final String BIGBLIND = "\u0E4F";
+    private static final String LITTLEBLIND = "\u263B";
 
     public static void printTest() {
         System.out.println(DEALER);
@@ -69,7 +73,6 @@ public class UI {
         System.out.println("You can match the bet, backing out, or check (pass) on your turn");
         System.out.println("bet more if you have a good hand in the game and win more points ");
         System.out.println(DECORATOR);
-        printHands();
     }
 
     public static void printHands() {
@@ -114,7 +117,7 @@ public class UI {
     }
 
     public static void printInfo() {
-        System.out.print("Developer Team :");
+        System.out.print("Developer Team: ");
         System.out.println("One Poker");
     }
 
@@ -212,6 +215,23 @@ public class UI {
 
     public static void printMsg(String msg) {
         System.out.println(msg);
+    }
+
+    public static Object[] redirectSout() {
+        // Create a stream to hold the output
+        baos = new ByteArrayOutputStream();
+        PrintStream ps = new PrintStream(baos);
+        // IMPORTANT: Save the old System.out!
+        sout = System.out;
+        // Tell Java to use your special stream
+        System.setOut(ps);
+        return new Object[]{sout, baos};
+    }
+
+    public static String getSout() {
+        System.out.flush();
+        System.setOut(sout);
+        return baos.toString();
     }
 
 }

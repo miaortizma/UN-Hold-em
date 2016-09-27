@@ -1,7 +1,7 @@
 package data;
 
-import static businessLogic.DeckFactory.createDealingDeck;
-import static businessLogic.DeckFactory.createHand;
+import static business.DeckFactory.createDealingDeck;
+import static business.DeckFactory.createHand;
 import java.util.ArrayList;
 import java.util.List;
 

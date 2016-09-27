@@ -23,6 +23,8 @@
  */
 package ui;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Miguel Angel
@@ -45,21 +47,111 @@ public class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        infoButton = new javax.swing.JButton();
+        helpButton = new javax.swing.JButton();
+        roundButton = new javax.swing.JButton();
+        handsButton = new javax.swing.JButton();
+        help2Button = new javax.swing.JButton();
+        logoLabel = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        infoButton.setText("Info");
+        infoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                infoButtonActionPerformed(evt);
+            }
+        });
+
+        helpButton.setText("Help");
+        helpButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                helpButtonActionPerformed(evt);
+            }
+        });
+
+        roundButton.setText("Start a Tournament");
+
+        handsButton.setText("Hands");
+        handsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                handsButtonActionPerformed(evt);
+            }
+        });
+
+        help2Button.setText("Never played Poker Before?");
+
+        logoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/resources/1c1ed759-6566-4336-b606-5d20ea841053.jpg"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(handsButton)
+                                .addGap(58, 58, 58))
+                            .addComponent(help2Button, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(109, 109, 109)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(infoButton)
+                            .addComponent(helpButton))
+                        .addGap(19, 19, 19))
+                    .addComponent(logoLabel))
+                .addGap(94, 94, 94))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(240, 240, 240)
+                .addComponent(roundButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(53, 53, 53)
+                .addComponent(logoLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(helpButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(infoButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(roundButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(handsButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(help2Button)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void infoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_infoButtonActionPerformed
+        // TODO add your handling code here:
+        UI.redirectSout();
+        UI.printInfo();
+        JOptionPane.showMessageDialog(rootPane, UI.getSout());
+    }//GEN-LAST:event_infoButtonActionPerformed
+
+    private void helpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpButtonActionPerformed
+        // TODO add your handling code here:
+        UI.redirectSout();
+        UI.printHelp();
+        JOptionPane.showMessageDialog(rootPane, UI.getSout());
+    }//GEN-LAST:event_helpButtonActionPerformed
+
+    private void handsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handsButtonActionPerformed
+        // TODO add your handling code here:
+        UI.redirectSout();
+        UI.printHands();
+        JOptionPane.showMessageDialog(rootPane, UI.getSout());
+    }//GEN-LAST:event_handsButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -97,5 +189,11 @@ public class GUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton handsButton;
+    private javax.swing.JButton help2Button;
+    private javax.swing.JButton helpButton;
+    private javax.swing.JButton infoButton;
+    private javax.swing.JLabel logoLabel;
+    private javax.swing.JButton roundButton;
     // End of variables declaration//GEN-END:variables
 }

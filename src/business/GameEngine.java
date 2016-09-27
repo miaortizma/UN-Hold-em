@@ -1,9 +1,9 @@
-package businessLogic;
+package business;
 
-import static businessLogic.DeckHelper.deal;
-import static businessLogic.DeckHelper.dealCard;
-import static businessLogic.DeckHelper.dealToPlayers;
-import static businessLogic.HandHelper.*;
+import static business.DeckHelper.deal;
+import static business.DeckHelper.dealCard;
+import static business.DeckHelper.dealToPlayers;
+import static business.HandHelper.*;
 import tests.HandAnalyserTest;
 import data.*;
 import java.util.Collections;

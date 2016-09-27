@@ -1,7 +1,7 @@
-package businessLogic;
+package business;
 
-import static businessLogic.DeckFactory.cloneHand;
-import static businessLogic.DeckFactory.createHand;
+import static business.DeckFactory.cloneHand;
+import static business.DeckFactory.createHand;
 import data.Card;
 import data.Hand;
 import java.util.ArrayList;

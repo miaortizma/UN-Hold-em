@@ -1,6 +1,6 @@
 package data;
 
-import static businessLogic.HandHelper.compare;
+import static business.HandHelper.compare;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

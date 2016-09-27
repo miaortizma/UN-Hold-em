@@ -1,6 +1,6 @@
-package businessLogic;
+package business;
 
-import static businessLogic.DeckHelper.shuffleDeck;
+import static business.DeckHelper.shuffleDeck;
 import data.Card;
 import data.Deck;
 import data.Hand;
