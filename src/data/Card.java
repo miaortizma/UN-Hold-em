@@ -1,5 +1,8 @@
 package data;
 
+import java.awt.Color;
+import java.awt.Graphics;
+
 /**
  *
  * @author OnePoker UN
@@ -14,13 +17,16 @@ public class Card implements Comparable<Card> {
         EIGHT(8), NINE(9), TEN(10), JACK(11), QUEEN(12), KING(13), ACE(14);
         private final int value;
         private static final String[] toString = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "Q", "K", "A"};
+
         public int getValue() {
             return this.value;
         }
+
         @Override
         public String toString() {
             return toString[value - 2];
         }
+
         CardRank(int value) {
             this.value = value;
         }
@@ -42,6 +48,24 @@ public class Card implements Comparable<Card> {
         @Override
         public String toString() {
             return toString[value];
+        }
+
+        public void paint(Graphics g, int x, int y) {
+            switch (this) {
+                case DIAMONDS: {
+                }
+                case HEARTS: {
+                    g.setColor(Color.red);
+                    g.drawString(toString(), x, y);
+                    break;
+                }
+                case CLUBS: {
+                }
+                case SPADES: {
+                    g.setColor(Color.black);
+                    g.drawString(toString(), x, y);
+                }
+            }
         }
 
         Suit(int value) {

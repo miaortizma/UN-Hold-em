@@ -6,6 +6,7 @@ import data.Table;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
+import java.util.function.Function;
 
 public class UI {
 

@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class Deck<T extends Card> {
 
-    private List<Card> deck;
+    private final List<Card> deck;
 
     public Deck() {
         deck = new ArrayList<>();
@@ -21,13 +21,6 @@ public class Deck<T extends Card> {
      */
     public List<Card> getDeck() {
         return deck;
-    }
-
-    /**
-     * @param deck the deck to set
-     */
-    public void setDeck(List<Card> deck) {
-        this.deck = deck;
     }
 
     public void addCard(Card c) {

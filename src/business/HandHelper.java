@@ -97,11 +97,12 @@ public class HandHelper {
      * @return bestHand the best hand that can be obtained from
      */
     public static Hand bestHand(Hand playerHand, Hand comunitary) {
-        Hand merge = createHand("array");
+
+        Hand merge = cloneHand(playerHand);
+        merge.addAll(comunitary);
+
         Hand bestHand = comunitary;
         bestHand.setRank(rankHand(bestHand));
-        merge.addAll(playerHand);
-        merge.addAll(comunitary);
 
         Hand temp = createHand("linked");
         temp.addAll(comunitary);
@@ -151,10 +152,8 @@ public class HandHelper {
         out = Integer.compare(hand.getRank().getValue(), anotherHand.getRank().getValue());
         if (out == 0) {
             switch (hand.getRank()) {
-                // 1 pair
-                case HIGHCARD:
-                //2 pair
                 case PAIR:
+                    return comparePair(hand, anotherHand);
                 case TWOPAIR:
                     return comparePair(hand, anotherHand);
                 case THREE:
