@@ -4,15 +4,18 @@ Welcome, this is  a Object Oriented implementation of a Poker Game, a project of
 Most important Progress:
 - Poker Hand Calculator (Props to: @subskybox)
 - Poker Hand Comparator
+- Poker Round Simulation
+- Poker Tournamente Simulation
 
-Authors:
-- Miguel Angel miaortizma@unal.edu.co
+To Do:
+- AI
+- GUI
 
-Course Info:
-- Object Oriented Programming (2016375) / 2016-2. https://sites.google.com/site/oopunal20162/contents
-- Professor: Ing. Sebastian Alejandro Velasco Dimate savelascod@unal.edu.co
+info:
+ - Miguel Angel miaortizma@unal.edu.co
+ - Object Oriented Programming (2016375) / 2016-2. https://sites.google.com/site/oopunal20162/contents
 
-- References:
+References:
 @subskybox
 http://www.codeproject.com/Articles/569271/A-Poker-hand-analyzer-in-JavaScript-using-bit-math
 @Aracurunir
