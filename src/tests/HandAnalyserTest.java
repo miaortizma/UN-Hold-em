@@ -1,14 +1,13 @@
 package tests;
 
-import static businessLogic.DeckHelper.deal;
-import static businessLogic.DeckHelper.dealToPlayers;
-import static businessLogic.GameEngine.compareHands;
-import data.PokerDeck;
+import static business.GameEngine.compareHands;
+import data.Deck;
 import data.Hand;
 import data.Table;
 import static ui.UI.printStandings;
 import static ui.UI.printTest;
-import static businessLogic.DeckHelper.deal;
+import static business.DeckHelper.deal;
+import static business.DeckHelper.dealToPlayers;
 
 /**
  *
@@ -20,7 +19,7 @@ public class HandAnalyserTest {
 
         Table table = new Table();
         dealToPlayers(table);
-        PokerDeck dealer = table.getDealingDeck();
+        Deck dealer = table.getDealingDeck();
         Hand comunitario = table.getTableHand();
         //printDeck(dealer);
         deal(dealer, comunitario, 5);

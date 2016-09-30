@@ -1,52 +1,18 @@
-package businessLogic;
+package business;
 
-import static businessLogic.DeckFactory.cloneHand;
-import static businessLogic.DeckFactory.createHand;
-import data.Deck;
+import static business.DeckFactory.cloneHand;
+import static business.DeckFactory.createHand;
 import data.Card;
-import data.PokerDeck;
 import data.Hand;
-import data.Player;
-import data.Table;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
-import static ui.UI.printMsg;
 
 /**
  *
  * @author OnePoker UN Estudiante
  */
-public class DeckHelper {
-
-    public static final String[] HANDS = {"4 of a Kind", "Straight Flush", "Straight", "Flush", "High Card", "1 Pair", "2 Pair", "Royal Flush", "3 of a Kind", "Full House"};
-    public static final HashMap<String, Integer> RANKS = new HashMap<>();
-
-    //maps HANDS into RANKS
-    static {
-        //HIGH CARD
-        RANKS.put(HANDS[4], 0);
-        //1 PAIR
-        RANKS.put(HANDS[5], 1);
-        //2 PAIR
-        RANKS.put(HANDS[6], 2);
-        //ROYAL FLUSH
-        RANKS.put(HANDS[7], 9);
-        //STRAIGHT
-        RANKS.put(HANDS[2], 4);
-        //FLUSH
-        RANKS.put(HANDS[3], 5);
-        //FULL HOUSE
-        RANKS.put(HANDS[9], 6);
-        //4 OF A KIND
-        RANKS.put(HANDS[0], 7);
-        //STRAIGHT FLUSH
-        RANKS.put(HANDS[1], 8);
-        //3 OF A KIND
-        RANKS.put(HANDS[8], 3);
-    }
+public class HandHelper {
 
     /**
      * Reference Author @subskybox See
@@ -58,8 +24,9 @@ public class DeckHelper {
      * RoyalFlush
      *
      * @param hand
+     * @return
      */
-    public static void rankHand(Hand hand) {
+    public static Hand.HandRank rankHand(Hand hand) {
         int[] ranks = hand.getCardRanks();
         int[] suits = hand.getCardSuits();
         long s = 0, v = 0, o;
@@ -70,8 +37,41 @@ public class DeckHelper {
         }
         v = v % 15 - ((s / (s & -s) == 31) || (s == 0x403c) ? 3 : 1);
         v -= (allEqual(suits) ? 1 : 0) * ((s == 0x7c00) ? -5 : 1);
-        hand.setRankName(HANDS[(int) v]);
-        hand.setRank(RANKS.get(HANDS[(int) v]));
+        switch ((int) v) {
+            case 4: {
+                return Hand.HandRank.HIGHCARD;
+            }
+            case 5: {
+                return Hand.HandRank.PAIR;
+            }
+            case 6: {
+                return Hand.HandRank.TWOPAIR;
+            }
+            case 7: {
+                return Hand.HandRank.ROYAL;
+            }
+            case 2: {
+                return Hand.HandRank.STRAIGHT;
+            }
+            case 3: {
+                return Hand.HandRank.FLUSH;
+            }
+            case 9: {
+                return Hand.HandRank.FULLHOUSE;
+            }
+            case 0: {
+                return Hand.HandRank.FOUR;
+            }
+            case 1: {
+                return Hand.HandRank.STRAIGHTFLUSH;
+            }
+            case 8: {
+                return Hand.HandRank.THREE;
+            }
+            default: {
+                throw new Error();
+            }
+        }
     }
 
     public static boolean allEqual(int[] x) {
@@ -97,11 +97,12 @@ public class DeckHelper {
      * @return bestHand the best hand that can be obtained from
      */
     public static Hand bestHand(Hand playerHand, Hand comunitary) {
-        Hand merge = createHand("array");
-        Hand bestHand = comunitary;
-        rankHand(bestHand);
-        merge.addAll(playerHand);
+
+        Hand merge = cloneHand(playerHand);
         merge.addAll(comunitary);
+
+        Hand bestHand = comunitary;
+        bestHand.setRank(rankHand(bestHand));
 
         Hand temp = createHand("linked");
         temp.addAll(comunitary);
@@ -115,7 +116,7 @@ public class DeckHelper {
                     }
                 }
                 Collections.sort(temp.getCards());
-                rankHand(temp);
+                temp.setRank(rankHand(temp));
                 bestHand = compare(bestHand, temp) > 0 ? bestHand : cloneHand(temp);
                 cardSelected = 0;
             }
@@ -130,7 +131,7 @@ public class DeckHelper {
      * @return
      */
     public static boolean isSuitedConnector(Hand hand) {
-        if (hand.getSize() == 2) {
+        if (hand.size() == 2) {
             int[] suits = hand.getCardSuits();
             int[] ranks = hand.getCardRanks();
             return (suits[0] == suits[1]) && ((ranks[0] == (ranks[1] - 1)));
@@ -148,17 +149,16 @@ public class DeckHelper {
      */
     public static int compare(Hand hand, Hand anotherHand) {
         int out;
-        out = Integer.compare(hand.getRank(), anotherHand.getRank());
+        out = Integer.compare(hand.getRank().getValue(), anotherHand.getRank().getValue());
         if (out == 0) {
             switch (hand.getRank()) {
-                // 1 pair
-                case 1:
-                //2 pair
-                case 2:
+                case PAIR:
                     return comparePair(hand, anotherHand);
-                case 3:
+                case TWOPAIR:
+                    return comparePair(hand, anotherHand);
+                case THREE:
                     return compareThree(hand, anotherHand);
-                case 6:
+                case FULLHOUSE:
                     return compareThree(hand, anotherHand);
                 default:
                     int thisHighCard = highCard(hand);
@@ -179,7 +179,7 @@ public class DeckHelper {
      */
     public static int highCard(Hand hand) {
         int maxCard = hand.getCard(0).getValue();
-        for (int i = 1; i < hand.getSize(); i++) {
+        for (int i = 1; i < hand.size(); i++) {
             maxCard = hand.getCard(i).getValue() > maxCard ? hand.getCard(i).getValue() : maxCard;
         }
         return maxCard;
@@ -233,11 +233,11 @@ public class DeckHelper {
      */
     public static int comparePair(Hand hand, Hand anotherHand) {
         int out;
-        int thisPair = highestPair(hand, hand.getSize());
-        int anotherPair = highestPair(anotherHand, hand.getSize());
+        int thisPair = highestPair(hand, hand.size());
+        int anotherPair = highestPair(anotherHand, hand.size());
         out = Integer.compare(thisPair, anotherPair);
         if (out == 0) {
-            if (hand.getRank() == 2) {
+            if (hand.getRank() == Hand.HandRank.TWOPAIR) {
                 thisPair = highestPair(hand, 3);
                 anotherPair = highestPair(anotherHand, 3);
                 out = Integer.compare(thisPair, anotherPair);
@@ -262,8 +262,8 @@ public class DeckHelper {
      */
     public static int compareThree(Hand hand, Hand anotherHand) {
         int out;
-        int thisThree = highestThree(hand, hand.getSize());
-        int anotherThree = highestThree(anotherHand, hand.getSize());
+        int thisThree = highestThree(hand, hand.size());
+        int anotherThree = highestThree(anotherHand, hand.size());
         out = Integer.compare(thisThree, anotherThree);
         if (out == 0) {
             return compareKickers(hand, anotherHand, thisThree);
@@ -303,7 +303,7 @@ public class DeckHelper {
     public static int kicker(Hand hand, List<Integer> filter) {
         //if kicker returns -1 then no comparation was made, then compareKickers should terminate
         int kicker = -1;
-        for (int i = 0; i < hand.getSize(); i++) {
+        for (int i = 0; i < hand.size(); i++) {
             Card temp = hand.getCard(i);
             if (temp.getValue() > kicker && !filter.contains(temp.getValue())) {
                 kicker = temp.getValue();
@@ -312,46 +312,4 @@ public class DeckHelper {
         filter.add(kicker);
         return kicker;
     }
-
-    public static void burnCard(Deck deck) {
-        //System.out.println("Card burned!");
-        deck.pop();
-    }
-
-    public static Card deal(PokerDeck deck) {
-        if (deck.getCards().isEmpty()) {
-            throw new IllegalArgumentException("Empty deck", null);
-        }
-        return (Card) deck.getCards().remove(deck.getSize() - 1);
-    }
-
-    public static void deal(PokerDeck deck, Hand mano, int i) {
-        for (int j = 0; j < i; j++) {
-            mano.addCard(deal(deck));
-        }
-    }
-
-    public static void dealToPlayers(Table round) {
-        List<Player> players = round.getPlayers();
-        PokerDeck deck = round.getDealingDeck();
-        for (int i = 0; i < players.size(); i++) {
-            Player player = players.get(i);
-            deal(deck, player.getHand(), 2);
-        }
-    }
-
-    public static void shuffleDeck(PokerDeck deck) {
-        deck.setShuffled(true);
-        Random rnd = new Random();
-        List<Card> cards = deck.getCards();
-        int index;
-        Card temp;
-        for (int i = cards.size() - 1; i > 0; i--) {
-            index = rnd.nextInt(i + 1);
-            temp = cards.get(index);
-            cards.set(index, cards.get(i));
-            cards.set(i, temp);
-        }
-    }
-
 }

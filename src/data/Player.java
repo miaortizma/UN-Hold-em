@@ -1,6 +1,6 @@
 package data;
 
-import static businessLogic.DeckFactory.createHand;
+import static business.DeckFactory.createHand;
 
 /**
  *

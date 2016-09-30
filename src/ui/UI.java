@@ -1,25 +1,28 @@
 package ui;
 
-import static businessLogic.GameEngine.checkCommand;
+import static business.GameEngine.checkCommand;
 import data.Player;
 import data.Table;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.Scanner;
+import java.util.function.Function;
 
 public class UI {
 
     private static final Scanner IN = new Scanner(System.in);
     private static String inputUI;
+    private static PrintStream sout;
+    private static ByteArrayOutputStream baos;
     private static final String COMMANDS = "\n"
             + "Type <Exit> at any time to exit \n"
             + "Type <Info> to know about this project\n"
             + "Type <Help> if you need some help\n"
             + "Type <Hands> to print Hands";
-    public static final String[] RANKS = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
-    public static final String[] SUITS = {"\u2660", "\u2663", "\u2764", "\u2666"};
     static final String DECORATOR = "/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/";
-    public static final String DEALER = "D";
-    public static final String BIGBLIND = "\u0E4F";
-    public static final String LITTLEBLIND = "\u263B";
+    private static final String DEALER = "D";
+    private static final String BIGBLIND = "\u0E4F";
+    private static final String LITTLEBLIND = "\u263B";
 
     public static void printTest() {
         System.out.println(DEALER);
@@ -44,7 +47,7 @@ public class UI {
         if ("Command".equals(ex.getMessage())) {
             return;
         }
-        ex.printStackTrace();
+        //ex.printStackTrace();
         System.out.print("Error: ");
         System.out.println(ex.getMessage());
     }
@@ -71,7 +74,6 @@ public class UI {
         System.out.println("You can match the bet, backing out, or check (pass) on your turn");
         System.out.println("bet more if you have a good hand in the game and win more points ");
         System.out.println(DECORATOR);
-        printHands();
     }
 
     public static void printHands() {
@@ -106,8 +108,8 @@ public class UI {
         }
     }
 
-    public static void printRoundMenu(Table table) {
-        System.out.println("(1) Check (" + table.getMinBet() + ")\t (2) Raise  \t (3) Fold \t (4) All in \t (5) Retire");
+    public static void printRoundMenu() {
+        System.out.println("(1) Check \t (2) Raise  \t (3) Fold \t (4) All in \t (5) Retire");
 
     }
 
@@ -116,7 +118,7 @@ public class UI {
     }
 
     public static void printInfo() {
-        System.out.print("Developer Team :");
+        System.out.print("Developer Team: ");
         System.out.println("One Poker");
     }
 
@@ -147,6 +149,7 @@ public class UI {
     }
 
     public static void printStandings(Table table) {
+        System.out.println("Tournament Standings: ");
         for (int i = 0; i < 8; i++) {
             if (table.getSeats()[i] != null) {
                 System.out.println(table.getSeats()[i]);
@@ -207,11 +210,29 @@ public class UI {
         System.out.println("***********************");
         System.out.println("Cards\tCredits");
         System.out.println(table.getPlayerHand(0) + "\t" + table.getPlayer(0).getCredits());
+        System.out.println("Minimum bet: " + table.getMinBet());
         System.out.println("***********************");
     }
 
     public static void printMsg(String msg) {
         System.out.println(msg);
+    }
+
+    public static Object[] redirectSout() {
+        // Create a stream to hold the output
+        baos = new ByteArrayOutputStream();
+        PrintStream ps = new PrintStream(baos);
+        // IMPORTANT: Save the old System.out!
+        sout = System.out;
+        // Tell Java to use your special stream
+        System.setOut(ps);
+        return new Object[]{sout, baos};
+    }
+
+    public static String getSout() {
+        System.out.flush();
+        System.setOut(sout);
+        return baos.toString();
     }
 
 }
