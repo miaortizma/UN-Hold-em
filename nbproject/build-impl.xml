@@ -344,7 +344,7 @@ is divided into following sections:
                     <globmapper from="*.java" to="*.class"/>
                 </pathconvert>
                 <tempfile deleteonexit="true" property="javac.includesfile.binary"/>
-                <echo file="${javac.includesfile.binary}" Msg="${javac.includes.binary}"/>
+                <echo file="${javac.includesfile.binary}" Message="${javac.includes.binary}"/>
                 <delete>
                     <files includesfile="${javac.includesfile.binary}"/>
                 </delete>

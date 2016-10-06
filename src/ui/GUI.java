@@ -23,7 +23,6 @@
  */
 package ui;
 
-import business.GameEngine;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.function.Function;
@@ -180,7 +179,6 @@ public class GUI extends javax.swing.JFrame {
 
     private void roundButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roundButtonActionPerformed
         // TODO add your handling code here:
-        GameEngine.startGame();
     }//GEN-LAST:event_roundButtonActionPerformed
 
     private void infoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_infoButtonActionPerformed

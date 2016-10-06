@@ -1,5 +1,7 @@
 package business;
 
+import static business.AI.all;
+import static business.AI.raise;
 import static business.DeckHelper.deal;
 import static business.DeckHelper.dealCard;
 import static business.DeckHelper.dealToPlayers;
@@ -11,6 +13,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static ui.UI.*;
+import static business.AI.call;
 
 /**
  *
@@ -22,8 +25,32 @@ public class GameEngine {
     public static Random RND;
     private static GameEngine instance;
     private static Table table;
+    private static int handCount;
+    private static int j;
+
+    /**
+     * @return the handCount
+     */
+    public static int getHandCount() {
+        return handCount;
+    }
+
+    /**
+     * @param aHandCount the handCount to set
+     */
+    public static void setHandCount(int aHandCount) {
+        handCount = aHandCount;
+    }
+
+    /**
+     * @return the table
+     */
+    public static Table getTable() {
+        return table;
+    }
 
     private GameEngine() {
+
         Random RND = new Random();
     }
 
@@ -31,6 +58,7 @@ public class GameEngine {
         if (instance == null) {
             instance = new GameEngine();
         }
+        setHandCount(0);
         return instance;
     }
 
@@ -47,18 +75,19 @@ public class GameEngine {
         printWelcome();
         while (true) {
             try {
-                printMainMenu(table);
+                printMainMenu(getTable());
                 menu = askInt("\nOption: ");
                 if (menu < 1 || menu > 4) {
                     throw new IllegalArgumentException("Not a menu option");
                 }
                 switch (menu) {
                     case 1: {
-                        if (table == null) {
+                        if (getTable() == null) {
                             table = new Table();
                         } else {
-                            table = new Table(table);
+                            table = new Table(getTable());
                         }
+                        setHandCount(getHandCount() + 1);
                         playRound();
                         break;
                     }
@@ -71,7 +100,7 @@ public class GameEngine {
                         break;
                     }
                     case 4: {
-                        checkCommand("<Exit>", true);
+                        checkCommand("Exit", true);
                     }
                     default: {
                         throw new IllegalArgumentException("Not a valid command");
@@ -98,29 +127,29 @@ public class GameEngine {
      */
     public static boolean checkCommand(String input, boolean print) {
         switch (input) {
-            case "<Exit>": {
+            case "Exit": {
                 if (print) {
                     printExit();
                 }
                 System.exit(0);
             }
-            case "<Info>": {
+            case "Info": {
                 if (print) {
                     printInfo();
                 }
                 return true;
             }
-            case "<Help>": {
+            case "Help": {
                 if (print) {
                     printHelp();
                 }
                 return true;
             }
-            case "<Test>": {
+            case "Test": {
                 HandAnalyserTest.test();
                 return true;
             }
-            case "<Hands>": {
+            case "Hands": {
                 printHands();
                 return true;
             }
@@ -138,8 +167,12 @@ public class GameEngine {
      */
     public static void addBet(Player plyr, int bet) {
         printMsg("Player " + plyr.getId() + " adds " + bet + " to the pot!!\n");
+        if (bet > plyr.getCredits()) {
+            allIn(plyr);
+            //throw new IllegalArgumentException("Bet is higher than player credits");
+        }
         plyr.setCredits(plyr.getCredits() - bet);
-        table.addToPot(bet);
+        getTable().addToPot(bet);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException ex) {
@@ -147,33 +180,36 @@ public class GameEngine {
         }
     }
 
-    public static void checkBet(Player plyr) {
-        if (plyr.getCredits() > table.getMinBet()) {
-            printMsg("Player " + plyr.getId() + " Checks");
-            addBet(plyr, table.getMinBet());
+    public static void callBet(Player plyr) {
+        if (plyr.getCredits() > getTable().getMinBet()) {
+            printMsg("Player " + plyr.getId() + " Calls");
+            addBet(plyr, getTable().getMinBet());
         } else {
             allIn(plyr);
         }
     }
 
     public static void raiseBet(Player plyr, int bet) {
-        if (bet < table.getMinBet()) {
+        if (bet <= getTable().getMinBet()) {
             throw new IllegalArgumentException("Raise must be higher than minimum bet");
         } else {
-            printMsg("Player " + plyr.getId() + " raises " + (bet - table.getMinBet()));
-            table.setMinBet(bet);
+            printMsg("Player " + plyr.getId() + " raises " + (bet - getTable().getMinBet()));
+            getTable().setMinBet(bet);
             addBet(plyr, bet);
         }
     }
 
     public static void fold(Player plyr) {
         plyr.setElo(plyr.getElo() - 10);
-        table.removePlayer(plyr);
+        getTable().removePlayer(plyr);
+        j--;
         printMsg("Player " + plyr.getId() + " folds\n");
     }
 
     public static void allIn(Player plyr) {
         printMsg("Player " + plyr.getId() + " goes all in!!");
+        plyr.setAllIn(true);
+        getTable().setMinBet(plyr.getCredits() + getTable().getMinBet());
         addBet(plyr, plyr.getCredits());
     }
 
@@ -184,11 +220,12 @@ public class GameEngine {
                 printRoundMenu();
                 menu = askInt("Option: ");
                 if (menu < 1 || menu > 5) {
+                    menu = 0;
                     throw new IllegalArgumentException("Not a menu option");
                 }
                 switch (menu) {
                     case 1: {
-                        checkBet(table.getPlayer(0));
+                        callBet(getTable().getPlayer(0));
                         break;
                     }
                     case 2: {
@@ -196,7 +233,7 @@ public class GameEngine {
                         while (raise == 0) {
                             try {
                                 raise = askInt("Raise: ");
-                                raiseBet(table.getPlayer(0), raise);
+                                raiseBet(getTable().getPlayer(0), raise);
                             } catch (Exception ex) {
                                 raise = 0;
                                 printError(ex);
@@ -205,15 +242,15 @@ public class GameEngine {
                         break;
                     }
                     case 3: {
-                        fold(table.getPlayer(0));
+                        fold(getTable().getPlayer(0));
                         break;
                     }
                     case 4: {
-                        allIn(table.getPlayer(0));
+                        allIn(getTable().getPlayer(0));
                         break;
                     }
                     case 5: {
-                        checkCommand("<Exit>", true);
+                        checkCommand("Exit", true);
                     }
                     default: {
                         throw new IllegalArgumentException("Not a valid command", null);
@@ -227,32 +264,59 @@ public class GameEngine {
     }
 
     public static void preFlop() {
-        printMsg("Big blind and small blind open the betting round ");
-        addBet(table.getPlayer(0), table.getMinBet() / 2);
-        addBet(table.getPlayer(1), table.getMinBet());
-        table.addToPot(table.getMinBet() + table.getMinBet() / 2);
-        fold(table.getPlayer(2));
-        raiseBet(table.getPlayer(3), 75);
+        printMsg("Big blind and small blind open the betting round (Forced bets)");
+        addBet(getTable().getPlayer(0), getTable().getMinBet() / 2);
+        addBet(getTable().getPlayer(1), getTable().getMinBet());
     }
 
     public static int holdCardsValue(Hand hand) {
-        return 0;
+        int[] rank = hand.getCardRanks();
+        int[] suit = hand.getCardSuits();
+        int value = rank[0] + rank[1];
+        if (suit[0] == suit[1]) {
+            value += 3;
+        }
+        if (rank[1] - rank[0] == 2 || rank[0] - rank[1] == 2) {
+            value += 2;
+        }
+        if (rank[1] - rank[0] == 1 || rank[0] - rank[1] == 1) {
+            value += 3;
+        }
+        if (rank[1] - rank[0] == 0 || rank[0] - rank[1] == 0) {
+            value += 3;
+        }
+        return value;
     }
 
     public static void getPlayerOption(Player plyr) {
         if (plyr.getCredits() <= 0) {
-            printMsg("Player " + plyr.getId() + " Retires...");
-            for (int i = 0; i < 8; i++) {
-                if (plyr == table.getSeats()[i]) {
-                    table.getSeats()[i] = null;
-                    table.removePlayer(plyr);
+            if (!plyr.isAllIn()) {
+                for (int i = 0; i < 8; i++) {
+                    if (plyr == getTable().getSeats()[i]) {
+                        table.getSeats()[i] = null;
+                        getTable().removePlayer(plyr);
+                    }
                 }
+                printMsg("Player " + plyr.getId() + " Retires...");
+            } else {
+                printMsg("Player " + plyr.getId() + " Is all in...");
             }
+
         } else if (plyr.isHumanPlayer()) {
             roundMenu();
+            return;
+        }
+        int handValue = holdCardsValue(plyr.getHand());
+        if (handValue <= 26 && getTable().getMinBet() > plyr.getCredits()) {
+            fold(plyr);
+        } else if (all(plyr, getTable()) && handValue > 26) {
+            allIn(plyr);
+        } else if (raise(plyr, getTable()) && handValue > 14) {
+            raiseBet(plyr, plyr.getCredits() / 10 + getTable().getMinBet());
+        } else if (call(plyr, getTable()) && handValue >= 4) {
+            callBet(plyr);
         } else {
-            int handValue = holdCardsValue(plyr.getHand());
-            checkBet(plyr);
+            fold(plyr);
         }
     }
 
@@ -264,44 +328,67 @@ public class GameEngine {
      *
      */
     public static void playRound() {
-        Deck dealingDeck = table.getDealingDeck();
-        Hand tableHand = table.getTableHand();
+        Deck dealingDeck = getTable().getDealingDeck();
+        Hand tableHand = getTable().getTableHand();
         dealCard(dealingDeck);
-        table.getPlayer(0).setHumanPlayer(true);
-        dealToPlayers(table);
-        printMsg("Dealt hold cards(You are player " + table.getPlayer(0).getId() + ")");
-        printUser(table);
+        getTable().getPlayer(0).setHumanPlayer(true);
+        dealToPlayers(getTable());
+        printMsg("Dealt hold cards(You are player " + getTable().getPlayer(0).getId() + ")");
+        printUser(getTable());
         preFlop();
         for (int i = 0; i < 3; i++) {
             switch (i) {
                 case 0: {
                     printMsg("The flop:");
                     deal(dealingDeck, tableHand, 3);
-                    printMsg(table.getTableHand() + "\n");
+                    printMsg(getTable().getTableHand() + "\n");
                     break;
                 }
                 case 1: {
                     printMsg("The turn:");
                     deal(dealingDeck, tableHand, 1);
-                    printMsg(table.getTableHand() + "\n");
+                    printMsg(getTable().getTableHand() + "\n");
                     break;
                 }
                 case 2: {
                     printMsg("The river:");
                     deal(dealingDeck, tableHand, 1);
-                    printMsg(table.getTableHand() + "\n");
+                    printMsg(getTable().getTableHand() + "\n");
                     break;
                 }
             }
-            printUser(table);
-            for (int j = 0; j < 8; j++) {
-                if (table.getSeats()[j] != null) {
-                    getPlayerOption(table.getSeats()[j]);
+            printUser(getTable());
+            if (getTable().getPlayersSize() == 1) {
+                break;
+            }
+            for (j = 0; j < getTable().getPlayersSize(); j++) {
+                if (getTable().getSeats()[j].isAllIn()) {
+                    printMsg("Player " + getTable().getSeats()[j].getId() + " is all in...\n");
+                } else {
+                    getPlayerOption(getTable().getPlayer(j));
                 }
             }
         }
         dealRewards();
-        printStandings(table);
+        printStandings(getTable());
+        if (getTable().getSeats()[0].getCredits() == 0) {
+            printMsg("You ran out of credits!!, better luck next time");
+            checkCommand("Exit", true);
+        }
+        int count = 0;
+        Player X = null;
+        for (int i = 0; i < 8; i++) {
+            if (table.getSeats()[i] != null) {
+                count++;
+            }else{
+            X = table.getSeats()[i];
+            }
+        }
+        if (count == 1) {
+            printMsg("Player " + X.getId() +  "wins ");
+            checkCommand("Exit", true);
+            
+        }
     }
 
     /**
@@ -327,26 +414,38 @@ public class GameEngine {
      *
      */
     public static void dealRewards() {
-        compareHands(table);
-        printRoundStandings(table);
-        if (table.getPlayer(1).compareTo(table.getPlayer(0)) == 0) {
-            Player tie1 = table.getPlayer(0);
-            Player tie2 = table.getPlayer(1);
-            tie1.setCredits(tie1.getCredits() + table.getPot() / 2);
-            tie2.setCredits(tie2.getCredits() + table.getPot() / 2);
+        if (!(table.getPlayersSize() == 1)) {
+            compareHands(getTable());
+        }
+        printRoundStandings(getTable());
+        if (getTable().getPlayersSize() == 1) {
+            Player winner = getTable().getPlayer(0);
+            winner.setCredits(winner.getCredits() + getTable().getPot());
+            winner.setElo(winner.getElo() + 25);
+            for (int i = 1; i < getTable().getPlayersSize(); i++) {
+                getTable().getPlayer(i).setElo(getTable().getPlayer(i).getElo() - 5);
+            }
+            getTable().setPot(0);
+            return;
+        }
+        if (getTable().getPlayer(1).compareTo(getTable().getPlayer(0)) == 0) {
+            Player tie1 = getTable().getPlayer(0);
+            Player tie2 = getTable().getPlayer(1);
+            tie1.setCredits(tie1.getCredits() + getTable().getPot() / 2);
+            tie2.setCredits(tie2.getCredits() + getTable().getPot() / 2);
             tie1.setElo(tie1.getElo() + 10);
             tie2.setElo(tie2.getElo() + 10);
-            for (int i = 2; i < table.getPlayersSize(); i++) {
-                table.getPlayer(i).setElo(table.getPlayer(i).getElo() - 5);
+            for (int i = 2; i < getTable().getPlayersSize(); i++) {
+                getTable().getPlayer(i).setElo(getTable().getPlayer(i).getElo() - 5);
             }
         } else {
-            Player winner = table.getPlayer(0);
-            winner.setCredits(winner.getCredits() + table.getPot());
+            Player winner = getTable().getPlayer(0);
+            winner.setCredits(winner.getCredits() + getTable().getPot());
             winner.setElo(winner.getElo() + 25);
-            for (int i = 1; i < table.getPlayersSize(); i++) {
-                table.getPlayer(i).setElo(table.getPlayer(i).getElo() - 5);
+            for (int i = 1; i < getTable().getPlayersSize(); i++) {
+                getTable().getPlayer(i).setElo(getTable().getPlayer(i).getElo() - 5);
             }
         }
-        table.setPot(0);
+        getTable().setPot(0);
     }
 }

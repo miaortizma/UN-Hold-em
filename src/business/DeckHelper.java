@@ -41,7 +41,7 @@ public class DeckHelper {
         if (deck.getDeck().isEmpty()) {
             throw new IllegalArgumentException("Empty deck", null);
         }
-        return (Card)deck.getDeck().remove(deck.getDeck().size() - 1);
+        return (Card) deck.getDeck().remove(deck.getDeck().size() - 1);
     }
 
     public static void deal(Deck deck, Hand mano, int i) {
@@ -65,7 +65,7 @@ public class DeckHelper {
         Card temp;
         for (int i = deck.size() - 1; i > 0; i--) {
             index = rnd.nextInt(i + 1);
-            temp = deck.getCard(i);
+            temp = deck.getCard(index);
             deck.set(index, deck.getCard(i));
             deck.set(i, temp);
         }
