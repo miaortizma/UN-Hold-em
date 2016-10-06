@@ -1,12 +1,12 @@
 package ui;
 
+import business.GameEngine;
 import static business.GameEngine.checkCommand;
 import data.Player;
 import data.Table;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
-import java.util.function.Function;
 
 public class UI {
 
@@ -15,10 +15,10 @@ public class UI {
     private static PrintStream sout;
     private static ByteArrayOutputStream baos;
     private static final String COMMANDS = "\n"
-            + "Type <Exit> at any time to exit \n"
-            + "Type <Info> to know about this project\n"
-            + "Type <Help> if you need some help\n"
-            + "Type <Hands> to print Hands";
+            + "Type Exit at any time to exit \n"
+            + "Type Info to know about this project\n"
+            + "Type Help if you need some help\n"
+            + "Type Hands to print Hands";
     static final String DECORATOR = "/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/";
     private static final String DEALER = "D";
     private static final String BIGBLIND = "\u0E4F";
@@ -100,7 +100,7 @@ public class UI {
     }
 
     public static void printMainMenu(Table table) {
-        System.out.println("ººººººººMenuºººººººº ");
+        System.out.println("\nººººººººMenuºººººººº ");
         if (table != null) {
             System.out.println("(1) Play next Hand \t (2) Never played poker before? \t (3) Command List\n(4) Retire");
         } else {
@@ -109,7 +109,10 @@ public class UI {
     }
 
     public static void printRoundMenu() {
-        System.out.println("(1) Check \t (2) Raise  \t (3) Fold \t (4) All in \t (5) Retire");
+        //   if (GameEngine.getTable().isOpenBet()) {
+        System.out.println("\n(1) Call \t (2) Raise  \t (3) Fold \t (4) All in \t (5) Retire");
+        //     } else {
+        //           System.out.println("\n(1) Check \t (2) Call \t (3) Raise  \n (4) Fold \t (5) All in \t (6) Retire");
 
     }
 
@@ -118,6 +121,14 @@ public class UI {
     }
 
     public static void printInfo() {
+        System.out.println("Wellcome,");
+        System.out.println("This is a Object Oriented Implementation of a Poker Game,");
+        System.out.println("a project of students of Universidad Nacional de Colombia Project.");
+        System.out.println("\t" + "Authors:");
+        System.out.println("Miguel Angel Ortiz \t miaortizma@unal.edu.co\n Diana Carolina Guarin \t dcguarina@unal.edu.co \n Daniel Organista Calderon \t jodorganistaca@unal.edu.co");
+        System.out.println("\t Course Info:");
+        System.out.println("Object Oriented Programming (2016375)/ 2016-2 \n https://sites.google.com/site/oopunal20162/contents");
+        System.out.println("Teacher: Ing. Sebastian Alejandro Velasco Dimate \n savelascod@unal.edu.co");
         System.out.print("Developer Team: ");
         System.out.println("One Poker");
     }
@@ -133,19 +144,25 @@ public class UI {
         System.out.println("Each player can form a \"Best hand\" combining his cards with the comunitary hand");
         System.out.println("The player(s) with the best hand wins");
 
-        System.out.println("\nRound Standings(from best to worst):");
+        System.out.println("\nRound " + GameEngine.getHandCount() + " Standings(from best to worst):");
         for (Player plyr : table.getPlayers()) {
             System.out.println("Player " + plyr.getId() + " - " + plyr.getHand().toString());
         }
-        System.out.println("");
+        System.out.println("Round pot: " + table.getPot() + "\n");
+        if (table.getPlayersSize() == 1) {
+            System.out.print("Winner: ");
+            System.out.println("Player " + table.getPlayer(0).getId());
+            return;
+        }
         if (table.getPlayer(1).compareTo(table.getPlayer(0)) == 0) {
             System.out.println("Tie");
-            System.out.println("Player " + table.getPlayer(0).getId() + " wins (" + (int) table.getPot() / 2 + ")");
-            System.out.println("Player " + table.getPlayer(1).getId() + " wins (" + (int) table.getPot() / 2 + ")");
+            System.out.println("Player " + table.getPlayer(0).getId());
+            System.out.println("Player " + table.getPlayer(1).getId());
         } else {
-            System.out.println("Player " + table.getPlayer(0).getId() + " wins (" + (int) table.getPot() + ")");
+            System.out.print("Winner: ");
+            System.out.println("Player " + table.getPlayer(0).getId());
         }
-        System.out.println("\nType <Hands> to check how Hand are ranked\n");
+        System.out.println("\nType Hands to check how Hand are ranked\n");
     }
 
     public static void printStandings(Table table) {
@@ -211,6 +228,7 @@ public class UI {
         System.out.println("Cards\tCredits");
         System.out.println(table.getPlayerHand(0) + "\t" + table.getPlayer(0).getCredits());
         System.out.println("Minimum bet: " + table.getMinBet());
+        System.out.println("Pot: " + table.getPot());
         System.out.println("***********************");
     }
 
@@ -219,12 +237,9 @@ public class UI {
     }
 
     public static Object[] redirectSout() {
-        // Create a stream to hold the output
         baos = new ByteArrayOutputStream();
         PrintStream ps = new PrintStream(baos);
-        // IMPORTANT: Save the old System.out!
         sout = System.out;
-        // Tell Java to use your special stream
         System.setOut(ps);
         return new Object[]{sout, baos};
     }

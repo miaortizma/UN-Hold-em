@@ -43,4 +43,12 @@ public class Deck<T extends Card> {
         deck.set(i, c);
     }
 
+    @Override
+    public String toString() {
+        String out = "";
+        for (int i = 0; i < deck.size(); i++) {
+            out += "" + deck.get(i);
+        }
+        return out;
+    }
 }

@@ -18,6 +18,7 @@ public class Table {
     private int dealerPos;
     private int pot;
     private int minBet;
+    private boolean openBet;
 
     public Table() {
         players = new ArrayList<>();
@@ -31,6 +32,7 @@ public class Table {
             players.add(new Player());
             Seats[i] = players.get(i);
         }
+        openBet = false;
     }
 
     public Table(Table oldTable) {
@@ -47,6 +49,7 @@ public class Table {
         this.dealerPos = 2;
         this.minBet = 50;
         this.pot = 0;
+        this.openBet = false;
     }
 
     public void addToPot(int bet) {
@@ -139,5 +142,19 @@ public class Table {
      */
     public Player[] getSeats() {
         return Seats;
+    }
+
+    /**
+     * @return the openBet
+     */
+    public boolean isOpenBet() {
+        return openBet;
+    }
+
+    /**
+     * @param openBet the openBet to set
+     */
+    public void setOpenBet(boolean openBet) {
+        this.openBet = openBet;
     }
 }
