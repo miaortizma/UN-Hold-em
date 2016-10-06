@@ -54,7 +54,7 @@ public class Hand<T extends Card> implements Comparable<Hand> {
 
     public int[] getCardSuits() {
         int[] suits = new int[5];
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < hand.size(); i++) {
             suits[i] = getCard(i).getSuit().getValue();
         }
         return suits;
@@ -102,7 +102,6 @@ public class Hand<T extends Card> implements Comparable<Hand> {
 
     @Override
     public String toString() {
-        Collections.sort(getCards());
         String out = "";
 
         if (getRank() != null) {
