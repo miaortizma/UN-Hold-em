@@ -1,6 +1,7 @@
 package business;
 
 import static business.AI.all;
+import static business.AI.call;
 import static business.AI.raise;
 import static business.DeckHelper.deal;
 import static business.DeckHelper.dealCard;
@@ -8,12 +9,15 @@ import static business.DeckHelper.dealToPlayers;
 import static business.HandHelper.*;
 import tests.HandAnalyserTest;
 import data.*;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.Collections;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static ui.UI.*;
-import static business.AI.call;
+import ui.UI;
+import ui.UISwing;
+import ui.UIText;
 
 /**
  *
@@ -25,32 +29,31 @@ public class GameEngine {
     public static Random RND;
     private static GameEngine instance;
     private static Table table;
+    private static UI ui;
     private static int handCount;
     private static int j;
+    private static PrintStream sout;
+    private static ByteArrayOutputStream baos;
 
-    /**
-     * @return the handCount
-     */
-    public static int getHandCount() {
+    private static void selectUI(String[] args) {
+        if (args.length == 0) {
+            ui = new UISwing();
+        } else if (args[0].equals("text")) {
+            ui = new UIText();
+        } else {
+            ui = new UISwing();
+        }
+    }
+
+    private static int getHandCount() {
         return handCount;
     }
 
-    /**
-     * @param aHandCount the handCount to set
-     */
-    public static void setHandCount(int aHandCount) {
-        handCount = aHandCount;
-    }
-
-    /**
-     * @return the table
-     */
-    public static Table getTable() {
-        return table;
+    private static void setHandCount(int i) {
+        handCount = i;
     }
 
     private GameEngine() {
-
         Random RND = new Random();
     }
 
@@ -58,7 +61,6 @@ public class GameEngine {
         if (instance == null) {
             instance = new GameEngine();
         }
-        setHandCount(0);
         return instance;
     }
 
@@ -66,55 +68,59 @@ public class GameEngine {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        selectUI(args);
         getInstance();
-        startGame();
+        startProgram();
     }
 
-    public static void startGame() {
-        int menu = 0;
-        printWelcome();
-        while (true) {
-            try {
-                printMainMenu(getTable());
-                menu = askInt("\nOption: ");
-                if (menu < 1 || menu > 4) {
-                    throw new IllegalArgumentException("Not a menu option");
-                }
-                switch (menu) {
-                    case 1: {
-                        if (getTable() == null) {
-                            table = new Table();
-                        } else {
-                            table = new Table(getTable());
-                        }
-                        setHandCount(getHandCount() + 1);
-                        playRound();
-                        break;
-                    }
-                    case 2: {
-                        printHelp();
-                        break;
-                    }
-                    case 3: {
-                        printCommands();
-                        break;
-                    }
-                    case 4: {
-                        checkCommand("Exit", true);
-                    }
-                    default: {
-                        throw new IllegalArgumentException("Not a valid command");
-                    }
+    public static void newRound() {
+        if (table == null) {
+            table = new Table();
+        } else {
+            table = new Table(table);
+        }
+        setHandCount(getHandCount() + 1);
+        playRound();
+    }
 
+    public static void startProgram() {
+        int menu = 0;
+        ui.printWelcome();
+        if (ui instanceof UISwing) {
+            //do nothing
+        } else {
+            while (true) {
+                try {
+                    ui.printMainMenu(table);
+                    menu = ui.AskMenuOption();
+                    if (menu < 1 || menu > 4) {
+                        throw new IllegalArgumentException("Not a menu option");
+                    }
+                    switch (menu) {
+                        case 1: {
+                            newRound();
+                        }
+                        case 2: {
+                            ui.printHelp();
+                            break;
+                        }
+                        case 3: {
+                            ui.printCommands();
+                            break;
+                        }
+                        case 4: {
+                            checkCommand("<Exit>", true);
+                        }
+                        default: {
+                            throw new IllegalArgumentException("Not a valid command");
+                        }
+
+                    }
+                } catch (Exception ex) {
+                    ui.printError(ex);
                 }
-            } catch (Exception ex) {
-                printError(ex);
             }
         }
-    }
-
-    private static void tests() {
-        HandAnalyserTest.test();
     }
 
     /**
@@ -127,30 +133,30 @@ public class GameEngine {
      */
     public static boolean checkCommand(String input, boolean print) {
         switch (input) {
-            case "Exit": {
+            case "<Exit>": {
                 if (print) {
-                    printExit();
+                    ui.printExit();
                 }
                 System.exit(0);
             }
-            case "Info": {
+            case "<Info>": {
                 if (print) {
-                    printInfo();
+                    ui.printInfo();
                 }
                 return true;
             }
-            case "Help": {
+            case "<Help>": {
                 if (print) {
-                    printHelp();
+                    ui.printHelp();
                 }
                 return true;
             }
-            case "Test": {
+            case "<Test>": {
                 HandAnalyserTest.test();
                 return true;
             }
-            case "Hands": {
-                printHands();
+            case "<Hands>": {
+                ui.printHands();
                 return true;
             }
             default: {
@@ -159,14 +165,8 @@ public class GameEngine {
         }
     }
 
-    /**
-     * Adds bet to table pot
-     *
-     * @param plyr
-     * @param bet
-     */
     public static void addBet(Player plyr, int bet) {
-        printMsg("Player " + plyr.getId() + " adds " + bet + " to the pot!!\n");
+        ui.printMsg("Player " + plyr.getId() + " adds " + bet + " to the pot!!\n");
         if (bet > plyr.getCredits()) {
             allIn(plyr);
             //throw new IllegalArgumentException("Bet is higher than player credits");
@@ -182,7 +182,7 @@ public class GameEngine {
 
     public static void callBet(Player plyr) {
         if (plyr.getCredits() > getTable().getMinBet()) {
-            printMsg("Player " + plyr.getId() + " Calls");
+            ui.printMsg("Player " + plyr.getId() + " Calls");
             addBet(plyr, getTable().getMinBet());
         } else {
             allIn(plyr);
@@ -193,7 +193,7 @@ public class GameEngine {
         if (bet <= getTable().getMinBet()) {
             throw new IllegalArgumentException("Raise must be higher than minimum bet");
         } else {
-            printMsg("Player " + plyr.getId() + " raises " + (bet - getTable().getMinBet()));
+            ui.printMsg("Player " + plyr.getId() + " raises " + (bet - getTable().getMinBet()));
             getTable().setMinBet(bet);
             addBet(plyr, bet);
         }
@@ -203,11 +203,11 @@ public class GameEngine {
         plyr.setElo(plyr.getElo() - 10);
         getTable().removePlayer(plyr);
         j--;
-        printMsg("Player " + plyr.getId() + " folds\n");
+        ui.printMsg("Player " + plyr.getId() + " folds\n");
     }
 
     public static void allIn(Player plyr) {
-        printMsg("Player " + plyr.getId() + " goes all in!!");
+        ui.printMsg("Player " + plyr.getId() + " goes all in!!");
         plyr.setAllIn(true);
         getTable().setMinBet(plyr.getCredits() + getTable().getMinBet());
         addBet(plyr, plyr.getCredits());
@@ -217,40 +217,39 @@ public class GameEngine {
         int menu = 0;
         while (menu == 0) {
             try {
-                printRoundMenu();
-                menu = askInt("Option: ");
+                ui.printRoundMenu();
+                menu = ui.askInt("Option: ");
                 if (menu < 1 || menu > 5) {
-                    menu = 0;
                     throw new IllegalArgumentException("Not a menu option");
                 }
                 switch (menu) {
                     case 1: {
-                        callBet(getTable().getPlayer(0));
+                        callBet(table.getPlayer(0));
                         break;
                     }
                     case 2: {
                         int raise = 0;
                         while (raise == 0) {
                             try {
-                                raise = askInt("Raise: ");
-                                raiseBet(getTable().getPlayer(0), raise);
+                                raise = ui.askInt("Raise: ");
+                                raiseBet(table.getPlayer(0), raise);
                             } catch (Exception ex) {
                                 raise = 0;
-                                printError(ex);
+                                ui.printError(ex);
                             }
                         }
                         break;
                     }
                     case 3: {
-                        fold(getTable().getPlayer(0));
+                        fold(table.getPlayer(0));
                         break;
                     }
                     case 4: {
-                        allIn(getTable().getPlayer(0));
+                        allIn(table.getPlayer(0));
                         break;
                     }
                     case 5: {
-                        checkCommand("Exit", true);
+                        checkCommand("<Exit>", true);
                     }
                     default: {
                         throw new IllegalArgumentException("Not a valid command", null);
@@ -258,15 +257,18 @@ public class GameEngine {
 
                 }
             } catch (Exception ex) {
-                printError(ex);
+                ui.printError(ex);
             }
         }
     }
 
     public static void preFlop() {
-        printMsg("Big blind and small blind open the betting round (Forced bets)");
-        addBet(getTable().getPlayer(0), getTable().getMinBet() / 2);
-        addBet(getTable().getPlayer(1), getTable().getMinBet());
+        ui.printMsg("Big blind and small blind open the betting round ");
+        addBet(table.getPlayer(0), table.getMinBet() / 2);
+        addBet(table.getPlayer(1), table.getMinBet());
+        table.addToPot(table.getMinBet() + table.getMinBet() / 2);
+        fold(table.getPlayer(2));
+        raiseBet(table.getPlayer(3), 75);
     }
 
     public static int holdCardsValue(Hand hand) {
@@ -297,9 +299,9 @@ public class GameEngine {
                         getTable().removePlayer(plyr);
                     }
                 }
-                printMsg("Player " + plyr.getId() + " Retires...");
+                ui.printMsg("Player " + plyr.getId() + " Retires...");
             } else {
-                printMsg("Player " + plyr.getId() + " Is all in...");
+                ui.printMsg("Player " + plyr.getId() + " Is all in...");
             }
 
         } else if (plyr.isHumanPlayer()) {
@@ -328,67 +330,46 @@ public class GameEngine {
      *
      */
     public static void playRound() {
-        Deck dealingDeck = getTable().getDealingDeck();
-        Hand tableHand = getTable().getTableHand();
+        Deck dealingDeck = table.getDealingDeck();
+        Hand tableHand = table.getTableHand();
         dealCard(dealingDeck);
-        getTable().getPlayer(0).setHumanPlayer(true);
-        dealToPlayers(getTable());
-        printMsg("Dealt hold cards(You are player " + getTable().getPlayer(0).getId() + ")");
-        printUser(getTable());
+        table.getPlayer(0).setHumanPlayer(true);
+        dealToPlayers(table);
+        ui.printMsg("Dealt hold cards(You are player " + table.getPlayer(0).getId() + ")");
+        ui.printUser(table);
         preFlop();
         for (int i = 0; i < 3; i++) {
             switch (i) {
                 case 0: {
-                    printMsg("The flop:");
+                    ui.printMsg("The flop:");
                     deal(dealingDeck, tableHand, 3);
-                    printMsg(getTable().getTableHand() + "\n");
+                    ui.printMsg(table.getTableHand() + "\n");
                     break;
                 }
                 case 1: {
-                    printMsg("The turn:");
+                    ui.printMsg("The turn:");
                     deal(dealingDeck, tableHand, 1);
-                    printMsg(getTable().getTableHand() + "\n");
+                    ui.printMsg(table.getTableHand() + "\n");
                     break;
                 }
                 case 2: {
-                    printMsg("The river:");
+                    ui.printMsg("The river:");
                     deal(dealingDeck, tableHand, 1);
-                    printMsg(getTable().getTableHand() + "\n");
+                    ui.printMsg(table.getTableHand() + "\n");
                     break;
                 }
             }
-            printUser(getTable());
-            if (getTable().getPlayersSize() == 1) {
-                break;
-            }
-            for (j = 0; j < getTable().getPlayersSize(); j++) {
-                if (getTable().getSeats()[j].isAllIn()) {
-                    printMsg("Player " + getTable().getSeats()[j].getId() + " is all in...\n");
-                } else {
-                    getPlayerOption(getTable().getPlayer(j));
+            ui.printUser(table);
+            for (int j = 0; j < 8; j++) {
+                if (table.getSeats()[j] != null) {
+                    getPlayerOption(table.getSeats()[j]);
                 }
             }
         }
-        dealRewards();
-        printStandings(getTable());
-        if (getTable().getSeats()[0].getCredits() == 0) {
-            printMsg("You ran out of credits!!, better luck next time");
-            checkCommand("Exit", true);
-        }
-        int count = 0;
-        Player X = null;
-        for (int i = 0; i < 8; i++) {
-            if (table.getSeats()[i] != null) {
-                count++;
-            }else{
-            X = table.getSeats()[i];
-            }
-        }
-        if (count == 1) {
-            printMsg("Player " + X.getId() +  "wins ");
-            checkCommand("Exit", true);
-            
-        }
+        int winners = dealRewards();
+        ui.printRoundStandings(table, winners);
+        ui.printStandings(table);
+        getTable().setPot(0);
     }
 
     /**
@@ -411,13 +392,12 @@ public class GameEngine {
     /**
      * Assumes players is ordered from best to worst
      *
-     *
+     * Returns the numbers of players who won e.g 2 means tie
      */
-    public static void dealRewards() {
+    public static int dealRewards() {
         if (!(table.getPlayersSize() == 1)) {
             compareHands(getTable());
         }
-        printRoundStandings(getTable());
         if (getTable().getPlayersSize() == 1) {
             Player winner = getTable().getPlayer(0);
             winner.setCredits(winner.getCredits() + getTable().getPot());
@@ -426,7 +406,7 @@ public class GameEngine {
                 getTable().getPlayer(i).setElo(getTable().getPlayer(i).getElo() - 5);
             }
             getTable().setPot(0);
-            return;
+            return 1;
         }
         if (getTable().getPlayer(1).compareTo(getTable().getPlayer(0)) == 0) {
             Player tie1 = getTable().getPlayer(0);
@@ -438,6 +418,7 @@ public class GameEngine {
             for (int i = 2; i < getTable().getPlayersSize(); i++) {
                 getTable().getPlayer(i).setElo(getTable().getPlayer(i).getElo() - 5);
             }
+            return 2;
         } else {
             Player winner = getTable().getPlayer(0);
             winner.setCredits(winner.getCredits() + getTable().getPot());
@@ -445,7 +426,26 @@ public class GameEngine {
             for (int i = 1; i < getTable().getPlayersSize(); i++) {
                 getTable().getPlayer(i).setElo(getTable().getPlayer(i).getElo() - 5);
             }
+            return 1;
         }
-        getTable().setPot(0);
     }
+
+    public static Table getTable() {
+        return table;
+    }
+
+    public static Object[] redirectSout() {
+        baos = new ByteArrayOutputStream();
+        PrintStream ps = new PrintStream(baos);
+        sout = System.out;
+        System.setOut(ps);
+        return new Object[]{sout, baos};
+    }
+
+    public static String getSout() {
+        System.out.flush();
+        System.setOut(sout);
+        return baos.toString();
+    }
+
 }
