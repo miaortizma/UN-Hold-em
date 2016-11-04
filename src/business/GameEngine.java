@@ -37,7 +37,7 @@ public class GameEngine {
 
     private static void selectUI(String[] args) {
         if (args.length == 0) {
-            ui = new UISwing();
+            ui = new UIText();
         } else if (args[0].equals("text")) {
             ui = new UIText();
         } else {
