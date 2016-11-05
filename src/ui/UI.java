@@ -35,7 +35,7 @@ public interface UI {
 
     public int askInt(String question);
 
-    public int askMenuOption();
+    public int askMenuOption(String menuName, String message, String[] options);
 
     public void printWelcome();
 
@@ -46,10 +46,6 @@ public interface UI {
     public void printCommands();
 
     public void printHands();
-
-    public void printMainMenu(Boolean flag);
-
-    public void printRoundMenu();
 
     public void printExit();
 
@@ -62,7 +58,5 @@ public interface UI {
     public void printUser(Table table);
 
     public void printMsg(String msg);
-
-    public int askRoundMenu();
 
 }

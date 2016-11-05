@@ -10,7 +10,7 @@ import java.util.List;
  * @author OnePoker UN
  */
 public class Table {
-
+    
     private final Deck dealingDeck;
     private final Hand tableHand;
     private final List<Player> players;
@@ -19,22 +19,23 @@ public class Table {
     private int pot;
     private int minBet;
     private boolean openBet;
-
+    
     public Table() {
         players = new ArrayList<>();
         tableHand = createHand("array");
         dealingDeck = createDealingDeck();
-        dealerPos = 2;
+        dealerPos = 0;
         minBet = 50;
         pot = 0;
         Seats = new Player[8];
         for (int i = 0; i < 5; i++) {
             players.add(new Player());
             Seats[i] = players.get(i);
+            players.get(i).setPositon(i);
         }
         openBet = false;
     }
-
+    
     public Table(Table oldTable) {
         this.Seats = oldTable.getSeats();
         this.players = new ArrayList<>();
@@ -46,40 +47,40 @@ public class Table {
         }
         this.dealingDeck = createDealingDeck();
         this.tableHand = createHand("array");
-        this.dealerPos = 2;
+        this.dealerPos = 0;
         this.minBet = 50;
         this.pot = 0;
         this.openBet = false;
     }
-
+    
     public void addToPot(int bet) {
         this.setPot(this.getPot() + bet);
     }
-
+    
     public List<Player> getPlayers() {
         return players;
     }
-
+    
     public void removePlayer(Player player) {
         this.players.remove(player);
     }
-
+    
     public int getPlayersSize() {
         return players.size();
     }
-
+    
     public Deck getDealingDeck() {
         return dealingDeck;
     }
-
+    
     public Hand getTableHand() {
         return tableHand;
     }
-
+    
     public Player getPlayer(int i) {
         return players.get(i);
     }
-
+    
     public Hand getPlayerHand(int i) {
         return players.get(i).getHand();
     }
@@ -97,7 +98,7 @@ public class Table {
     public void setPot(int pot) {
         this.pot = pot;
     }
-
+    
     @Override
     public String toString() {
         String out = "";

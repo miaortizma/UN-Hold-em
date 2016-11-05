@@ -1,6 +1,6 @@
 package ui;
 
-import static business.GameEngine.checkCommand;
+import business.GameEngine;
 import data.Player;
 import data.Table;
 import java.util.Scanner;
@@ -46,14 +46,14 @@ public class UIText implements UI {
         }
         //ex.printStackTrace();
         System.out.print("Error: ");
-        System.out.println(ex);
+        System.out.println(ex.getMessage());
     }
 
     @Override
     public String askMsg(String question) throws Exception {
         System.out.print(question);
         inputUI = IN.nextLine();
-        if (checkCommand(inputUI, true)) {
+        if (GameEngine.getInstance(null).checkCommand(inputUI, true)) {
             throw new Exception("Command");
         }
         return inputUI;
@@ -95,22 +95,6 @@ public class UIText implements UI {
     }
 
     @Override
-    public void printMainMenu(Boolean flag) {
-        System.out.println("ººººººººMenuºººººººº ");
-        if (flag) {
-            System.out.println("(1) Play next Hand \t (2) Never played poker before? \t (3) Command List\n(4) Retire");
-        } else {
-            System.out.println("(1) Start a Tournament \t (2) Never played poker before? \t (3) Command List\n(4) Retire");
-        }
-    }
-
-    @Override
-    public void printRoundMenu() {
-        System.out.println("(1) Check \t (2) Raise  \t (3) Fold \t (4) All in \t (5) Retire");
-
-    }
-
-    @Override
     public void printExit() {
         System.out.println("\nThanks, see you later");
     }
@@ -134,6 +118,7 @@ public class UIText implements UI {
      * end of round
      *
      * @param table the round to print must have finished
+     * @param winners
      */
     @Override
     public void printRoundStandings(Table table, int winners) {
@@ -148,7 +133,7 @@ public class UIText implements UI {
         System.out.println("\n"
                 + "Winners:");
         for (int i = 0; i < winners; i++) {
-            System.out.println("Player " + table.getPlayer(i).getId() + "Wins");
+            System.out.println("Player " + table.getPlayer(i).getId() + " Wins");
         }
         System.out.println("\nType <Hands> to check how Hand are ranked\n");
     }
@@ -179,36 +164,18 @@ public class UIText implements UI {
     }
 
     @Override
-    public int askMenuOption() {
+    public int askMenuOption(String menuName, String message, String[] options) {
         int menu = 0;
-        while (menu == 0) {
-            printMainMenu(false);
-            try {
-                menu = askInt("Option: ");
-            } catch (Exception ex) {
-                printError(ex);
-            }
-            if (menu < 1 || menu > 4) {
-                menu = 0;
-            }
+        String menuStr = "";
+        for (int i = 0; i < options.length; i++) {
+            menuStr += "(" + (i + 1) + ") " + options[i] + "\t";
         }
-        return menu;
-    }
+        printMsg(menuStr);
 
-    @Override
-    public int askRoundMenu() {
-        int menu = 0;
         while (menu == 0) {
-            try {
-                printRoundMenu();
-                menu = askInt("Option: ");
-                if (menu < 1 || menu > 5) {
-                    menu = 0;
-                    throw new IllegalArgumentException("Not a menu option");
-                }
-
-            } catch (Exception ex) {
-                printError(ex);
+            menu = askInt(message);
+            if (menu < 1 || menu > options.length) {
+                menu = 0;
             }
         }
         return menu;
@@ -227,5 +194,4 @@ public class UIText implements UI {
         }
         return out;
     }
-
 }

@@ -16,7 +16,7 @@ public class Player implements Comparable<Player> {
     private Hand hand;
     private boolean humanPlayer;
     private boolean allIn;
-    //rango
+    private int positon;
     private int elo;
 
     public Player(int id, String name) {
@@ -138,5 +138,19 @@ public class Player implements Comparable<Player> {
      */
     public void setAllIn(boolean allIn) {
         this.allIn = allIn;
+    }
+
+    /**
+     * @return the positon
+     */
+    public int getPositon() {
+        return positon;
+    }
+
+    /**
+     * @param positon the positon to set
+     */
+    public void setPositon(int positon) {
+        this.positon = positon;
     }
 }

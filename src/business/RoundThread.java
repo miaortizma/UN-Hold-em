@@ -23,21 +23,15 @@
  */
 package business;
 
-import static business.AI.all;
-import static business.AI.call;
-import static business.AI.holdCardsValue;
-import static business.AI.raise;
-import static business.DeckHelper.deal;
-import static business.DeckHelper.dealCard;
-import static business.DeckHelper.dealToPlayers;
+import static business.AI.*;
+import static business.DeckHelper.*;
 import static business.GameEngine.ui;
-import static business.HandHelper.bestHand;
 import data.Deck;
 import data.Hand;
 import data.Player;
 import data.Table;
-import java.util.Collections;
-import ui.UISwing;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -45,13 +39,24 @@ import ui.UISwing;
  */
 public class RoundThread extends Thread {
 
-    private static Table table;
+    private Table table;
+    private List<Integer> checkPlayers = new ArrayList<>();
+    private List<Integer> raisePlayers = new ArrayList<>();
+    String msg;
+    int j;
+
+    /**
+     * @return the table
+     */
+    public Table getTable() {
+        return table;
+    }
 
     public RoundThread() {
         table = new Table();
     }
 
-    public static void getPlayerOption(Player plyr) {
+    public void getPlayerOption(Player plyr) {
         if (plyr.getCredits() <= 0) {
             if (!plyr.isAllIn()) {
                 for (int i = 0; i < 8; i++) {
@@ -63,8 +68,8 @@ public class RoundThread extends Thread {
                 ui.printMsg("Player " + plyr.getId() + " Retires...");
             } else {
                 ui.printMsg("Player " + plyr.getId() + " Is all in...");
+                return;
             }
-
         } else if (plyr.isHumanPlayer()) {
             roundMenu();
             return;
@@ -90,7 +95,7 @@ public class RoundThread extends Thread {
      * collections sort to print the players they are sorted in reverse order)
      *
      */
-    public static void playRound() {
+    public void playRound() {
         Deck dealingDeck = table.getDealingDeck();
         Hand tableHand = table.getTableHand();
         dealCard(dealingDeck);
@@ -101,6 +106,7 @@ public class RoundThread extends Thread {
 
         preFlop();
         for (int i = 0; i < 3; i++) {
+            table.setOpenBet(false);
             switch (i) {
                 case 0: {
                     ui.printMsg("The flop:");
@@ -122,29 +128,46 @@ public class RoundThread extends Thread {
                 }
             }
             ui.printUser(table);
-            for (int j = 0; j < 8; j++) {
-                if (table.getSeats()[j] != null) {
+            //bettings
+            msg = "Your turn!";
+            for (j = 0; j < table.getPlayersSize(); j++) {
+                getPlayerOption(table.getPlayer(j));
+
+            }
+            if (checkPlayers.size() > 0 && table.isOpenBet()) {
+                msg = "Betting round was opened, you must bet!";
+                for (j = 0; j < checkPlayers.size(); j++) {
                     getPlayerOption(table.getSeats()[j]);
                 }
             }
+            checkPlayers.clear();
         }
-        int winners = dealRewards();
-        ui.printRoundStandings(table, winners);
-        ui.printStandings(table);
-        table.setPot(0);
+        GameEngine.getInstance(null).notifyWinner();
     }
 
-    public static void preFlop() {
-        ui.printMsg("Big blind and small blind open the betting round (Forced bets)");
-        addBet(table.getPlayer(0), table.getMinBet() / 2);
-        addBet(table.getPlayer(1), table.getMinBet());
+    public void preFlop() {
+        ui.printMsg("Preflop:");
+        ui.printMsg("Big blind and small blind have forced bets");
+        int pos = table.getDealerPos();
+        addBet(table.getPlayer(pos), table.getMinBet() / 2);
+        addBet(table.getPlayer(pos + 1), table.getMinBet());
+        for (int i = pos + 2; i < 8; i++) {
+            if (table.getSeats()[i] != null) {
+                getPlayerOption(table.getSeats()[i]);
+            }
+        }
     }
 
-    public static void addBet(Player plyr, int bet) {
+    private void checkBet(Player player) {
+        checkPlayers.add(player.getPositon());
+        ui.printMsg("Player " + player.getId() + " checks...\n");
+    }
+
+    public void addBet(Player plyr, int bet) {
+        table.setOpenBet(true);
         ui.printMsg("Player " + plyr.getId() + " adds " + bet + " to the pot!!\n");
         if (bet > plyr.getCredits()) {
             allIn(plyr);
-            //throw new IllegalArgumentException("Bet is higher than player credits");
         }
         plyr.setCredits(plyr.getCredits() - bet);
         table.addToPot(bet);
@@ -154,7 +177,7 @@ public class RoundThread extends Thread {
         }
     }
 
-    public static void callBet(Player plyr) {
+    public void callBet(Player plyr) {
         if (plyr.getCredits() > table.getMinBet()) {
             ui.printMsg("Player " + plyr.getId() + " Calls");
             addBet(plyr, table.getMinBet());
@@ -163,115 +186,79 @@ public class RoundThread extends Thread {
         }
     }
 
-    public static void raiseBet(Player plyr, int bet) {
-        if (bet <= table.getMinBet()) {
-            throw new IllegalArgumentException("Raise must be higher than minimum bet");
-        } else {
-            ui.printMsg("Player " + plyr.getId() + " raises " + (bet - table.getMinBet()));
-            table.setMinBet(bet);
-            addBet(plyr, bet);
-        }
+    /**
+     * Assumes bet to be raised higher than minbet of table
+     *
+     * @param plyr
+     * @param bet
+     */
+    public void raiseBet(Player plyr, int bet) {
+        raisePlayers.add(plyr.getPositon());
+        ui.printMsg("Player " + plyr.getId() + " raises " + (bet - table.getMinBet()));
+        table.setMinBet(bet);
+        addBet(plyr, bet);
     }
 
-    public static void fold(Player plyr) {
+    public void fold(Player plyr) {
         plyr.setElo(plyr.getElo() - 10);
         table.removePlayer(plyr);
         ui.printMsg("Player " + plyr.getId() + " folds\n");
+        j--;
     }
 
-    public static void allIn(Player plyr) {
+    public void allIn(Player plyr) {
         ui.printMsg("Player " + plyr.getId() + " goes all in!!");
         plyr.setAllIn(true);
         table.setMinBet(plyr.getCredits() + table.getMinBet());
         addBet(plyr, plyr.getCredits());
     }
 
-    /**
-     * NOTES/ TO DO: -Should add some variable to notify that there is a tie
-     * -Should add different method that controls who wins etc. sets each table
-     * player hand as its possible Hand after merging its hand and the
-     * comunitary hand, sets each player kickers.
-     *
-     * Sorts the list of players (The criteria is their hands and kickers)
-     *
-     * @param table
-     */
-    public static void compareHands(Table table) {
-        for (Player plyr : table.getPlayers()) {
-            plyr.setHand(bestHand(plyr.getHand(), table.getTableHand()));
-        }
-        Collections.sort(table.getPlayers(), Collections.reverseOrder());
-    }
-
-    /**
-     * Assumes players is ordered from best to worst
-     *
-     * Returns the numbers of players who won e.g 2 means tie
-     */
-    public static int dealRewards() {
-        int playersSize = table.getPlayersSize();
-        if (!(playersSize == 1)) {
-            compareHands(table);
-        }
-        if (table.getPlayersSize() == 1) {
-            Player winner = table.getPlayer(0);
-            winner.setCredits(winner.getCredits() + table.getPot());
-            winner.setElo(winner.getElo() + 25);
-            for (int i = 1; i < table.getPlayersSize(); i++) {
-                table.getPlayer(i).setElo(table.getPlayer(i).getElo() - 5);
-            }
-            table.setPot(0);
-            return 1;
-        }
-        if (table.getPlayer(1).compareTo(table.getPlayer(0)) == 0) {
-            Player tie1 = table.getPlayer(0);
-            Player tie2 = table.getPlayer(1);
-            tie1.setCredits(tie1.getCredits() + table.getPot() / 2);
-            tie2.setCredits(tie2.getCredits() + table.getPot() / 2);
-            tie1.setElo(tie1.getElo() + 10);
-            tie2.setElo(tie2.getElo() + 10);
-            for (int i = 2; i < table.getPlayersSize(); i++) {
-                table.getPlayer(i).setElo(table.getPlayer(i).getElo() - 5);
-            }
-            return 2;
-        } else {
-            Player winner = table.getPlayer(0);
-            winner.setCredits(winner.getCredits() + table.getPot());
-            winner.setElo(winner.getElo() + 25);
-            for (int i = 1; i < table.getPlayersSize(); i++) {
-                table.getPlayer(i).setElo(table.getPlayer(i).getElo() - 5);
-            }
-            return 1;
-        }
-    }
-
-    public static void roundMenu() {
-
-        int menu = ui.askRoundMenu();
-
-        switch (menu) {
-            case 1: {
-                callBet(table.getPlayer(0));
-                break;
-            }
-            case 2: {
-                int raise = ui.askInt("Raise: ");
-                raiseBet(table.getPlayer(0), raise);
-                break;
-            }
-            case 3: {
-                fold(table.getPlayer(0));
-                break;
-            }
-            case 4: {
-                allIn(table.getPlayer(0));
-                break;
-            }
-            case 5: {
-                GameEngine.checkCommand("Exit", true);
-            }
-            default: {
-                throw new IllegalArgumentException("Not a valid command", null);
+    public void roundMenu() {
+        String[] options = {"Check", "Call", "Raise", "Fold", "All in", "Retire"};
+        int menu = 0;
+        while (menu == 0) {
+            menu = ui.askMenuOption("Round Menu", msg, options);
+            switch (menu) {
+                case 1: {
+                    if (table.isOpenBet()) {
+                        ui.printError(new IllegalArgumentException("Cannot check when betting round is open"));
+                        menu = 0;
+                        break;
+                    }
+                    //Check is equivalent to passing
+                    checkBet(table.getPlayer(0));
+                    break;
+                }
+                case 2: {
+                    callBet(table.getPlayer(0));
+                    break;
+                }
+                case 3: {
+                    int raise = ui.askInt("Raise: ");
+                    if (raise < table.getMinBet()) {
+                        ui.printError(new IllegalArgumentException("Raise must be higher than minimum bet"));
+                        menu = 0;
+                    }
+                    raiseBet(table.getPlayer(0), raise);
+                    break;
+                }
+                case 4: {
+                    fold(table.getPlayer(0));
+                    break;
+                }
+                case 5: {
+                    allIn(table.getPlayer(0));
+                    break;
+                }
+                case 6: {
+                    GameEngine.getInstance(null).checkCommand("Exit", true);
+                    break;
+                }
+                default: {
+                    menu = 0;
+                    ui.printError(new IllegalArgumentException("Not a valid command", null));
+                    break;
+                }
             }
         }
     }
