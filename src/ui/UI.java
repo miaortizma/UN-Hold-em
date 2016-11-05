@@ -33,9 +33,9 @@ public interface UI {
 
     public String askMsg(String question) throws Exception;
 
-    public int askInt(String question) throws Exception;
+    public int askInt(String question);
 
-    public int AskMenuOption() throws Exception;
+    public int askMenuOption();
 
     public void printWelcome();
 
@@ -47,7 +47,7 @@ public interface UI {
 
     public void printHands();
 
-    public void printMainMenu(Table table);
+    public void printMainMenu(Boolean flag);
 
     public void printRoundMenu();
 
@@ -62,5 +62,7 @@ public interface UI {
     public void printUser(Table table);
 
     public void printMsg(String msg);
+
+    public int askRoundMenu();
 
 }

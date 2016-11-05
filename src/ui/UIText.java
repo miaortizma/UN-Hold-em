@@ -3,16 +3,12 @@ package ui;
 import static business.GameEngine.checkCommand;
 import data.Player;
 import data.Table;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.util.Scanner;
 
 public class UIText implements UI {
 
     private static final Scanner IN = new Scanner(System.in);
     private static String inputUI;
-    private static PrintStream sout;
-    private static ByteArrayOutputStream baos;
     private static final String COMMANDS = "\n"
             + "Type <Exit> at any time to exit \n"
             + "Type <Info> to know about this project\n"
@@ -64,12 +60,6 @@ public class UIText implements UI {
     }
 
     @Override
-    public int askInt(String question) throws Exception {
-        askMsg(question);
-        return Integer.parseInt(inputUI);
-    }
-
-    @Override
     public void printHelp() {
         System.out.println(DECORATOR);
         System.out.println("Poker Hold'em is a game of bets in which each player has two cards and the goal is to assemble the \n best set of five cards between yours and the five comunitary cards.");
@@ -105,9 +95,9 @@ public class UIText implements UI {
     }
 
     @Override
-    public void printMainMenu(Table table) {
+    public void printMainMenu(Boolean flag) {
         System.out.println("ººººººººMenuºººººººº ");
-        if (table != null) {
+        if (flag) {
             System.out.println("(1) Play next Hand \t (2) Never played poker before? \t (3) Command List\n(4) Retire");
         } else {
             System.out.println("(1) Start a Tournament \t (2) Never played poker before? \t (3) Command List\n(4) Retire");
@@ -174,53 +164,6 @@ public class UIText implements UI {
         System.out.println("");
     }
 
-    /**
-     * Prints the board with the bottoms
-     *
-     * @param pos rank of between 0 to 7
-     * @param table the round
-     *
-     */
-    /*public static void printBoard(int pos, Table table) {
-        String[] players = new String[8];
-        for (int i = 0; i < 8; i++) {
-            if (i < table.getPlayersSize()) {
-                players[i] = table.getPlayer(i).toString();
-            } else {
-                players[i] = "\t";
-            }
-        }
-        String[] botones = new String[8];
-        switch (pos) {
-            case 0: {
-                System.out.println("The flop: ");
-                break;
-            }
-            case 1: {
-                System.out.println("The turn:  ");
-                break;
-            }
-            case 2: {
-                System.out.println("The river:  ");
-                break;
-            }
-        }
-        int dealerPos = table.getDealerPos();
-        botones[dealerPos - 2] = BIGBLIND;
-        botones[dealerPos - 1] = LITTLEBLIND;
-        botones[dealerPos] = DEALER;
-        for (int i = 3; i < 8; i++) {
-            botones[i] = "";
-        }
-        String tableDecorator = "  ##############################################  ";
-        System.out.printf("%-56s\n"
-                + " #\t  " + players[0] + "\t" + players[1] + "\t" + players[2] + "\t\t#\n"
-                + "# \t\t" + botones[0] + " \t" + botones[1] + "\t" + botones[2] + "\t\t #\n"
-                + "#" + players[7] + "  " + botones[7] + "\t%-16s " + botones[3] + "\t" + players[3] + "\t #\n"
-                + "#  \t" + botones[6] + "\t" + botones[5] + "\t " + botones[4] + "\t\t\t #\n"
-                + " #\t" + players[6] + "\t" + players[5] + players[4] + "\t\t# \n"
-                + "%-56s\n", tableDecorator, table.getTableHand().toString(), tableDecorator);
-    }*/
     @Override
     public void printUser(Table table) {
         System.out.println("***********************");
@@ -236,8 +179,53 @@ public class UIText implements UI {
     }
 
     @Override
-    public int AskMenuOption() throws Exception {
-        return askInt("\nOption: ");
+    public int askMenuOption() {
+        int menu = 0;
+        while (menu == 0) {
+            printMainMenu(false);
+            try {
+                menu = askInt("Option: ");
+            } catch (Exception ex) {
+                printError(ex);
+            }
+            if (menu < 1 || menu > 4) {
+                menu = 0;
+            }
+        }
+        return menu;
+    }
+
+    @Override
+    public int askRoundMenu() {
+        int menu = 0;
+        while (menu == 0) {
+            try {
+                printRoundMenu();
+                menu = askInt("Option: ");
+                if (menu < 1 || menu > 5) {
+                    menu = 0;
+                    throw new IllegalArgumentException("Not a menu option");
+                }
+
+            } catch (Exception ex) {
+                printError(ex);
+            }
+        }
+        return menu;
+    }
+
+    @Override
+    public int askInt(String question) {
+        int out = 0;
+        while (out == 0) {
+            printMsg(question);
+            if (IN.hasNextInt()) {
+                out = IN.nextInt();
+            } else {
+                IN.next();
+            }
+        }
+        return out;
     }
 
 }

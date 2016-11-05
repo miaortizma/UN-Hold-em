@@ -23,10 +23,10 @@
  */
 package ui;
 
-import static business.GameEngine.newRound;
+import business.GameEngine;
 import data.Table;
 import java.awt.CardLayout;
-import javax.swing.ImageIcon;
+import java.awt.Color;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -45,6 +45,7 @@ public class UISwing extends javax.swing.JFrame implements UI {
             initComponents();
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
+            this.setBackground(Color.black);
             SwingUtilities.updateComponentTreeUI(this);
             //this.setIconImage(new ImageIcon(getClass().getResource("/ui/resources/poker.png")));
             this.pack();
@@ -63,43 +64,59 @@ public class UISwing extends javax.swing.JFrame implements UI {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        botonesRonda = new javax.swing.ButtonGroup();
-        mainPanel = new javax.swing.JPanel();
+        exitButton = new javax.swing.JButton();
         cardPanel = new javax.swing.JPanel();
         welcomePanel = new javax.swing.JPanel();
+        titleLabel = new javax.swing.JLabel();
         helpButton = new javax.swing.JButton();
         handsButton = new javax.swing.JButton();
         infoButton = new javax.swing.JButton();
-        roundButton = new javax.swing.JButton();
+        roundMenuButton = new javax.swing.JButton();
         welcomeLabel = new javax.swing.JLabel();
-        titleLabel = new javax.swing.JLabel();
         roundPanel = new javax.swing.JPanel();
-        roundMenuPanel = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        logTextArea = new java.awt.TextArea();
-        decoratorLabel = new javax.swing.JLabel();
-        decoratorLabel2 = new javax.swing.JLabel();
-        exitButton = new javax.swing.JButton();
+        startRoundButton = new javax.swing.JButton();
+        scrollPane = new javax.swing.JScrollPane();
+        logTextArea = new javax.swing.JTextArea();
+        jPanel1 = new javax.swing.JPanel();
+        cardsLabel = new javax.swing.JLabel();
+        cards = new javax.swing.JLabel();
+        allInButton = new javax.swing.JButton();
+        checkButton = new javax.swing.JButton();
+        raiseButton = new javax.swing.JButton();
+        callButton = new javax.swing.JButton();
+        retireButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("UN'Hold Em");
+        setBackground(new java.awt.Color(255, 255, 255));
+        setMinimumSize(new java.awt.Dimension(600, 600));
+        setResizable(false);
 
-        mainPanel.setBackground(new java.awt.Color(0, 0, 0));
-        mainPanel.setMaximumSize(new java.awt.Dimension(1040, 500));
-        mainPanel.setMinimumSize(new java.awt.Dimension(1040, 500));
-        mainPanel.setPreferredSize(new java.awt.Dimension(1040, 500));
+        exitButton.setBackground(new java.awt.Color(255, 0, 0));
+        exitButton.setFont(new java.awt.Font("Lucida Calligraphy", 1, 18)); // NOI18N
+        exitButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/resources/Users-Exit-icon.png"))); // NOI18N
+        exitButton.setText("Exit");
+        exitButton.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.red, java.awt.Color.red, java.awt.Color.red, java.awt.Color.red));
+        exitButton.setContentAreaFilled(false);
+        exitButton.setOpaque(true);
+        exitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitButtonActionPerformed(evt);
+            }
+        });
 
-        cardPanel.setMaximumSize(new java.awt.Dimension(300, 500));
-        cardPanel.setMinimumSize(new java.awt.Dimension(300, 500));
+        cardPanel.setMaximumSize(new java.awt.Dimension(500, 600));
+        cardPanel.setMinimumSize(new java.awt.Dimension(500, 600));
+        cardPanel.setPreferredSize(new java.awt.Dimension(500, 600));
         cardPanel.setLayout(new java.awt.CardLayout());
 
         welcomePanel.setBackground(new java.awt.Color(0, 0, 0));
-        welcomePanel.setMaximumSize(new java.awt.Dimension(300, 500));
-        welcomePanel.setMinimumSize(new java.awt.Dimension(300, 500));
-        welcomePanel.setPreferredSize(new java.awt.Dimension(300, 500));
+        welcomePanel.setMaximumSize(new java.awt.Dimension(500, 600));
+        welcomePanel.setMinimumSize(new java.awt.Dimension(500, 500));
+        welcomePanel.setPreferredSize(new java.awt.Dimension(500, 600));
+
+        titleLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/resources/UN Hold'em LOGO.png"))); // NOI18N
+        titleLabel.setMaximumSize(new java.awt.Dimension(300, 250));
 
         helpButton.setBackground(new java.awt.Color(0, 153, 0));
         helpButton.setFont(new java.awt.Font("Lucida Calligraphy", 1, 14)); // NOI18N
@@ -141,10 +158,10 @@ public class UISwing extends javax.swing.JFrame implements UI {
             }
         });
 
-        roundButton.setText("Jugar");
-        roundButton.addActionListener(new java.awt.event.ActionListener() {
+        roundMenuButton.setText("Show Round Menu");
+        roundMenuButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                roundButtonActionPerformed(evt);
+                roundMenuButtonActionPerformed(evt);
             }
         });
 
@@ -153,109 +170,130 @@ public class UISwing extends javax.swing.JFrame implements UI {
         welcomeLabel.setForeground(new java.awt.Color(255, 255, 255));
         welcomeLabel.setText("Welcome to ...");
 
-        titleLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/resources/UN Hold'em LOGO.png"))); // NOI18N
-        titleLabel.setMaximumSize(new java.awt.Dimension(300, 250));
-
         javax.swing.GroupLayout welcomePanelLayout = new javax.swing.GroupLayout(welcomePanel);
         welcomePanel.setLayout(welcomePanelLayout);
         welcomePanelLayout.setHorizontalGroup(
             welcomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(welcomePanelLayout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addGroup(welcomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, welcomePanelLayout.createSequentialGroup()
+                .addGroup(welcomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, welcomePanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(welcomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(welcomeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(welcomePanelLayout.createSequentialGroup()
+                                .addGap(88, 88, 88)
+                                .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(welcomePanelLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(infoButton))
-                    .addComponent(handsButton)))
+                        .addContainerGap(104, Short.MAX_VALUE)
+                        .addComponent(helpButton)
+                        .addGap(103, 103, 103)))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, welcomePanelLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(welcomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(infoButton)
+                    .addGroup(welcomePanelLayout.createSequentialGroup()
+                        .addComponent(handsButton)
+                        .addGap(177, 177, 177))))
             .addGroup(welcomePanelLayout.createSequentialGroup()
-                .addGap(128, 128, 128)
-                .addComponent(roundButton))
-            .addGroup(welcomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                .addComponent(welcomeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(titleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE))
-            .addGroup(welcomePanelLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(helpButton))
+                .addGap(190, 190, 190)
+                .addComponent(roundMenuButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         welcomePanelLayout.setVerticalGroup(
             welcomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(welcomePanelLayout.createSequentialGroup()
-                .addGap(5, 5, 5)
+                .addGap(38, 38, 38)
                 .addComponent(welcomeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(titleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(5, 5, 5)
-                .addComponent(roundButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19)
+                .addComponent(roundMenuButton)
+                .addGap(18, 18, 18)
                 .addComponent(helpButton)
-                .addGap(5, 5, 5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(handsButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(infoButton)
-                .addGap(20, 20, 20))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         cardPanel.add(welcomePanel, "WELCOMEPANEL");
 
         roundPanel.setBackground(new java.awt.Color(0, 0, 0));
-        roundPanel.setMaximumSize(new java.awt.Dimension(300, 500));
-        roundPanel.setMinimumSize(new java.awt.Dimension(300, 500));
-        roundPanel.setPreferredSize(new java.awt.Dimension(300, 500));
+        roundPanel.setMaximumSize(new java.awt.Dimension(500, 600));
+        roundPanel.setMinimumSize(new java.awt.Dimension(500, 600));
+        roundPanel.setPreferredSize(new java.awt.Dimension(500, 600));
 
-        roundMenuPanel.setBackground(new java.awt.Color(0, 0, 0));
-        roundMenuPanel.setMaximumSize(new java.awt.Dimension(32767, 300));
-
-        jButton1.setText("Call");
-
-        jButton2.setText("Check");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        startRoundButton.setText("Start Round");
+        startRoundButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                startRoundButtonActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Raise");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        logTextArea.setColumns(35);
+        logTextArea.setRows(15);
+        scrollPane.setViewportView(logTextArea);
+
+        cardsLabel.setText("Cards");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cardsLabel)
+                    .addComponent(cards))
+                .addContainerGap(50, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(cardsLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cards)
+                .addContainerGap(55, Short.MAX_VALUE))
+        );
+
+        allInButton.setText("All in");
+        allInButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                allInButtonActionPerformed(evt);
             }
         });
 
-        jButton4.setText("All in");
+        checkButton.setText("Check");
+        checkButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkButtonActionPerformed(evt);
+            }
+        });
 
-        jButton5.setText("Retire");
+        raiseButton.setText("Raise");
+        raiseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                raiseButtonActionPerformed(evt);
+            }
+        });
 
-        javax.swing.GroupLayout roundMenuPanelLayout = new javax.swing.GroupLayout(roundMenuPanel);
-        roundMenuPanel.setLayout(roundMenuPanelLayout);
-        roundMenuPanelLayout.setHorizontalGroup(
-            roundMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(roundMenuPanelLayout.createSequentialGroup()
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4)
-                .addContainerGap(43, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, roundMenuPanelLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton5)
-                .addGap(113, 113, 113))
-        );
-        roundMenuPanelLayout.setVerticalGroup(
-            roundMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, roundMenuPanelLayout.createSequentialGroup()
-                .addContainerGap(50, Short.MAX_VALUE)
-                .addGroup(roundMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
-                .addGap(18, 18, 18)
-                .addComponent(jButton5)
-                .addGap(96, 96, 96))
-        );
+        callButton.setText("Call");
+        callButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                callButtonActionPerformed(evt);
+            }
+        });
+
+        retireButton.setText("Retire");
+        retireButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                retireButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout roundPanelLayout = new javax.swing.GroupLayout(roundPanel);
         roundPanel.setLayout(roundPanelLayout);
@@ -264,78 +302,71 @@ public class UISwing extends javax.swing.JFrame implements UI {
             .addGroup(roundPanelLayout.createSequentialGroup()
                 .addGroup(roundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(roundPanelLayout.createSequentialGroup()
-                        .addGap(133, 133, 133)
-                        .addComponent(logTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(142, 142, 142)
+                        .addComponent(startRoundButton))
                     .addGroup(roundPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(roundMenuPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 5, Short.MAX_VALUE))
+                        .addGap(49, 49, 49)
+                        .addGroup(roundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(roundPanelLayout.createSequentialGroup()
+                                .addComponent(callButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(checkButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(raiseButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(allInButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(retireButton))
+                            .addGroup(roundPanelLayout.createSequentialGroup()
+                                .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
         roundPanelLayout.setVerticalGroup(
             roundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(roundPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(roundMenuPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(logTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(189, Short.MAX_VALUE))
+                .addGap(98, 98, 98)
+                .addComponent(startRoundButton)
+                .addGap(18, 18, 18)
+                .addGroup(roundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(roundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(callButton)
+                    .addComponent(checkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(raiseButton)
+                    .addComponent(allInButton)
+                    .addComponent(retireButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(144, Short.MAX_VALUE))
         );
 
-        cardPanel.add(roundPanel, "ROUNDPANEL");
+        cardPanel.add(roundPanel, "card4");
 
-        decoratorLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/resources/cardSuits11.png"))); // NOI18N
-
-        decoratorLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/resources/cardSuits11.png"))); // NOI18N
-
-        exitButton.setBackground(new java.awt.Color(255, 0, 0));
-        exitButton.setFont(new java.awt.Font("Lucida Calligraphy", 1, 18)); // NOI18N
-        exitButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/resources/Users-Exit-icon.png"))); // NOI18N
-        exitButton.setText("Exit");
-        exitButton.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.red, java.awt.Color.red, java.awt.Color.red, java.awt.Color.red));
-        exitButton.setContentAreaFilled(false);
-        exitButton.setOpaque(true);
-        exitButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exitButtonActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
-        mainPanel.setLayout(mainPanelLayout);
-        mainPanelLayout.setHorizontalGroup(
-            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, 0)
-                        .addComponent(decoratorLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(300, 300, 300)
-                .addComponent(decoratorLabel)
-                .addContainerGap())
-            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(mainPanelLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(cardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-        mainPanelLayout.setVerticalGroup(
-            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                .addContainerGap()
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
                 .addComponent(exitButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(decoratorLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
-            .addComponent(decoratorLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(mainPanelLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(cardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGap(0, 105, Short.MAX_VALUE)
+                    .addComponent(cardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
-
-        getContentPane().add(mainPanel, java.awt.BorderLayout.CENTER);
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(exitButton)
+                .addContainerGap(583, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -357,19 +388,34 @@ public class UISwing extends javax.swing.JFrame implements UI {
         JOptionPane.showMessageDialog(rootPane, "Desarrollado por..");
     }//GEN-LAST:event_infoButtonActionPerformed
 
-    private void roundButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roundButtonActionPerformed
-        CardLayout cl = (CardLayout) (cardPanel.getLayout());
-        cl.show(cardPanel, "ROUNDPANEL");
-        newRound();
-    }//GEN-LAST:event_roundButtonActionPerformed
+    private void roundMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roundMenuButtonActionPerformed
+        ((CardLayout) (cardPanel.getLayout())).next(cardPanel);
+    }//GEN-LAST:event_roundMenuButtonActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void checkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_checkButtonActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void raiseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_raiseButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_raiseButtonActionPerformed
+
+    private void startRoundButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startRoundButtonActionPerformed
+        startRoundButton.setEnabled(false);
+        GameEngine.startRound();
+    }//GEN-LAST:event_startRoundButtonActionPerformed
+
+    private void allInButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allInButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_allInButtonActionPerformed
+
+    private void callButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_callButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_callButtonActionPerformed
+
+    private void retireButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retireButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_retireButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -408,24 +454,24 @@ public class UISwing extends javax.swing.JFrame implements UI {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup botonesRonda;
+    private javax.swing.JButton allInButton;
+    private javax.swing.JButton callButton;
     private javax.swing.JPanel cardPanel;
-    private javax.swing.JLabel decoratorLabel;
-    private javax.swing.JLabel decoratorLabel2;
+    private javax.swing.JLabel cards;
+    private javax.swing.JLabel cardsLabel;
+    private javax.swing.JButton checkButton;
     private javax.swing.JButton exitButton;
     private javax.swing.JButton handsButton;
     private javax.swing.JButton helpButton;
     private javax.swing.JButton infoButton;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private java.awt.TextArea logTextArea;
-    private javax.swing.JPanel mainPanel;
-    private javax.swing.JButton roundButton;
-    private javax.swing.JPanel roundMenuPanel;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextArea logTextArea;
+    private javax.swing.JButton raiseButton;
+    private javax.swing.JButton retireButton;
+    private javax.swing.JButton roundMenuButton;
     private javax.swing.JPanel roundPanel;
+    private javax.swing.JScrollPane scrollPane;
+    private javax.swing.JButton startRoundButton;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JLabel welcomeLabel;
     private javax.swing.JPanel welcomePanel;
@@ -437,13 +483,8 @@ public class UISwing extends javax.swing.JFrame implements UI {
     }
 
     @Override
-    public int askInt(String question) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public void printWelcome() {
-        JOptionPane.showMessageDialog(this.rootPane, "Hola k ace", "Welcome to UN Hold'em", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(this.rootPane, "Hola", "Welcome to UN Hold'em", JOptionPane.PLAIN_MESSAGE);
     }
 
     @Override
@@ -470,17 +511,10 @@ public class UISwing extends javax.swing.JFrame implements UI {
 
     @Override
     public void printCommands() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void printHands() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void printMainMenu(Table table) {
-        //El menu esta inicializado con la UISwing    
     }
 
     @Override
@@ -495,21 +529,19 @@ public class UISwing extends javax.swing.JFrame implements UI {
 
     @Override
     public void printInfo() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void printRoundStandings(Table table, int winners) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void printStandings(Table table) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void printUser(Table table) {
+        cards.setText(table.getPlayerHand(0).toString());
         printMsg("***********************\n"
                 + "Cards\tCredits\n"
                 + table.getPlayerHand(0) + "\t" + table.getPlayer(0).getCredits() + "\n"
@@ -519,15 +551,41 @@ public class UISwing extends javax.swing.JFrame implements UI {
 
     @Override
     public void printMsg(String msg) {
-        logTextArea.append(msg);
-    }
-
-    private void setIconImage(ImageIcon imageIcon) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        synchronized (this) {
+            logTextArea.append(msg + "\n");
+            logTextArea.setCaretPosition(logTextArea.getDocument().getLength());
+        }
     }
 
     @Override
-    public int AskMenuOption() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int askMenuOption() {
+        return 0;
     }
+
+    @Override
+    public int askRoundMenu() {
+        setRoundButtonsEnabled(true);
+        return 1;
+    }
+
+    @Override
+    public void printMainMenu(Boolean flag) {
+    }
+
+    @Override
+    public int askInt(String question) {
+        //incompleto
+        int result = Integer.parseInt(JOptionPane.showInputDialog(question));
+        return result;
+    }
+
+    private void setRoundButtonsEnabled(boolean foo) {
+        checkButton.setEnabled(foo);
+        callButton.setEnabled(foo);
+        raiseButton.setEnabled(foo);
+        allInButton.setEnabled(foo);
+        retireButton.setEnabled(foo);
+        
+    }
+
 }
