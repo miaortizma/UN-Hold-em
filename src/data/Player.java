@@ -15,8 +15,6 @@ public class Player implements Comparable<Player> {
     private int credits;
     private Hand hand;
     private boolean humanPlayer;
-    private boolean allIn;
-    private int positon;
     private int elo;
 
     public Player(int id, String name) {
@@ -24,7 +22,11 @@ public class Player implements Comparable<Player> {
         this.elo = 1200;
         this.credits = 1000;
         this.name = name;
+    }
 
+    public Player() {
+        this(++count, "");
+        hand = createHand("array");
     }
 
     public Player(Player oldPlayer) {
@@ -33,11 +35,6 @@ public class Player implements Comparable<Player> {
         this.credits = oldPlayer.getCredits();
         this.name = oldPlayer.getName();
         this.hand = createHand("array");
-    }
-
-    public Player() {
-        this(++count, "");
-        hand = createHand("array");
     }
 
     public Hand getHand() {
@@ -126,31 +123,4 @@ public class Player implements Comparable<Player> {
         this.elo = elo;
     }
 
-    /**
-     * @return the allIn
-     */
-    public boolean isAllIn() {
-        return allIn;
-    }
-
-    /**
-     * @param allIn the allIn to set
-     */
-    public void setAllIn(boolean allIn) {
-        this.allIn = allIn;
-    }
-
-    /**
-     * @return the positon
-     */
-    public int getPositon() {
-        return positon;
-    }
-
-    /**
-     * @param positon the positon to set
-     */
-    public void setPositon(int positon) {
-        this.positon = positon;
-    }
 }

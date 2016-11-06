@@ -15,15 +15,7 @@ public class UIText implements UI {
             + "Type <Help> if you need some help\n"
             + "Type <Hands> to print Hands";
     static final String DECORATOR = "/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/";
-    private static final String DEALER = "D";
-    private static final String BIGBLIND = "\u0E4F";
-    private static final String LITTLEBLIND = "\u263B";
-
-    public static void printTest() {
-        System.out.println(DEALER);
-        System.out.println(BIGBLIND);
-        System.out.println(LITTLEBLIND);
-    }
+    int menu;
 
     @Override
     public void printWelcome() {
@@ -53,7 +45,7 @@ public class UIText implements UI {
     public String askMsg(String question) throws Exception {
         System.out.print(question);
         inputUI = IN.nextLine();
-        if (GameEngine.getInstance(null).checkCommand(inputUI, true)) {
+        if (GameEngine.getInstance().checkCommand(inputUI, true)) {
             throw new Exception("Command");
         }
         return inputUI;
@@ -142,7 +134,7 @@ public class UIText implements UI {
     public void printStandings(Table table) {
         System.out.println("Tournament Standings: ");
         for (int i = 0; i < 8; i++) {
-            if (table.getSeats()[i] != null) {
+            if (table.getSeats()[i].getPlayer() != null) {
                 System.out.println(table.getSeats()[i]);
             }
         }
@@ -150,11 +142,10 @@ public class UIText implements UI {
     }
 
     @Override
-    public void printUser(Table table) {
+    public void printUser(Player player) {
         System.out.println("***********************");
         System.out.println("Cards\tCredits");
-        System.out.println(table.getPlayerHand(0) + "\t" + table.getPlayer(0).getCredits());
-        System.out.println("Minimum bet: " + table.getMinBet());
+        System.out.println(player.getHand() + "\t" + player.getCredits());
         System.out.println("***********************");
     }
 
@@ -164,34 +155,48 @@ public class UIText implements UI {
     }
 
     @Override
-    public int askMenuOption(String menuName, String message, String[] options) {
-        int menu = 0;
+    public void printMenuOption(String menuName, String msg, String[] options) {
+        menu = 0;
         String menuStr = "";
         for (int i = 0; i < options.length; i++) {
             menuStr += "(" + (i + 1) + ") " + options[i] + "\t";
         }
         printMsg(menuStr);
-
         while (menu == 0) {
-            menu = askInt(message);
-            if (menu < 1 || menu > options.length) {
+            menu = askInt(msg);
+            if (menu < 1 || menu > 6) {
                 menu = 0;
             }
+        }
+    }
+
+    @Override
+    public int askInt(String question) {
+        printMsg(question);
+        if (IN.hasNextInt()) {
+            menu = IN.nextInt();
+            IN.nextLine();
+        } else {
+            IN.nextLine();
         }
         return menu;
     }
 
     @Override
-    public int askInt(String question) {
-        int out = 0;
-        while (out == 0) {
-            printMsg(question);
-            if (IN.hasNextInt()) {
-                out = IN.nextInt();
-            } else {
-                IN.next();
-            }
-        }
-        return out;
+    public void notifyMainMenu() {
+        GameEngine.getInstance().setMenu(menu);
+    }
+
+    @Override
+    public void notifyRoundMenu() {
+        GameEngine.getInstance().getRoundThread().setMenu(menu);
+    }
+
+    @Override
+    public void printTable(Table table, String status) {
+        printMsg(status);
+        printMsg(GameEngine.getInstance().getRoundThread().getStatus());
+        printMsg(table.getTableHand() + "\n");
+        printUser(table.getPlayer(0));
     }
 }

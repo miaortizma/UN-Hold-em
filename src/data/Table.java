@@ -10,16 +10,16 @@ import java.util.List;
  * @author OnePoker UN
  */
 public class Table {
-    
+
     private final Deck dealingDeck;
     private final Hand tableHand;
     private final List<Player> players;
-    private final Player[] Seats;
+    private final Seat[] seats;
     private int dealerPos;
     private int pot;
     private int minBet;
     private boolean openBet;
-    
+
     public Table() {
         players = new ArrayList<>();
         tableHand = createHand("array");
@@ -27,22 +27,24 @@ public class Table {
         dealerPos = 0;
         minBet = 50;
         pot = 0;
-        Seats = new Player[8];
+        seats = new Seat[8];
+        for (int i = 0; i < 8; i++) {
+            seats[i] = new Seat();
+        }
         for (int i = 0; i < 5; i++) {
             players.add(new Player());
-            Seats[i] = players.get(i);
-            players.get(i).setPositon(i);
+            seats[i].seatPlayer(players.get(i));
         }
         openBet = false;
     }
-    
+
     public Table(Table oldTable) {
-        this.Seats = oldTable.getSeats();
+        this.seats = oldTable.getSeats();
         this.players = new ArrayList<>();
         for (int i = 0; i < oldTable.getSeats().length; i++) {
             if (oldTable.getSeats()[i] != null) {
-                players.add(new Player(oldTable.getSeats()[i]));
-                Seats[i] = players.get(players.size() - 1);
+                players.add(new Player(oldTable.getSeats()[i].getPlayer()));
+                seats[i].seatPlayer(players.get(players.size() - 1));
             }
         }
         this.dealingDeck = createDealingDeck();
@@ -52,35 +54,31 @@ public class Table {
         this.pot = 0;
         this.openBet = false;
     }
-    
+
     public void addToPot(int bet) {
         this.setPot(this.getPot() + bet);
     }
-    
+
     public List<Player> getPlayers() {
         return players;
     }
-    
-    public void removePlayer(Player player) {
-        this.players.remove(player);
-    }
-    
+
     public int getPlayersSize() {
         return players.size();
     }
-    
+
     public Deck getDealingDeck() {
         return dealingDeck;
     }
-    
+
     public Hand getTableHand() {
         return tableHand;
     }
-    
+
     public Player getPlayer(int i) {
         return players.get(i);
     }
-    
+
     public Hand getPlayerHand(int i) {
         return players.get(i).getHand();
     }
@@ -98,7 +96,7 @@ public class Table {
     public void setPot(int pot) {
         this.pot = pot;
     }
-    
+
     @Override
     public String toString() {
         String out = "";
@@ -141,8 +139,8 @@ public class Table {
     /**
      * @return the Seats
      */
-    public Player[] getSeats() {
-        return Seats;
+    public Seat[] getSeats() {
+        return seats;
     }
 
     /**
@@ -157,5 +155,9 @@ public class Table {
      */
     public void setOpenBet(boolean openBet) {
         this.openBet = openBet;
+    }
+
+    public Seat getSeat(int i) {
+        return seats[i];
     }
 }

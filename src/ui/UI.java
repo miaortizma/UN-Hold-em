@@ -23,6 +23,7 @@
  */
 package ui;
 
+import data.Player;
 import data.Table;
 
 /**
@@ -35,7 +36,7 @@ public interface UI {
 
     public int askInt(String question);
 
-    public int askMenuOption(String menuName, String message, String[] options);
+    public void printMenuOption(String menuName, String msg, String[] options);
 
     public void printWelcome();
 
@@ -55,8 +56,14 @@ public interface UI {
 
     public void printStandings(Table table);
 
-    public void printUser(Table table);
+    public void printUser(Player player);
 
     public void printMsg(String msg);
+
+    public void notifyRoundMenu();
+
+    public void notifyMainMenu();
+
+    public void printTable(Table table,String status);
 
 }

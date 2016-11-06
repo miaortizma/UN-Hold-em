@@ -16,13 +16,15 @@ import ui.UIText;
 public class GameEngine {
 
     public static Random RND;
-    private static GameEngine instance;
+    private static GameEngine engine;
     public static UI ui;
     private static RoundThread round;
+    private int menu;
+    private int hands;
 
-    private GameEngine(String[] args) {
-        selectUI(args);
+    private GameEngine() {
         RND = new Random();
+        hands = 0;
     }
 
     private void selectUI(String[] args) {
@@ -46,51 +48,60 @@ public class GameEngine {
         ui.printRoundStandings(table, winners);
         ui.printStandings(table);
         table.setPot(0);
+        menu();
     }
 
-    public static GameEngine getInstance(String[] args) {
-        if (instance == null) {
-            instance = new GameEngine(args);
+    public static GameEngine getInstance() {
+        if (engine == null) {
+            engine = new GameEngine();
         }
-        return instance;
+        return engine;
     }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        instance = new GameEngine(args);
-        getInstance(args);
-        instance.menu();
+        getInstance();
+        engine.selectUI(args);
+        ui.printWelcome();
+        engine.menu();
     }
 
     public void menu() {
-        if (ui instanceof UISwing) {
-            return;
-        }
-        String[] options = {"Start a Tournament", "Never played poker before?", "Command List", "Retire"};
-        int menu = 0;
-        ui.printWelcome();
-        menu = ui.askMenuOption("Main menu", "Option:", options);
+        while (true) {
+            if (ui instanceof UISwing) {
+                return;
+            }
+            String[] options = {"Start a Tournament", "Never played poker before?", "Command List", "Retire"};
+            if (hands > 0) {
+                options[0] = "Next hand";
+            }
+            menu = 0;
+            ui.printMenuOption("Main menu", "Option:", options);
+            ui.notifyMainMenu();
+            switch (menu) {
+                case 1: {
+                    System.out.println("Start");
+                    hands++;
+                    startRound();
+                    return;
+                }
+                case 2: {
+                    ui.printHelp();
+                    break;
+                }
+                case 3: {
+                    ui.printCommands();
+                    break;
+                }
+                case 4: {
+                    checkCommand("Exit", true);
+                }
+                default: {
+                    throw new IllegalArgumentException("Not a valid command");
+                }
 
-        switch (menu) {
-            case 1: {
-                startRound();
-                break;
-            }
-            case 2: {
-                ui.printHelp();
-                break;
-            }
-            case 3: {
-                ui.printCommands();
-                break;
-            }
-            case 4: {
-                checkCommand("Exit", true);
-            }
-            default: {
-                throw new IllegalArgumentException("Not a valid command");
             }
 
         }
@@ -149,7 +160,7 @@ public class GameEngine {
         Table table = round.getTable();
         int playersSize = table.getPlayersSize();
         if (!(playersSize == 1)) {
-            instance.compareHands(table);
+            engine.compareHands(table);
         } else {
             Player winner = table.getPlayer(0);
             winner.setCredits(winner.getCredits() + table.getPot());
@@ -193,9 +204,23 @@ public class GameEngine {
      * @param table
      */
     public void compareHands(Table table) {
-        for (Player plyr : table.getPlayers()) {
+        table.getPlayers().stream().forEach((plyr) -> {
             plyr.setHand(HandHelper.bestHand(plyr.getHand(), table.getTableHand()));
-        }
+        });
         Collections.sort(table.getPlayers(), Collections.reverseOrder());
+    }
+
+    /**
+     * @return the menu
+     */
+    public int getMenu() {
+        return menu;
+    }
+
+    /**
+     * @param menu the menu to set
+     */
+    public void setMenu(int menu) {
+        this.menu = menu;
     }
 }
