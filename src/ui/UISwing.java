@@ -38,7 +38,7 @@ import javax.swing.UIManager;
  * @author Diana
  */
 public class UISwing extends javax.swing.JFrame implements UI {
-    
+
     private int menu;
     PlayerInfoPanel[] playersPanels;
 
@@ -49,7 +49,7 @@ public class UISwing extends javax.swing.JFrame implements UI {
         try {
             initComponents();
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            
+
             this.setBackground(Color.black);
             SwingUtilities.updateComponentTreeUI(this);
             //this.setIconImage(new ImageIcon(getClass().getResource("/ui/resources/poker.png")));
@@ -64,7 +64,7 @@ public class UISwing extends javax.swing.JFrame implements UI {
             playersPanels[5] = player5InfoPanel;
             playersPanels[6] = player6InfoPanel;
             playersPanels[7] = player7InfoPanel;
-            tableHandLabel.setFont(new Font("Helvetica",Font.BOLD ,32));
+            tableHandLabel.setFont(new Font("Helvetica", Font.BOLD, 32));
         } catch (Exception e) {
             printError(e);
         }
@@ -87,8 +87,8 @@ public class UISwing extends javax.swing.JFrame implements UI {
         helpButton = new javax.swing.JButton();
         handsButton = new javax.swing.JButton();
         infoButton = new javax.swing.JButton();
-        roundMenuButton = new javax.swing.JButton();
         welcomeLabel = new javax.swing.JLabel();
+        roundMenuButton = new javax.swing.JButton();
         roundPanel = new javax.swing.JPanel();
         startRoundButton = new javax.swing.JButton();
         scrollPane = new javax.swing.JScrollPane();
@@ -104,13 +104,14 @@ public class UISwing extends javax.swing.JFrame implements UI {
         tableHandPanel = new javax.swing.JPanel();
         tableHandLabel = new javax.swing.JLabel();
         roundStatusLabel = new javax.swing.JLabel();
+        decorator1 = new javax.swing.JLabel();
+        decorator2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("UN'Hold Em");
         setBackground(new java.awt.Color(0, 0, 0));
         setMaximumSize(new java.awt.Dimension(1000, 500));
         setMinimumSize(new java.awt.Dimension(600, 400));
-        setPreferredSize(new java.awt.Dimension(800, 500));
         setResizable(false);
 
         mainPanel.setBackground(new java.awt.Color(0, 0, 0));
@@ -135,10 +136,10 @@ public class UISwing extends javax.swing.JFrame implements UI {
         cardPanel.setPreferredSize(new java.awt.Dimension(700, 400));
         cardPanel.setLayout(new java.awt.CardLayout());
 
-        welcomePanel.setBackground(new java.awt.Color(255, 255, 255));
-        welcomePanel.setMaximumSize(new java.awt.Dimension(500, 600));
-        welcomePanel.setMinimumSize(new java.awt.Dimension(500, 500));
-        welcomePanel.setPreferredSize(new java.awt.Dimension(500, 600));
+        welcomePanel.setBackground(new java.awt.Color(0, 0, 0));
+        welcomePanel.setMaximumSize(new java.awt.Dimension(700, 500));
+        welcomePanel.setMinimumSize(new java.awt.Dimension(700, 500));
+        welcomePanel.setPreferredSize(new java.awt.Dimension(700, 500));
 
         titleLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/resources/UN Hold'em LOGO.png"))); // NOI18N
         titleLabel.setMaximumSize(new java.awt.Dimension(300, 250));
@@ -183,62 +184,69 @@ public class UISwing extends javax.swing.JFrame implements UI {
             }
         });
 
+        welcomeLabel.setBackground(new java.awt.Color(0, 0, 0));
+        welcomeLabel.setFont(new java.awt.Font("Lucida Calligraphy", 1, 24)); // NOI18N
+        welcomeLabel.setForeground(new java.awt.Color(255, 255, 255));
+        welcomeLabel.setText("Welcome to ...");
+
+        roundMenuButton.setBackground(new java.awt.Color(255, 51, 51));
+        roundMenuButton.setFont(new java.awt.Font("Lucida Calligraphy", 1, 14)); // NOI18N
+        roundMenuButton.setForeground(new java.awt.Color(240, 240, 240));
+        roundMenuButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/resources/poker.png"))); // NOI18N
         roundMenuButton.setText("Show Round Menu");
+        roundMenuButton.setBorderPainted(false);
+        roundMenuButton.setContentAreaFilled(false);
+        roundMenuButton.setOpaque(true);
         roundMenuButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 roundMenuButtonActionPerformed(evt);
             }
         });
 
-        welcomeLabel.setBackground(new java.awt.Color(0, 0, 0));
-        welcomeLabel.setFont(new java.awt.Font("Lucida Calligraphy", 1, 24)); // NOI18N
-        welcomeLabel.setForeground(new java.awt.Color(255, 255, 255));
-        welcomeLabel.setText("Welcome to ...");
-
         javax.swing.GroupLayout welcomePanelLayout = new javax.swing.GroupLayout(welcomePanel);
         welcomePanel.setLayout(welcomePanelLayout);
         welcomePanelLayout.setHorizontalGroup(
             welcomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, welcomePanelLayout.createSequentialGroup()
+            .addGroup(welcomePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(welcomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(welcomePanelLayout.createSequentialGroup()
-                        .addGroup(welcomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(helpButton)
-                            .addComponent(handsButton))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(welcomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(welcomeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(welcomeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
+                .addGroup(welcomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, welcomePanelLayout.createSequentialGroup()
+                        .addComponent(helpButton)
+                        .addGap(42, 42, 42))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, welcomePanelLayout.createSequentialGroup()
+                        .addGroup(welcomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(handsButton)
                             .addGroup(welcomePanelLayout.createSequentialGroup()
-                                .addComponent(roundMenuButton)
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(welcomePanelLayout.createSequentialGroup()
-                        .addComponent(infoButton)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                                .addComponent(infoButton)
+                                .addGap(9, 9, 9)))
+                        .addGap(118, 118, 118))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, welcomePanelLayout.createSequentialGroup()
+                        .addComponent(roundMenuButton)
+                        .addGap(65, 65, 65))))
         );
         welcomePanelLayout.setVerticalGroup(
             welcomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(welcomePanelLayout.createSequentialGroup()
                 .addGroup(welcomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(welcomePanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(welcomePanelLayout.createSequentialGroup()
-                        .addGap(26, 26, 26)
+                        .addGap(32, 32, 32)
                         .addComponent(roundMenuButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(helpButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(infoButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(handsButton))
+                    .addGroup(welcomePanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(welcomeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(welcomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(welcomeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(welcomePanelLayout.createSequentialGroup()
-                                .addComponent(helpButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(handsButton)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(infoButton)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(196, Short.MAX_VALUE))
         );
 
         cardPanel.add(welcomePanel, "WELCOMEPANEL");
@@ -304,17 +312,25 @@ public class UISwing extends javax.swing.JFrame implements UI {
 
         cardPanel.add(roundPanel, "card4");
 
+        decorator1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/resources/cardSuits11.png"))); // NOI18N
+
+        decorator2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ui/resources/cardSuits11.png"))); // NOI18N
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainPanelLayout.createSequentialGroup()
-                .addComponent(exitButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                .addGap(0, 77, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(cardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23))
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addComponent(exitButton)
+                .addContainerGap(693, Short.MAX_VALUE))
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addComponent(decorator1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(decorator2))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -322,22 +338,31 @@ public class UISwing extends javax.swing.JFrame implements UI {
                 .addComponent(exitButton)
                 .addGap(5, 5, 5)
                 .addComponent(cardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(decorator1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                        .addComponent(decorator2)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 800, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 500, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(mainPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -349,15 +374,15 @@ public class UISwing extends javax.swing.JFrame implements UI {
     }//GEN-LAST:event_exitButtonActionPerformed
 
     private void helpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpButtonActionPerformed
-        JOptionPane.showMessageDialog(rootPane, "Necesitas Ayuda?");
+        printHelp();
     }//GEN-LAST:event_helpButtonActionPerformed
 
     private void handsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handsButtonActionPerformed
-        JOptionPane.showMessageDialog(rootPane, "Las manos son...");
+        printHands();
     }//GEN-LAST:event_handsButtonActionPerformed
 
     private void infoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_infoButtonActionPerformed
-        JOptionPane.showMessageDialog(rootPane, "Desarrollado por..");
+        printInfo();
     }//GEN-LAST:event_infoButtonActionPerformed
 
     private void roundMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roundMenuButtonActionPerformed
@@ -407,6 +432,8 @@ public class UISwing extends javax.swing.JFrame implements UI {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel cardPanel;
+    private javax.swing.JLabel decorator1;
+    private javax.swing.JLabel decorator2;
     private javax.swing.JButton exitButton;
     private javax.swing.JButton handsButton;
     private javax.swing.JButton helpButton;
@@ -437,12 +464,12 @@ public class UISwing extends javax.swing.JFrame implements UI {
     public String askMsg(String question) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public void printWelcome() {
-        JOptionPane.showMessageDialog(this.rootPane, "Hola", "Welcome to UN Hold'em", JOptionPane.PLAIN_MESSAGE);
+        //JOptionPane.showMessageDialog(this.rootPane, "Hola", "Welcome to UN Hold'em", JOptionPane.PLAIN_MESSAGE);
     }
-    
+
     @Override
     public void printError(Exception ex) {
         ex.printStackTrace();
@@ -452,7 +479,7 @@ public class UISwing extends javax.swing.JFrame implements UI {
                 error,
                 JOptionPane.ERROR_MESSAGE);
     }
-    
+
     @Override
     public void printHelp() {
         String msg = "Poker Hold'em is a game of bets in which each player has two cards and the goal is to assemble the \n"
@@ -464,24 +491,53 @@ public class UISwing extends javax.swing.JFrame implements UI {
                 + "bet more if you have a good hand in the game and win more points ";
         JOptionPane.showMessageDialog(rootPane, msg, "Help", JOptionPane.PLAIN_MESSAGE);
     }
-    
+
     @Override
     public void printCommands() {
     }
-    
+
     @Override
     public void printHands() {
+        String msg = "These are the hands you can form on the game, they are sorted upward by value (1 = higher value):\n"
+                + "1) Royal Flush: 10" + "\u2660 " + "J" + "\u2660 " + "Q" + "\u2660 " + "K" + "\u2660 " + "A" + "\u2660 " + "(five higher cards from the same suit )\n"
+                + "2) Straight Flush: 4\u2663 5\u2663 6\u2663 7\u2663 8\u2663 (Five cards consecutive from the same suit)\n"
+                + "3) Four of a Kind: A\u2660 A\u2663 A\u2764 A\u2666 8\u2663 (Four A's and a kicker*, )\n"
+                + "4) Full House: 10\u2666 10\u2764 10\u2663 J\u2660 J\u2663 (A pair and a Three of a Kind, in tie case wins the one who has the higher Three of a Kind)\n"
+                + "5) Flush: 5\u2660 7\u2660 2\u2660 9\u2660 Q\u2660 (Five cards in disorder of the same suit)\n"
+                + "6) Straight: 3\u2764 4\u2663 5\u2764 6\u2666 7\u2660 (Five consecutive card from different suits)\n"
+                + "7) Three of a Kind: 7\u2666 7\u2663 7\u2764 A\u2666 (Three card of the same value, the last two have to be different between them)\n"
+                + "8) Double Pair: Q\u2764 Q\u2663 J\u2663 J\u2666 4\u2764 (two pairs of cards , in case of tie wins the one who has the higher pair and so on)\n"
+                + "9) Pair: 8\u2666 8\u2660 K\u2663 7\u2666 3\u2764 \n"
+                + "10) High Card: A\u2764 J\u2663 10\u2666 5\u2764 6\u2666 (When anybody have some of the previous hands, wins the one who has the higher kicker*)\n"
+                + "* \nA kicker is the highest card on that doesn't determine the type of the hand, it  decides who wins in case of tie\n"
+                + "P.S.: If two or more player have the same hand, wins the higher one, if the hands are completely the same \n the prize is divided among the winners.\n Also, if two or more player have hands that are composed of other hands like double pair(two pairs) or full house(Three of a kind and a pair)\n and there is a tie, the sub-hand are compared until  the kicker if it's necessary and wins the higher of them.\n"
+                + "We hope you enjoy it! :D";
+
+        JOptionPane.showMessageDialog(rootPane, msg, "Hands", JOptionPane.INFORMATION_MESSAGE);
+
     }
-    
+
     @Override
     public void printExit() {
         JOptionPane.showMessageDialog(null, "Hasta luego..");
     }
-    
+
     @Override
     public void printInfo() {
+        String msg = "Wellcome,"
+                + "This is a Object Oriented Implementation of a Poker Game,\n"
+                + "a project of students of Universidad Nacional de Colombia Project.\n"
+                + "\t" + "Authors:\n"
+                + "Miguel Angel Ortiz \t miaortizma@unal.edu.co\n Diana Carolina Guarin \t dcguarina@unal.edu.co \n Daniel Organista Calderon \t jodorganistaca@unal.edu.co\n"
+                + "\t Course Info:\n"
+                + "Object Oriented Programming (2016375)/ 2016-2 \n https://sites.google.com/site/oopunal20162/contents \n"
+                + "Teacher: Ing. Sebastian Alejandro Velasco Dimate \t savelascod@unal.edu.co\n"
+                + "Developer Team: \t"
+                + "One Poker";
+        JOptionPane.showMessageDialog(rootPane, msg, "Info", JOptionPane.INFORMATION_MESSAGE);
+
     }
-    
+
     @Override
     public void printRoundStandings(Table table, int winners) {
         String out = ("Round Standings(from best to worst):\n");
@@ -494,7 +550,7 @@ public class UISwing extends javax.swing.JFrame implements UI {
         }
         JOptionPane.showMessageDialog(null, out);
     }
-    
+
     @Override
     public void printStandings(Table table) {
         String out = ("Tournament Standings: \n");
@@ -505,13 +561,13 @@ public class UISwing extends javax.swing.JFrame implements UI {
         }
         JOptionPane.showMessageDialog(null, out);
     }
-    
+
     @Override
     public void printUser(Player user) {
         userInfoPanel.setPlayer(user);
         userInfoPanel.repaint();
     }
-    
+
     @Override
     public void printMsg(String msg) {
         synchronized (this) {
@@ -519,7 +575,7 @@ public class UISwing extends javax.swing.JFrame implements UI {
             logTextArea.setCaretPosition(logTextArea.getDocument().getLength());
         }
     }
-    
+
     @Override
     public void printMenuOption(String menuName, String msg, String[] options) {
         menu = 1 + JOptionPane.showOptionDialog(null,
@@ -531,14 +587,14 @@ public class UISwing extends javax.swing.JFrame implements UI {
                 options,
                 options[0]);
     }
-    
+
     @Override
     public int askInt(String question) {
         //incompleto
         int result = Integer.parseInt(JOptionPane.showInputDialog(question));
         return result;
     }
-    
+
     @Override
     public void notifyRoundMenu() {
         userInfoPanel.enableButtons(true);
@@ -547,14 +603,14 @@ public class UISwing extends javax.swing.JFrame implements UI {
             userInfoPanel.disableCheck();
         }
     }
-    
+
     @Override
     public void notifyMainMenu() {
-        
+
     }
-    
+
     @Override
-    public void printTable(Table table,String status) {
+    public void printTable(Table table, String status) {
         roundStatusLabel.setText(status);
         tableHandLabel.setText("" + table.getTableHand());
         userInfoPanel.setPlayer(table.getPlayer(0));

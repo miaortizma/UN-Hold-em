@@ -111,14 +111,12 @@ public class RoundThread extends Thread {
         }
         dealToPlayers(table);
         ui.printMsg("Dealt hold cards\n");
-        ui.printTable(table,status + "\n");
+        ui.printTable(table, status + "\n");
 
-        
         this.setStatus("Pre - Flop");
         preFlop();
-        ui.printTable(table,status + "\n");
+        ui.printTable(table, status + "\n");
 
-        
         for (int i = 0; i < 3; i++) {
             table.setOpenBet(false);
             switch (i) {
@@ -138,7 +136,7 @@ public class RoundThread extends Thread {
                     break;
                 }
             }
-            ui.printTable(table,status + "\n");
+            ui.printTable(table, status + "\n");
             //bettings
             msg = "Your turn!";
             for (j = 0; j < 8; j++) {
@@ -258,11 +256,11 @@ public class RoundThread extends Thread {
         } else {
             ui.printMenuOption("Round Menu", msg, options);
             ui.notifyRoundMenu();
+            if (table.isOpenBet()) {
+                menu++;
+            }
         }
 
-        if (table.isOpenBet()) {
-            menu++;
-        }
         switch (menu) {
             case 1: {
                 //Check is equivalent to passing
